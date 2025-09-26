@@ -84,6 +84,7 @@ export default function MarketingManagerNavbar({ activeTab }: MarketingManagerNa
     return () => {
       window.removeEventListener('storage', updateAgencyName);
     };
+  }, []);
 
   // Show loading state in navbar while user info is being loaded
   if (!userInfo) {

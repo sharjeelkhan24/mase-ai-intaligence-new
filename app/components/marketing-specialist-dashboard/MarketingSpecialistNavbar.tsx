@@ -84,6 +84,7 @@ export default function MarketingSpecialistNavbar({ activeTab }: MarketingSpecia
     return () => {
       window.removeEventListener('storage', updateAgencyName);
     };
+  }, []);
 
   // Show loading state in navbar while user info is being loaded
   if (!userInfo) {
