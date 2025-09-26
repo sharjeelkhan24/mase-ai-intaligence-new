@@ -55,7 +55,9 @@ export default function QANurseNavbar({ activeTab }: QANurseNavbarProps) {
           const parsedData = JSON.parse(cachedData);
           if (parsedData.agency_name) {
             newAgencyName = parsedData.agency_name;
+          }
         } catch (e) {}
+      }
       
       // Second try: staffAgency fallback
       if (newAgencyName === 'MASE AI' && staffAgency) {
