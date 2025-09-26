@@ -73,6 +73,7 @@ export default function QANurseNavbar({ activeTab }: QANurseNavbarProps) {
             }
           } catch (e) {}
         }
+      }
       
       setAgencyName(newAgencyName);
     };
