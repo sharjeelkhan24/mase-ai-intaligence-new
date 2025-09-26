@@ -42,6 +42,8 @@ export default function QANurseNavbar({ activeTab }: QANurseNavbarProps) {
         role: staffRole,
         agency: staffAgency
       });
+    }
+    
     // Update agency name
     const updateAgencyName = () => {
       if (typeof window === 'undefined') return;
