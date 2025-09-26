@@ -70,7 +70,9 @@ export default function QANurseNavbar({ activeTab }: QANurseNavbarProps) {
             if (!parsedData.agency_name) {
               parsedData.agency_name = staffAgency;
               localStorage.setItem('staffData', JSON.stringify(parsedData));
+            }
           } catch (e) {}
+        }
       
       setAgencyName(newAgencyName);
     };
