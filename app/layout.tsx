@@ -2,6 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, ADLaM_Display, Albert_Sans } from "next/font/google";
 import { AgencyAuthProvider } from "@/lib/contexts/AgencyAuthContext";
+import { PatientAuthProvider } from "@/lib/contexts/PatientAuthContext";
+import { StaffAuthProvider } from "@/lib/contexts/StaffAuthContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,7 +44,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${adlamDisplay.variable} ${albertSans.variable} antialiased`}
       >
         <AgencyAuthProvider>
-          {children}
+          <PatientAuthProvider>
+            <StaffAuthProvider>
+              {children}
+            </StaffAuthProvider>
+          </PatientAuthProvider>
         </AgencyAuthProvider>
       </body>
     </html>

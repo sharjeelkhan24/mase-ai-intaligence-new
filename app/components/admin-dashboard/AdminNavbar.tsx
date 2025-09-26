@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Users, Settings, LogOut, Home, Shield, CreditCard, TrendingUp, ChevronDown, Link, FileText, CheckCircle } from 'lucide-react';
+import { Users, Settings, LogOut, Home, Shield, CreditCard, TrendingUp } from 'lucide-react';
 import { useAgencyAuth } from '@/lib/contexts/AgencyAuthContext';
 import Image from 'next/image';
 
@@ -15,7 +15,6 @@ export default function AdminNavbar({ activeSection, onSectionChange }: AdminNav
   const router = useRouter();
   const pathname = usePathname();
   const { agency, subscriptions, isLoading, clearAgencyData } = useAgencyAuth();
-  const [showQADropdown, setShowQADropdown] = useState(false);
 
   // Debug logging
   console.log('AdminNavbar render - agency:', agency, 'subscriptions:', subscriptions, 'isLoading:', isLoading);
@@ -109,7 +108,19 @@ export default function AdminNavbar({ activeSection, onSectionChange }: AdminNav
           </div>
           <div>
             <h1 className="text-lg font-bold text-gray-900 font-[family-name:var(--font-adlam-display)]">
-              MASE AI
+              {(() => {
+                if (typeof window === 'undefined') {
+                  return 'MASE AI';
+                }
+                const cachedData = localStorage.getItem('agencyData');
+                if (cachedData) {
+                  try {
+                    const parsedData = JSON.parse(cachedData);
+                    return parsedData.agency_name || 'MASE AI';
+                  } catch (e) {}
+                }
+                return 'MASE AI';
+              })()}
             </h1>
             <p className="text-sm text-gray-500 font-[family-name:var(--font-adlam-display)]">
               Agency Dashboard
@@ -125,92 +136,6 @@ export default function AdminNavbar({ activeSection, onSectionChange }: AdminNav
             const IconComponent = item.icon;
             const currentActive = getActiveSection();
             
-            // Special handling for Quality Assurance with dropdown
-            if (item.id === 'quality-assurance') {
-              return (
-                <li key={item.id} className="relative">
-                  <button
-                    onClick={() => {
-                      if (pathname === '/agency-dashboard/quality-assurance') {
-                        setShowQADropdown(!showQADropdown);
-                      } else {
-                        handleNavigation(item);
-                      }
-                    }}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 font-[family-name:var(--font-adlam-display)] ${
-                      currentActive === item.id
-                        ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
-                  >
-                    <IconComponent className="w-5 h-5" />
-                    <span className="font-medium">{item.label}</span>
-                    {item.requiresSubscription && trialSubscriptions.includes(item.requiresSubscription) && (
-                      <span className="ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">
-                        Trial
-                      </span>
-                    )}
-                    {currentActive === item.id && (
-                      <ChevronDown className={`w-4 h-4 ml-auto transition-transform ${showQADropdown ? 'rotate-180' : ''}`} />
-                    )}
-                  </button>
-                  
-                  {/* Quality Assurance Dropdown */}
-                  {currentActive === item.id && showQADropdown && (
-                    <div className="mt-2 ml-4 space-y-1">
-                      <button
-                        onClick={() => {
-                          setShowQADropdown(false);
-                          router.push('/agency-dashboard/quality-assurance');
-                        }}
-                        className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 font-[family-name:var(--font-adlam-display)] ${
-                          pathname === '/agency-dashboard/quality-assurance'
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                        }`}
-                      >
-                        <TrendingUp className="w-4 h-4" />
-                        <span className="text-sm">Overview</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowQADropdown(false);
-                          router.push('/agency-dashboard/quality-assurance/inteegrations');
-                        }}
-                        className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 font-[family-name:var(--font-adlam-display)] ${
-                          pathname.includes('/quality-assurance/inteegrations')
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                        }`}
-                      >
-                        <Link className="w-4 h-4" />
-                        <span className="text-sm">Inteegrations</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowQADropdown(false);
-                          // Add audit reports functionality here
-                        }}
-                        className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-[family-name:var(--font-adlam-display)]"
-                      >
-                        <FileText className="w-4 h-4" />
-                        <span className="text-sm">Audit Reports</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowQADropdown(false);
-                          // Add compliance tools functionality here
-                        }}
-                        className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-[family-name:var(--font-adlam-display)]"
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                        <span className="text-sm">Compliance Tools</span>
-                      </button>
-                    </div>
-                  )}
-                </li>
-              );
-            }
             
             // Regular navigation items
             return (

@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Shield, CheckCircle, XCircle, AlertTriangle, FileText, Calendar, TrendingUp, Star, Clock, Eye } from 'lucide-react';
 import AdminNavbar from '@/app/components/admin-dashboard/AdminNavbar';
 import SubscriptionGuard from '@/app/components/admin-dashboard/SubscriptionGuard';
 
 export default function QualityAssurance() {
-  const [selectedPeriod, setSelectedPeriod] = useState('month');
 
   // Sample quality metrics data
   const qualityMetrics = [
@@ -144,15 +143,6 @@ export default function QualityAssurance() {
               </p>
             </div>
             <div className="flex items-center space-x-3">
-              <select
-                value={selectedPeriod}
-                onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)]"
-              >
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-                <option value="quarter">This Quarter</option>
-              </select>
               <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 font-[family-name:var(--font-adlam-display)]">
                 <Shield className="w-4 h-4" />
                 <span>New Audit</span>

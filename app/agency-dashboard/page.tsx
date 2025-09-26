@@ -4,9 +4,13 @@ import React, { useEffect } from 'react';
 import { Users, DollarSign, BarChart3, Calendar, Bell, Search } from 'lucide-react';
 import AdminNavbar from '@/app/components/admin-dashboard/AdminNavbar';
 import { useAgencyAuth } from '@/lib/contexts/AgencyAuthContext';
+import { useRoleValidation } from '@/lib/hooks/useRoleValidation';
 
 export default function AgencyDashboard() {
   const { agency, isLoading, refreshAgencyData } = useAgencyAuth();
+  
+  // Use role validation hook to ensure only agency role can access this dashboard
+  const { isValid, isLoading: roleLoading, userInfo } = useRoleValidation('agency');
 
   // Debug and force refresh if needed
   useEffect(() => {
@@ -25,6 +29,25 @@ export default function AgencyDashboard() {
       refreshAgencyData();
     }
   }, [agency, isLoading, refreshAgencyData]);
+
+  // Show loading screen while role validation is in progress
+  if (roleLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p className="text-lg text-gray-600 font-[family-name:var(--font-adlam-display)]">
+            Validating access permissions...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // If role validation failed, the hook will handle redirect
+  if (!isValid || !userInfo) {
+    return null;
+  }
 
   const handleSectionChange = (section: string) => {
     // This is now handled by AdminNavbar component

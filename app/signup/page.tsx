@@ -342,6 +342,36 @@ export default function SignUp() {
 
       console.log('Agency data saved successfully:', agencyData);
 
+      // Create agency-specific tables
+      if (agencyData) {
+        try {
+          console.log('Creating agency-specific tables...');
+          const tableCreationResponse = await fetch('/api/create-agency-tables', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              agencyName: agencyData.agency_name,
+              agencyId: agencyData.id
+            }),
+          });
+
+          if (!tableCreationResponse.ok) {
+            const errorData = await tableCreationResponse.json();
+            console.error('Failed to create agency tables:', errorData);
+            // Don't fail the signup process, just log the error
+            // The agency can still be created without the specific tables
+          } else {
+            const tableData = await tableCreationResponse.json();
+            console.log('Agency tables created successfully:', tableData);
+          }
+        } catch (tableError) {
+          console.error('Error creating agency tables:', tableError);
+          // Don't fail the signup process, just log the error
+        }
+      }
+
       // Save subscription data
       if (selectedPlans.length > 0 && agencyData) {
         const subscriptionData = selectedPlans.map(planId => ({

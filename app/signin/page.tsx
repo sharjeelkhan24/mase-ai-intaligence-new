@@ -54,17 +54,26 @@ export default function SignIn() {
       console.log('Agency authenticated successfully:', agencyData.agency_name);
       console.log('Storing agency email in localStorage:', email);
       
-      // Clear any previous agency data first
+      // Clear all previous authentication data first
+      localStorage.removeItem('staffEmail');
+      localStorage.removeItem('staffRole');
+      localStorage.removeItem('staffAgency');
+      localStorage.removeItem('staffData');
       localStorage.removeItem('agencyEmail');
+      localStorage.removeItem('agencyData');
       
       // Store new agency email in localStorage for context
       localStorage.setItem('agencyEmail', email);
       
+      // Store complete agency data for navbar display
+      localStorage.setItem('agencyData', JSON.stringify(agencyData));
+      
       // Verify it was stored
       console.log('Stored email verification:', localStorage.getItem('agencyEmail'));
+      console.log('Stored agency data verification:', localStorage.getItem('agencyData'));
       
       // Force a page reload to clear any cached context data
-      console.log('Redirecting to dashboard and forcing refresh...');
+      console.log('Redirecting agency user to /agency-dashboard...');
       
       // Use replace instead of push to prevent back navigation issues
       router.replace('/agency-dashboard');
@@ -77,27 +86,108 @@ export default function SignIn() {
     }
   };
 
-  // Handle sign-in for staff
+  // Handle sign-in for staff (all staff roles including Clinical Director)
   const handleStaffSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      // Check if this email exists in agency table (wrong tab)
-      const { data: agencyData } = await supabase
+      // Only search agency-specific staff tables - no agency table check needed
+      // First, get all agencies and their staff table names
+      const { data: agencies, error: agenciesError } = await supabase
         .from('agency')
-        .select('email')
-        .eq('email', email)
-        .single();
+        .select('agency_name, staff_table_name')
+        .not('staff_table_name', 'is', null);
 
-      if (agencyData) {
-        setError('This is an agency account. Please use the Agency tab to sign in.');
+      if (agenciesError || !agencies || agencies.length === 0) {
+        setError('No agency staff tables found. Please contact support.');
         return;
       }
 
-      // For now, staff sign-in is not implemented
-      setError('Staff sign-in is not yet implemented. Please contact your administrator.');
+      let staffData = null;
+      let foundAgency = null;
+      let agencyTableName = null;
+
+      // Search through each agency's staff table
+      for (const agency of agencies) {
+        if (!agency.staff_table_name) continue;
+        
+        const { data: staffResult, error: staffError } = await supabase
+          .from(agency.staff_table_name)
+          .select('*')
+          .eq('email', email)
+          .single();
+
+        if (!staffError && staffResult) {
+          staffData = staffResult;
+          foundAgency = agency.agency_name;
+          agencyTableName = agency.staff_table_name;
+          break;
+        }
+      }
+
+      if (!staffData || !foundAgency) {
+        setError('Invalid email or password. Make sure you are using a staff account.');
+        return;
+      }
+
+      // Verify the password
+      const hashedPassword = btoa(password); // Base64 encoding - same as form submission
+      
+      if (staffData.password_hash !== hashedPassword) {
+        setError('Invalid email or password');
+        return;
+      }
+
+      console.log('Staff authenticated successfully:', staffData.first_name, staffData.last_name);
+      console.log('Staff role:', staffData.role);
+      console.log('Staff current status:', staffData.status);
+      console.log('Staff last_login:', staffData.last_login);
+      console.log('Staff last_logout:', staffData.last_logout);
+
+      // Update staff status to online and last_login timestamp
+      const { error: updateError } = await supabase
+        .from(agencyTableName)
+        .update({ 
+          status: 'online',
+          last_login: new Date().toISOString(),
+          last_logout: null  // Clear logout time when logging in
+        })
+        .eq('id', staffData.id);
+
+      if (updateError) {
+        console.error('Error updating staff login status:', updateError);
+        // Don't fail the login, just log the error
+      } else {
+        console.log('Staff status updated to online successfully');
+      }
+      console.log('Staff agency:', foundAgency);
+      
+      // Clear all previous authentication data first
+      localStorage.removeItem('staffEmail');
+      localStorage.removeItem('staffRole');
+      localStorage.removeItem('staffAgency');
+      localStorage.removeItem('staffData');
+      localStorage.removeItem('agencyEmail');
+      localStorage.removeItem('agencyData');
+      
+      // Store new staff information in localStorage
+      localStorage.setItem('staffEmail', email);
+      localStorage.setItem('staffRole', staffData.role);
+      localStorage.setItem('staffAgency', foundAgency);
+      
+      // Store complete staff data with agency name for navbar display
+      const completeStaffData = {
+        ...staffData,
+        agency_name: foundAgency
+      };
+      localStorage.setItem('staffData', JSON.stringify(completeStaffData));
+      
+      // Redirect based on role
+      const role = staffData.role.toLowerCase().replace(/\s+/g, '-');
+      console.log(`Redirecting staff user with role '${staffData.role}' (normalized: '${role}') to /${role}-dashboard`);
+      router.replace(`/${role}-dashboard`);
       
     } catch (error: any) {
       console.error('Sign-in error:', error);
@@ -107,27 +197,84 @@ export default function SignIn() {
     }
   };
 
-  // Handle sign-in for doctors
+  // Handle sign-in for doctors (Clinical Directors)
   const handleDoctorSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      // Check if this email exists in agency table (wrong tab)
-      const { data: agencyData } = await supabase
+      // Only search agency-specific staff tables for Clinical Directors - no agency table check needed
+      // First, get all agencies and their staff table names
+      const { data: agencies, error: agenciesError } = await supabase
         .from('agency')
-        .select('email')
-        .eq('email', email)
-        .single();
+        .select('agency_name, staff_table_name')
+        .not('staff_table_name', 'is', null);
 
-      if (agencyData) {
-        setError('This is an agency account. Please use the Agency tab to sign in.');
+      if (agenciesError || !agencies || agencies.length === 0) {
+        setError('No agency staff tables found. Please contact support.');
         return;
       }
 
-      // For now, doctor sign-in is not implemented
-      setError('Doctor sign-in is not yet implemented. Please contact your administrator.');
+      let staffData = null;
+      let foundAgency = null;
+
+      // Search through each agency's staff table for Clinical Directors only
+      for (const agency of agencies) {
+        if (!agency.staff_table_name) continue;
+        
+        const { data: staffResult, error: staffError } = await supabase
+          .from(agency.staff_table_name)
+          .select('*')
+          .eq('email', email)
+          .eq('role', 'Clinical Director')
+          .single();
+
+        if (!staffError && staffResult) {
+          staffData = staffResult;
+          foundAgency = agency.agency_name;
+          break;
+        }
+      }
+
+      if (!staffData || !foundAgency) {
+        setError('Invalid email or password. Make sure you are using a Clinical Director account.');
+        return;
+      }
+
+      // Verify the password
+      const hashedPassword = btoa(password); // Base64 encoding - same as form submission
+      
+      if (staffData.password_hash !== hashedPassword) {
+        setError('Invalid email or password');
+        return;
+      }
+
+      console.log('Clinical Director authenticated successfully:', staffData.first_name, staffData.last_name);
+      
+      // Clear all previous authentication data first
+      localStorage.removeItem('staffEmail');
+      localStorage.removeItem('staffRole');
+      localStorage.removeItem('staffAgency');
+      localStorage.removeItem('staffData');
+      localStorage.removeItem('agencyEmail');
+      localStorage.removeItem('agencyData');
+      
+      // Store new staff information in localStorage
+      localStorage.setItem('staffEmail', email);
+      localStorage.setItem('staffRole', staffData.role);
+      localStorage.setItem('staffAgency', foundAgency);
+      
+      // Store complete staff data with agency name for navbar display
+      const completeStaffData = {
+        ...staffData,
+        agency_name: foundAgency
+      };
+      localStorage.setItem('staffData', JSON.stringify(completeStaffData));
+      
+      // Redirect to clinical director dashboard
+      console.log('Redirecting Clinical Director to /clinical-director-dashboard...');
+      router.replace('/clinical-director-dashboard');
       
     } catch (error: any) {
       console.error('Sign-in error:', error);
@@ -150,7 +297,7 @@ export default function SignIn() {
                 Staff Access
               </h2>
               <p className="text-gray-600 text-sm font-[family-name:var(--font-adlam-display)]">
-                Healthcare staff, nurses, and providers
+                All healthcare staff roles
               </p>
             </div>
             
@@ -256,7 +403,7 @@ export default function SignIn() {
                 Doctor Access
               </h2>
               <p className="text-gray-600 text-sm font-[family-name:var(--font-adlam-display)]">
-                Physicians and medical professionals
+                Clinical Directors only
               </p>
             </div>
             
