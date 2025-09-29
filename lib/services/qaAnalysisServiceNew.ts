@@ -257,13 +257,18 @@ class QAAnalysisServiceNew {
     try {
       console.log('QA Service: Starting OpenAI analysis...');
       console.log('QA Service: Content length for analysis:', content.length);
+      console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
+      console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
       // Use GPT-4o for better analysis quality
       const modelToUse = aiModel;
       console.log('QA Service: Using model:', modelToUse, '(original:', aiModel, ')');
       
       const openaiService = OpenAIService.getInstance();
+      console.log('QA Service: OpenAI service instance obtained');
+      
       const result = await openaiService.analyzePatientDocument(content, fileName, modelToUse);
+      console.log('QA Service: OpenAI analysis completed successfully');
 
       return {
         complianceScore: result.confidence ? Math.round(result.confidence * 100) : 85,
@@ -310,6 +315,15 @@ class QAAnalysisServiceNew {
       };
     } catch (error) {
       console.error('QA Service: OpenAI analysis failed:', error);
+      console.error('QA Service: Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        environment: {
+          hasApiKey: !!process.env.OPENAI_API_KEY,
+          apiKeyLength: process.env.OPENAI_API_KEY?.length || 0,
+          nodeEnv: process.env.NODE_ENV
+        }
+      });
       throw error;
     }
   }

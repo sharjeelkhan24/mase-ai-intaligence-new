@@ -36,7 +36,13 @@ export async function POST(request: NextRequest) {
     console.log('ChatGPT QA Analysis: Content preview:', content.substring(0, 200));
 
     // Analyze with OpenAI
+    console.log('ChatGPT QA Analysis: Getting OpenAI service instance...');
     const openaiService = OpenAIService.getInstance();
+    
+    console.log('ChatGPT QA Analysis: Starting analysis...');
+    console.log('ChatGPT QA Analysis: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
+    console.log('ChatGPT QA Analysis: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
+    
     const analysisResult = await openaiService.analyzePatientDocument(
       content,
       file.name,
@@ -44,6 +50,8 @@ export async function POST(request: NextRequest) {
     );
 
     console.log('ChatGPT QA Analysis: Analysis completed:', analysisResult);
+    console.log('ChatGPT QA Analysis: Analysis result type:', typeof analysisResult);
+    console.log('ChatGPT QA Analysis: Analysis result keys:', Object.keys(analysisResult || {}));
 
     // Clean up temporary file
     try {
