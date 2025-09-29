@@ -374,7 +374,7 @@ The AI analysis will work perfectly once you provide the text content. This is a
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
       // Check if this is placeholder content (PDF parsing not available)
-      if (content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
+      if (content.includes('PDF text extraction not available') || content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
         console.log('QA Service: Detected placeholder content, returning default patient info');
         return {
           patientName: 'Not available - PDF parsing not available',
@@ -424,7 +424,7 @@ The AI analysis will work perfectly once you provide the text content. This is a
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
       // Check if this is placeholder content (PDF parsing not available)
-      if (content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
+      if (content.includes('PDF text extraction not available') || content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
         console.log('QA Service: Detected placeholder content, returning default analysis');
         return {
           complianceScore: 0,
