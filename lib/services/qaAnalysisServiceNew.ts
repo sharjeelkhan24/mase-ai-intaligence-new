@@ -265,18 +265,8 @@ class QAAnalysisServiceNew {
     console.log('QA Service: File size:', fileStats.size);
 
     if (fileExtension === '.pdf') {
-      console.log('QA Service: PDF processing not available in serverless environment');
-      const content = `PDF Document: ${fileName} - PDF text extraction not available in serverless environment. Please convert to text format (.txt) for analysis.`;
-      
-      return {
-        content,
-        fileInfo: {
-          fileType: 'pdf',
-          pageCount: 1,
-          fileSize: fileStats.size,
-          extractedText: content.substring(0, 1000)
-        }
-      };
+      console.log('QA Service: PDF processing requires API key configuration');
+      throw new Error('PDF processing requires PDF.co API key to be configured in environment variables');
     } else if (fileExtension === '.txt') {
       let content = fs.readFileSync(filePath, 'utf-8');
       
@@ -348,9 +338,9 @@ For files under 500MB, the AI can analyze the PDF directly.`;
         
             // Truncate content if too large to prevent connection errors
             let contentToSend = extractedText;
-            if (extractedText.length > 50000) { // 50K characters = ~12.5K tokens
+            if (extractedText.length > 100000) { // 100K characters = ~25K tokens
               console.log('QA Service: Content too large, truncating to prevent connection errors');
-              contentToSend = extractedText.substring(0, 50000) + '\n\n[Content truncated due to size - showing first 50,000 characters]';
+              contentToSend = extractedText.substring(0, 100000) + '\n\n[Content truncated due to size - showing first 100,000 characters]';
             }
 
             // Send extracted text to AI for analysis
@@ -396,34 +386,8 @@ Note: This PDF text has been extracted for accurate analysis of the document con
       } catch (error) {
         console.error('QA Service: PDF text extraction failed:', error);
         
-        // Fallback: Provide instructions for manual text extraction
-        const content = `PDF Document: ${fileName}
-
-File Information:
-- File Size: ${buffer.length} bytes
-- Status: PDF text extraction failed in serverless environment
-
-IMPORTANT: PDF text extraction is not available in this serverless environment. Please follow these steps:
-
-1. Open your PDF file in any PDF viewer (such as Adobe Reader or Chrome)
-2. Select all text using Ctrl+A (Cmd+A on Mac)
-3. Copy the text using Ctrl+C (Cmd+C on Mac)
-4. Paste the copied text into a new text file (.txt)
-5. Upload the .txt file for analysis
-
-Alternatively, you can use an online PDF to text converter and upload the resulting .txt file.
-
-Once you provide the text content, I will be able to extract all the necessary patient information and provide a detailed analysis.`;
-        
-        return {
-          content,
-          fileInfo: {
-            fileType: 'pdf',
-            pageCount: 1,
-            fileSize: buffer.length,
-            extractedText: `PDF text extraction failed - manual extraction required`
-          }
-        };
+        // No fallback - throw error if PDF extraction fails
+        throw new Error(`PDF text extraction failed: ${error.message}`);
       }
     } else if (fileExtension === '.txt') {
       let content = buffer.toString('utf-8');
@@ -450,20 +414,8 @@ Once you provide the text content, I will be able to extract all the necessary p
       console.log('QA Service: Content length:', content.length);
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
-      // Check if this is a PDF that needs manual text extraction
-      if (content.includes('PDF text extraction not available in serverless environment') || content.includes('PDF text extraction failed')) {
-        console.log('QA Service: Detected PDF requiring manual text extraction, returning default patient info');
-        return {
-          patientName: 'Not available - PDF text extraction required',
-          mrn: 'Not available - PDF text extraction required',
-          visitType: 'Not available - PDF text extraction required',
-          payor: 'Not available - PDF text extraction required',
-          visitDate: 'Not available - PDF text extraction required',
-          clinician: 'Not available - PDF text extraction required',
-          payPeriod: 'Not available - PDF text extraction required',
-          status: 'PDF_TEXT_EXTRACTION_REQUIRED'
-        };
-      }
+      // No fallback - only work with real extracted text
+      console.log('QA Service: Processing extracted text for patient information');
       
       const openaiService = OpenAIService.getInstance();
       const result = await openaiService.analyzePatientDocument(content, fileName, 'gpt-5-nano');
@@ -500,41 +452,8 @@ Once you provide the text content, I will be able to extract all the necessary p
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
-      // Check if this is a PDF that needs manual text extraction
-      if (content.includes('PDF text extraction not available in serverless environment') || content.includes('PDF text extraction failed')) {
-        console.log('QA Service: Detected PDF requiring manual text extraction, returning default analysis');
-        return {
-          complianceScore: 0,
-          issuesFound: ['PDF text extraction not available in serverless environment'],
-          recommendations: ['Please extract text from PDF and upload as .txt file for analysis'],
-          riskLevel: 'medium',
-          summary: `PDF Analysis Not Available: ${fileName} - Text extraction required.`,
-          detailedAnalysis: `
-          PDF Analysis Report - Text Extraction Required
-          ==============================================
-          
-          File: ${fileName}
-          Analysis Type: ${analysisType}
-          Date: ${new Date().toLocaleDateString()}
-          Status: Text extraction required
-          
-          LIMITATION:
-          PDF text extraction is not available in this serverless environment.
-          The AI cannot read PDF files directly without text extraction.
-          
-          RECOMMENDATIONS:
-          1. Open PDF in any viewer (Adobe Reader, Chrome, etc.)
-          2. Select all text (Ctrl+A / Cmd+A)
-          3. Copy text (Ctrl+C / Cmd+C)
-          4. Paste into a .txt file
-          5. Upload the .txt file for analysis
-          
-          Alternatively, use an online PDF to text converter.
-          
-          File Size: ${content.match(/\d+ bytes/)?.[0] || 'Unknown'}
-          `
-        };
-      }
+      // No fallback - only work with real extracted text
+      console.log('QA Service: Processing extracted text for quality analysis');
       
       // Use GPT-5-nano for highest token limits (200K TPM) and better PDF handling
       const modelToUse = 'gpt-5-nano';
@@ -612,9 +531,13 @@ Once you provide the text content, I will be able to extract all the necessary p
       const base64PDF = buffer.toString('base64');
       
       // Try PDF.co API first (more reliable)
+      console.log('QA Service: Checking PDF.co API key...');
+      console.log('QA Service: PDF_CO_API_KEY exists:', !!process.env.PDF_CO_API_KEY);
+      console.log('QA Service: PDF_CO_API_KEY length:', process.env.PDF_CO_API_KEY?.length || 0);
+      console.log('QA Service: PDF_CO_API_KEY preview:', process.env.PDF_CO_API_KEY?.substring(0, 20) + '...' || 'Not found');
+      
       if (process.env.PDF_CO_API_KEY) {
         console.log('QA Service: Trying PDF.co API');
-        console.log('QA Service: PDF.co API key length:', process.env.PDF_CO_API_KEY.length);
         
         // Step 1: Upload file to PDF.co
         const uploadResponse = await fetch('https://api.pdf.co/v1/file/upload/base64', {
@@ -680,9 +603,11 @@ Once you provide the text content, I will be able to extract all the necessary p
           console.error('QA Service: PDF.co upload error response:', errorText);
         }
         console.log('QA Service: PDF.co API failed');
+      } else {
+        console.log('QA Service: PDF.co API key not found, skipping API extraction');
       }
       
-      throw new Error('PDF.co API failed - PDF text extraction unavailable');
+      throw new Error('PDF.co API not available - PDF text extraction requires API key configuration');
       
     } catch (error) {
       console.error('QA Service: PDF text extraction failed:', error);

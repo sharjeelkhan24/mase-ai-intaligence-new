@@ -36,7 +36,7 @@ class AIPatientInfoService {
       const patientInfo: PatientInfo = {};
       
       // Extract patient name from OASIS form structure
-      // Look for patterns like "Banks, Cleatus" or "First Name: Cleatus" + "Last Name: Banks"
+      // Look for patterns like "Last, First" or "First Name: First" + "Last Name: Last"
       const nameMatch = content.match(/([A-Z][a-z]+,\s*[A-Z][a-z]+)/);
       if (nameMatch) {
         patientInfo.patientName = nameMatch[1].trim().toUpperCase();
@@ -47,7 +47,7 @@ class AIPatientInfoService {
         if (firstNameMatch && lastNameMatch) {
           patientInfo.patientName = `${lastNameMatch[1].trim()}, ${firstNameMatch[1].trim()}`.toUpperCase();
         } else {
-          // Try the header pattern: "Banks, CleatusDOB: 05/25/1966MRN: BANKS08222025"
+          // Try the header pattern: "Last, FirstDOB: MM/DD/YYYYMRN: PATIENTID"
           const headerMatch = content.match(/([A-Z][a-z]+,\s*[A-Z][a-z]+)DOB:/);
           if (headerMatch) {
             patientInfo.patientName = headerMatch[1].trim().toUpperCase();

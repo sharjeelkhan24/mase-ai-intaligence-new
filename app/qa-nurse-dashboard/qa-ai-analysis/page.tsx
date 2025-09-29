@@ -832,34 +832,70 @@ export default function QAAIAnalysisPage() {
                                           </tr>
                                         </thead>
                                         <tbody className="bg-white">
-                                          {actualExtractedData['Other Diagnoses'].map((diagnosis: string, index: number) => (
-                                            <tr key={index}>
-                                              <td className="px-4 py-3 text-sm text-blue-600 font-medium border-b border-gray-200">
-                                                {actualExtractedData[`Other Diagnosis ${index + 1} ICD`] || 'Not specified'}
-                                              </td>
-                                              <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
-                                                {diagnosis}
-                                              </td>
-                                              <td className="px-4 py-3 text-sm border-b border-gray-200">
-                                                {actualExtractedData[`Other Diagnosis ${index + 1} Clinical Group`] ? (
-                                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                    {actualExtractedData[`Other Diagnosis ${index + 1} Clinical Group`]}
-                                                  </span>
-                                                ) : (
-                                                  '-'
-                                                )}
-                                              </td>
-                                              <td className="px-4 py-3 text-sm border-b border-gray-200">
-                                                {actualExtractedData[`Other Diagnosis ${index + 1} Comorbidity Group`] ? (
-                                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                    {actualExtractedData[`Other Diagnosis ${index + 1} Comorbidity Group`]}
-                                                  </span>
-                                                ) : (
-                                                  '-'
-                                                )}
-                                              </td>
-                                            </tr>
-                                          ))}
+                                          {(() => {
+                                            // Use the new "Other Diagnoses Details" array if available, otherwise fall back to old format
+                                            const diagnosesDetails = actualExtractedData['Other Diagnoses Details'];
+                                            if (diagnosesDetails && Array.isArray(diagnosesDetails)) {
+                                              return diagnosesDetails.map((diagnosis: any, index: number) => (
+                                                <tr key={index}>
+                                                  <td className="px-4 py-3 text-sm text-blue-600 font-medium border-b border-gray-200">
+                                                    {diagnosis.icdCode || 'Not specified'}
+                                                  </td>
+                                                  <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
+                                                    {diagnosis.diagnosis}
+                                                  </td>
+                                                  <td className="px-4 py-3 text-sm border-b border-gray-200">
+                                                    {diagnosis.clinicalGroup ? (
+                                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        {diagnosis.clinicalGroup}
+                                                      </span>
+                                                    ) : (
+                                                      '-'
+                                                    )}
+                                                  </td>
+                                                  <td className="px-4 py-3 text-sm border-b border-gray-200">
+                                                    {diagnosis.comorbidityGroup ? (
+                                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        {diagnosis.comorbidityGroup}
+                                                      </span>
+                                                    ) : (
+                                                      '-'
+                                                    )}
+                                                  </td>
+                                                </tr>
+                                              ));
+                                            } else {
+                                              // Fallback to old format
+                                              return actualExtractedData['Other Diagnoses']?.map((diagnosis: string, index: number) => (
+                                                <tr key={index}>
+                                                  <td className="px-4 py-3 text-sm text-blue-600 font-medium border-b border-gray-200">
+                                                    {actualExtractedData[`Other Diagnosis ${index + 1} ICD`] || 'Not specified'}
+                                                  </td>
+                                                  <td className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200">
+                                                    {diagnosis}
+                                                  </td>
+                                                  <td className="px-4 py-3 text-sm border-b border-gray-200">
+                                                    {actualExtractedData[`Other Diagnosis ${index + 1} Clinical Group`] ? (
+                                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        {actualExtractedData[`Other Diagnosis ${index + 1} Clinical Group`]}
+                                                      </span>
+                                                    ) : (
+                                                      '-'
+                                                    )}
+                                                  </td>
+                                                  <td className="px-4 py-3 text-sm border-b border-gray-200">
+                                                    {actualExtractedData[`Other Diagnosis ${index + 1} Comorbidity Group`] ? (
+                                                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        {actualExtractedData[`Other Diagnosis ${index + 1} Comorbidity Group`]}
+                                                      </span>
+                                                    ) : (
+                                                      '-'
+                                                    )}
+                                                  </td>
+                                                </tr>
+                                              ));
+                                            }
+                                          })()}
                                         </tbody>
                                       </table>
                                     </div>
@@ -967,7 +1003,19 @@ export default function QAAIAnalysisPage() {
                                   ))
                                   ) : (
                                     <div className="text-center py-8 text-gray-500">
-                                      No corrections required for this assessment.
+                                      <div className="mb-4">
+                                        <AlertTriangle className="w-12 h-12 mx-auto text-yellow-500 mb-4" />
+                                        <h3 className="text-lg font-medium text-gray-900 mb-2">No Functional Status Items Found</h3>
+                                        <p className="text-sm text-gray-600">
+                                          The AI was unable to locate functional status items (M1800-M1870) in this document. 
+                                          This may indicate that the PDF text extraction needs improvement or the document format is not standard.
+                                        </p>
+                                      </div>
+                                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                        <p className="text-sm text-yellow-800">
+                                          <strong>Recommendation:</strong> Please ensure the PDF contains clear functional status sections with checkmarked values for M1800-M1870 items.
+                                        </p>
+                                      </div>
                                     </div>
                                   );
                                 })()}
