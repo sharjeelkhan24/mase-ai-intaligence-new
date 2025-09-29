@@ -342,37 +342,8 @@ For files under 500MB, the AI can analyze the PDF directly.`;
         };
       }
       
-      // For large PDFs, use a more efficient approach
-      let content;
-      if (estimatedTokens > 100000) {
-        // For very large PDFs, send only a portion and ask AI to request more if needed
-        const chunkSize = Math.floor(base64Content.length * 0.3); // Send 30% of the content
-        const base64Chunk = base64Content.substring(0, chunkSize);
-        
-        content = `PDF Document Analysis Request - Large File
-
-File Information:
-- File Name: ${fileName}
-- File Size: ${buffer.length} bytes
-- Estimated Tokens: ${estimatedTokens}
-- Format: PDF (Base64 encoded - partial content for initial analysis)
-
-This is a large PDF file. I'm providing the first 30% of the content for initial analysis. Please analyze this portion and let me know if you need more content for a complete analysis.
-
-Base64 PDF Content (First 30%):
-${base64Chunk}
-
-Please provide a comprehensive analysis including:
-1. Patient information (name, MRN, visit type, etc.)
-2. All diagnoses and ICD codes
-3. Quality assurance findings
-4. Compliance issues
-5. Recommendations
-
-Note: This is a partial analysis. If you need more content for complete analysis, please request it.`;
-      } else {
-        // For smaller PDFs, send the full content
-        content = `PDF Document Analysis Request
+      // Send full PDF content to GPT-5-nano for complete analysis
+      const content = `PDF Document Analysis Request
 
 File Information:
 - File Name: ${fileName}
@@ -393,7 +364,6 @@ Please provide a comprehensive analysis including:
 5. Recommendations
 
 Note: This PDF is being analyzed directly without text extraction, allowing for more accurate analysis of the original document format.`;
-      }
       
       console.log('QA Service: PDF sent directly to AI for analysis');
       console.log('QA Service: Base64 content length:', base64Content.length);
