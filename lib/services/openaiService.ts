@@ -1,13 +1,14 @@
 import OpenAI from 'openai';
 
-// Initialize OpenAI client with fallback
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || 'placeholder-key',
-});
+// Initialize OpenAI client only if API key is available
+let openai: OpenAI | null = null;
 
-// Check if API key is configured
-if (!process.env.OPENAI_API_KEY) {
-  console.warn('OPENAI_API_KEY environment variable is not set. OpenAI features will not work.');
+if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'placeholder-key') {
+  openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+} else {
+  console.warn('OPENAI_API_KEY environment variable is not set or is placeholder. OpenAI features will not work.');
 }
 
 export interface QAAnalysisResult {
@@ -49,8 +50,8 @@ export class OpenAIService {
     model: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' = 'gpt-4o'
   ): Promise<QAAnalysisResult> {
     try {
-      // Check if API key is configured
-      if (!process.env.OPENAI_API_KEY) {
+      // Check if OpenAI client is available
+      if (!openai) {
         throw new Error('OpenAI API key is not configured. Please set OPENAI_API_KEY environment variable.');
       }
 
@@ -309,6 +310,11 @@ Provide a comprehensive analysis in the requested JSON format.`;
    */
   public async testConnection(): Promise<boolean> {
     try {
+      if (!openai) {
+        console.error('OpenAI Service: Client not initialized - API key not configured');
+        return false;
+      }
+
       const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: 'Hello, this is a test.' }],
