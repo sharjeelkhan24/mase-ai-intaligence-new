@@ -331,29 +331,40 @@ class QAAnalysisServiceNew {
       try {
         console.log('QA Service: PDF buffer size:', buffer.length);
         
-        // Try pdf-parse with dynamic import and different approach
-        const pdfParse = await import('pdf-parse');
-        console.log('QA Service: PDF parsing library loaded');
+        // Use pdfjs-dist for serverless-friendly PDF parsing
+        const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+        console.log('QA Service: PDF.js library loaded');
         
-        // Create a copy of the buffer to avoid any potential issues
-        const pdfBuffer = Buffer.from(buffer);
-        console.log('QA Service: PDF buffer copy created, size:', pdfBuffer.length);
+        // Create a Uint8Array from the buffer
+        const pdfData = new Uint8Array(buffer);
+        console.log('QA Service: PDF data array created, size:', pdfData.length);
         
-        // Parse PDF with options to avoid filesystem dependencies
-        const pdfData = await pdfParse.default(pdfBuffer, {
-          // Disable any filesystem operations
-          max: 0, // No page limit
-          version: 'v1.10.100' // Use specific version
+        // Load the PDF document
+        const loadingTask = pdfjsLib.getDocument({
+          data: pdfData,
+          useSystemFonts: true,
+          disableFontFace: true,
+          disableRange: true,
+          disableStream: true
         });
         
-        console.log('QA Service: PDF Info:', {
-          pages: pdfData.numpages,
-          textLength: pdfData.text?.length || 0
-        });
+        const pdf = await loadingTask.promise;
+        const pageCount = pdf.numPages;
+        console.log('QA Service: PDF loaded successfully, pages:', pageCount);
         
-        let content = pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
+        // Extract text from all pages
+        let extractedText = '';
+        for (let i = 1; i <= pageCount; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items
+            .map((item: any) => item.str)
+            .join(' ');
+          extractedText += `\n--- Page ${i} ---\n${pageText}\n`;
+        }
         
-        // No content truncation - send full document to AI
+        const content = extractedText.trim() || `PDF Content: ${fileName} - No text content found in PDF.`;
+        
         console.log(`QA Service: Full content length: ${content.length} chars`);
         console.log('QA Service: Content preview:', content.substring(0, 200));
         
@@ -361,7 +372,7 @@ class QAAnalysisServiceNew {
           content,
           fileInfo: {
             fileType: 'pdf',
-            pageCount: pdfData.numpages,
+            pageCount: pageCount,
             fileSize: buffer.length,
             extractedText: content.substring(0, 1000)
           }
