@@ -234,7 +234,7 @@ Provide a comprehensive analysis in the requested JSON format.`;
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.3,
-        max_tokens: 8000,
+        ...(model === 'gpt-5-nano' ? { max_completion_tokens: 8000 } : { max_tokens: 8000 }),
       });
 
       const analysisText = response.choices[0]?.message?.content || '{}';
