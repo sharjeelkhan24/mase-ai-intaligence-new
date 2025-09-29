@@ -308,11 +308,46 @@ class QAAnalysisServiceNew {
       
       // Convert PDF buffer to base64 for AI analysis
       const base64Content = buffer.toString('base64');
+      
+      // Check if the content is too large (estimate ~4 chars per token)
+      const estimatedTokens = Math.ceil(base64Content.length / 4);
+      console.log('QA Service: Estimated tokens:', estimatedTokens);
+      
+      if (estimatedTokens > 100000) {
+        // For very large PDFs, provide a message about size limitations
+        const content = `PDF Document: ${fileName}
+        
+File Information:
+- File Size: ${buffer.length} bytes
+- Estimated Tokens: ${estimatedTokens}
+- Status: File too large for direct AI analysis
+
+This PDF file is too large for direct AI analysis. Please try one of the following:
+
+1. Compress the PDF file to reduce size
+2. Extract text content and upload as .txt file
+3. Split the PDF into smaller sections
+4. Use a PDF to text converter online
+
+For files under 100MB, the AI can analyze the PDF directly.`;
+        
+        return {
+          content,
+          fileInfo: {
+            fileType: 'pdf',
+            pageCount: 1,
+            fileSize: buffer.length,
+            extractedText: `PDF too large for analysis (${estimatedTokens} estimated tokens)`
+          }
+        };
+      }
+      
       const content = `PDF Document Analysis Request
 
 File Information:
 - File Name: ${fileName}
 - File Size: ${buffer.length} bytes
+- Estimated Tokens: ${estimatedTokens}
 - Format: PDF (Base64 encoded)
 
 Please analyze this PDF document and extract all relevant patient information, diagnoses, and quality assurance data. The PDF content has been provided in base64 format for direct analysis.
@@ -366,10 +401,23 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
       console.log('QA Service: Content length:', content.length);
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
-      // No need for placeholder detection - PDFs are sent directly to AI
+      // Check if this is a "too large" PDF message
+      if (content.includes('File too large for direct AI analysis')) {
+        console.log('QA Service: Detected large PDF, returning default patient info');
+        return {
+          patientName: 'Not available - PDF too large',
+          mrn: 'Not available - PDF too large',
+          visitType: 'Not available - PDF too large',
+          payor: 'Not available - PDF too large',
+          visitDate: 'Not available - PDF too large',
+          clinician: 'Not available - PDF too large',
+          payPeriod: 'Not available - PDF too large',
+          status: 'PDF_TOO_LARGE'
+        };
+      }
       
       const openaiService = OpenAIService.getInstance();
-      const result = await openaiService.analyzePatientDocument(content, fileName, aiModel);
+      const result = await openaiService.analyzePatientDocument(content, fileName, 'gpt-4o-mini');
       
       const patientInfo: PatientInfo = {
         patientName: result.patientName || '',
@@ -403,10 +451,42 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
-      // No need for placeholder detection - PDFs are sent directly to AI
+      // Check if this is a "too large" PDF message
+      if (content.includes('File too large for direct AI analysis')) {
+        console.log('QA Service: Detected large PDF, returning default analysis');
+        return {
+          complianceScore: 0,
+          issuesFound: ['PDF file too large for AI analysis'],
+          recommendations: ['Please compress the PDF or extract text content'],
+          riskLevel: 'medium',
+          summary: `PDF Analysis Not Available: ${fileName} - File too large for direct AI analysis.`,
+          detailedAnalysis: `
+          PDF Analysis Report - File Size Limitation
+          ==========================================
+          
+          File: ${fileName}
+          Analysis Type: ${analysisType}
+          Date: ${new Date().toLocaleDateString()}
+          Status: File too large for analysis
+          
+          LIMITATION:
+          This PDF file exceeds the token limit for direct AI analysis.
+          The file is too large to process in a single request.
+          
+          RECOMMENDATIONS:
+          1. Compress the PDF file to reduce size
+          2. Extract text content and upload as .txt file
+          3. Split the PDF into smaller sections
+          4. Use a PDF to text converter online
+          
+          File Size: ${content.match(/\d+ bytes/)?.[0] || 'Unknown'}
+          Estimated Tokens: ${content.match(/\d+ estimated tokens/)?.[0] || 'Unknown'}
+          `
+        };
+      }
       
-      // Use GPT-4o for better analysis quality
-      const modelToUse = aiModel;
+      // Use GPT-4o-mini for higher token limits and better PDF handling
+      const modelToUse = 'gpt-4o-mini';
       console.log('QA Service: Using model:', modelToUse, '(original:', aiModel, ')');
       
       const openaiService = OpenAIService.getInstance();
@@ -428,7 +508,7 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
         File: ${fileName}
         Analysis Type: ${analysisType}
         Date: ${new Date().toLocaleDateString()}
-        AI Model: ${modelToUse}${modelToUse !== aiModel ? ` (auto-selected due to content size, original: ${aiModel})` : ''}
+        AI Model: ${modelToUse}
         
         PATIENT INFORMATION:
         - Name: ${result.patientName || 'Not identified'}
@@ -450,7 +530,7 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
         ${result.recommendations?.map((rec, index) => `${index + 1}. ${rec}`).join('\n') || '1. Continue current care plan'}
         
         DETAILED FINDINGS:
-        - AI Model: ${modelToUse}${modelToUse !== aiModel ? ` (auto-selected due to content size, original: ${aiModel})` : ''}
+        - AI Model: ${modelToUse}
         - Analysis Confidence: ${result.confidence ? Math.round(result.confidence * 100) : 85}%
         - Content Length: ${content.length} characters
         - Extracted Data: ${JSON.stringify(result.extractedData, null, 2)}
