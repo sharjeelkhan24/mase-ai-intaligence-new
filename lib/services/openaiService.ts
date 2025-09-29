@@ -14,6 +14,7 @@ if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'placeholder-ke
 export interface QAAnalysisResult {
   patientName?: string;
   patientId?: string;
+  mrn?: string;
   visitType?: string;
   payor?: string;
   visitDate?: string;

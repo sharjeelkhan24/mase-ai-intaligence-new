@@ -382,6 +382,21 @@ class QAAnalysisServiceNew {
       console.log('QA Service: Content length:', content.length);
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
+      // Check if this is placeholder content (PDF parsing disabled)
+      if (content.includes('PDF parsing temporarily disabled')) {
+        console.log('QA Service: Detected placeholder content, returning default patient info');
+        return {
+          patientName: 'Not available - PDF parsing disabled',
+          mrn: 'Not available - PDF parsing disabled',
+          visitType: 'Not available - PDF parsing disabled',
+          payor: 'Not available - PDF parsing disabled',
+          visitDate: 'Not available - PDF parsing disabled',
+          clinician: 'Not available - PDF parsing disabled',
+          payPeriod: 'Not available - PDF parsing disabled',
+          status: 'PDF_PARSING_DISABLED'
+        };
+      }
+      
       const openaiService = OpenAIService.getInstance();
       const result = await openaiService.analyzePatientDocument(content, fileName, aiModel);
       
@@ -416,6 +431,36 @@ class QAAnalysisServiceNew {
       console.log('QA Service: Content length for analysis:', content.length);
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
+      
+      // Check if this is placeholder content (PDF parsing disabled)
+      if (content.includes('PDF parsing temporarily disabled')) {
+        console.log('QA Service: Detected placeholder content, returning default analysis');
+        return {
+          complianceScore: 0,
+          issuesFound: ['PDF parsing not available in serverless environment'],
+          recommendations: ['Please convert PDF to text format (.txt) for analysis'],
+          riskLevel: 'medium',
+          summary: `PDF Analysis Not Available: ${fileName} - PDF parsing is temporarily disabled due to serverless environment constraints.`,
+          detailedAnalysis: `
+          PDF Analysis Report - Serverless Environment Limitation
+          ======================================================
+          
+          File: ${fileName}
+          Analysis Type: ${analysisType}
+          Date: ${new Date().toLocaleDateString()}
+          Status: PDF parsing not available
+          
+          LIMITATION:
+          PDF parsing is temporarily disabled due to serverless environment constraints.
+          The pdf-parse library requires filesystem access which is not available in Vercel's serverless functions.
+          
+          RECOMMENDATION:
+          Please convert your PDF file to text format (.txt) and upload again for full AI analysis.
+          
+          File Size: ${content.match(/\d+ bytes/)?.[0] || 'Unknown'}
+          `
+        };
+      }
       
       // Use GPT-4o for better analysis quality
       const modelToUse = aiModel;
