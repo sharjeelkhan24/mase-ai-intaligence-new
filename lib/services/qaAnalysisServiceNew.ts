@@ -329,12 +329,23 @@ class QAAnalysisServiceNew {
     
     if (fileExtension === '.pdf') {
       try {
-        const pdf = require('pdf-parse');
-        const pdfData = await pdf(buffer);
-        const content = pdfData.text;
+        // Use dynamic import to avoid potential issues with require
+        const pdf = await import('pdf-parse');
+        console.log('QA Service: PDF buffer size:', buffer.length);
         
-        console.log(`QA Service: PDF content length: ${content.length} chars`);
-        console.log(`QA Service: PDF pages: ${pdfData.numpages}`);
+        // Ensure buffer is properly formatted for pdf-parse
+        const pdfData = await pdf.default(buffer);
+        
+        console.log('QA Service: PDF Info:', {
+          pages: pdfData.numpages,
+          textLength: pdfData.text?.length || 0
+        });
+        
+        let content = pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
+        
+        // No content truncation - send full document to AI
+        console.log(`QA Service: Full content length: ${content.length} chars`);
+        console.log('QA Service: Content preview:', content.substring(0, 200));
         
         return {
           content,
@@ -347,6 +358,10 @@ class QAAnalysisServiceNew {
         };
       } catch (error) {
         console.error('QA Service: PDF parsing error:', error);
+        console.error('QA Service: Error details:', {
+          message: error instanceof Error ? error.message : 'Unknown error',
+          stack: error instanceof Error ? error.stack : undefined
+        });
         throw new Error(`Failed to parse PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else if (fileExtension === '.txt') {
