@@ -56,7 +56,7 @@ export default function SurveyUserNavbar({ activeTab }: SurveyUserNavbarProps) {
             </div>
             <div>
               <h1 className="text-lg font-bold text-gray-900 font-[family-name:var(--font-adlam-display)]">
-                {agencyName || 'Loading...'}
+                Loading...
               </h1>
               <p className="text-sm text-gray-500 font-[family-name:var(--font-adlam-display)]">
                 Survey User Portal
