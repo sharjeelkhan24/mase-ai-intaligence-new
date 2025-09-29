@@ -329,22 +329,39 @@ class QAAnalysisServiceNew {
     
     if (fileExtension === '.pdf') {
       try {
-        // Try using a different approach - create a temporary file in memory
-        // and use pdf-parse with a different configuration
         console.log('QA Service: PDF buffer size:', buffer.length);
         
-        // For now, return a placeholder message since PDF parsing is problematic
-        // This allows the system to continue working while we find a better solution
-        const content = `PDF Content: ${fileName} - PDF parsing temporarily disabled due to serverless environment constraints. File size: ${buffer.length} bytes. Please use text files (.txt) for analysis.`;
+        // Try pdf-parse with dynamic import and different approach
+        const pdfParse = await import('pdf-parse');
+        console.log('QA Service: PDF parsing library loaded');
         
-        console.log(`QA Service: Using placeholder content for PDF`);
+        // Create a copy of the buffer to avoid any potential issues
+        const pdfBuffer = Buffer.from(buffer);
+        console.log('QA Service: PDF buffer copy created, size:', pdfBuffer.length);
+        
+        // Parse PDF with options to avoid filesystem dependencies
+        const pdfData = await pdfParse.default(pdfBuffer, {
+          // Disable any filesystem operations
+          max: 0, // No page limit
+          version: 'v1.10.100' // Use specific version
+        });
+        
+        console.log('QA Service: PDF Info:', {
+          pages: pdfData.numpages,
+          textLength: pdfData.text?.length || 0
+        });
+        
+        let content = pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
+        
+        // No content truncation - send full document to AI
+        console.log(`QA Service: Full content length: ${content.length} chars`);
         console.log('QA Service: Content preview:', content.substring(0, 200));
         
         return {
           content,
           fileInfo: {
             fileType: 'pdf',
-            pageCount: 1,
+            pageCount: pdfData.numpages,
             fileSize: buffer.length,
             extractedText: content.substring(0, 1000)
           }
@@ -355,7 +372,33 @@ class QAAnalysisServiceNew {
           message: error instanceof Error ? error.message : 'Unknown error',
           stack: error instanceof Error ? error.stack : undefined
         });
-        throw new Error(`Failed to parse PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        
+        // Fallback: Return a message explaining the issue
+        const content = `PDF Document: ${fileName}
+        
+File Information:
+- File Size: ${buffer.length} bytes
+- Status: PDF parsing failed
+
+Error: ${error instanceof Error ? error.message : 'Unknown error'}
+
+The PDF could not be parsed due to serverless environment constraints. Please try one of the following:
+
+1. Convert the PDF to text format (.txt) and upload again
+2. Use a different PDF file that may be more compatible
+3. Contact support if this issue persists
+
+For immediate analysis, you can copy the text content from your PDF and save it as a .txt file.`;
+        
+        return {
+          content,
+          fileInfo: {
+            fileType: 'pdf',
+            pageCount: 1,
+            fileSize: buffer.length,
+            extractedText: content.substring(0, 1000)
+          }
+        };
       }
     } else if (fileExtension === '.txt') {
       let content = buffer.toString('utf-8');
@@ -382,18 +425,18 @@ class QAAnalysisServiceNew {
       console.log('QA Service: Content length:', content.length);
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
-      // Check if this is placeholder content (PDF parsing disabled)
-      if (content.includes('PDF parsing temporarily disabled')) {
+      // Check if this is placeholder content (PDF parsing failed)
+      if (content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
         console.log('QA Service: Detected placeholder content, returning default patient info');
         return {
-          patientName: 'Not available - PDF parsing disabled',
-          mrn: 'Not available - PDF parsing disabled',
-          visitType: 'Not available - PDF parsing disabled',
-          payor: 'Not available - PDF parsing disabled',
-          visitDate: 'Not available - PDF parsing disabled',
-          clinician: 'Not available - PDF parsing disabled',
-          payPeriod: 'Not available - PDF parsing disabled',
-          status: 'PDF_PARSING_DISABLED'
+          patientName: 'Not available - PDF parsing failed',
+          mrn: 'Not available - PDF parsing failed',
+          visitType: 'Not available - PDF parsing failed',
+          payor: 'Not available - PDF parsing failed',
+          visitDate: 'Not available - PDF parsing failed',
+          clinician: 'Not available - PDF parsing failed',
+          payPeriod: 'Not available - PDF parsing failed',
+          status: 'PDF_PARSING_FAILED'
         };
       }
       
@@ -432,15 +475,15 @@ class QAAnalysisServiceNew {
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
-      // Check if this is placeholder content (PDF parsing disabled)
-      if (content.includes('PDF parsing temporarily disabled')) {
+      // Check if this is placeholder content (PDF parsing failed)
+      if (content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
         console.log('QA Service: Detected placeholder content, returning default analysis');
         return {
           complianceScore: 0,
           issuesFound: ['PDF parsing not available in serverless environment'],
           recommendations: ['Please convert PDF to text format (.txt) for analysis'],
           riskLevel: 'medium',
-          summary: `PDF Analysis Not Available: ${fileName} - PDF parsing is temporarily disabled due to serverless environment constraints.`,
+          summary: `PDF Analysis Not Available: ${fileName} - PDF parsing failed due to serverless environment constraints.`,
           detailedAnalysis: `
           PDF Analysis Report - Serverless Environment Limitation
           ======================================================
@@ -448,11 +491,11 @@ class QAAnalysisServiceNew {
           File: ${fileName}
           Analysis Type: ${analysisType}
           Date: ${new Date().toLocaleDateString()}
-          Status: PDF parsing not available
+          Status: PDF parsing failed
           
           LIMITATION:
-          PDF parsing is temporarily disabled due to serverless environment constraints.
-          The pdf-parse library requires filesystem access which is not available in Vercel's serverless functions.
+          PDF parsing failed due to serverless environment constraints.
+          The pdf-parse library has compatibility issues with Vercel's serverless functions.
           
           RECOMMENDATION:
           Please convert your PDF file to text format (.txt) and upload again for full AI analysis.
