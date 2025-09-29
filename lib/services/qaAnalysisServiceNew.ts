@@ -331,40 +331,25 @@ class QAAnalysisServiceNew {
       try {
         console.log('QA Service: PDF buffer size:', buffer.length);
         
-        // Use pdfjs-dist for serverless-friendly PDF parsing
-        const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
-        console.log('QA Service: PDF.js library loaded');
+        // Try to use pdf-parse with a different approach
+        const pdfParse = await import('pdf-parse');
+        console.log('QA Service: PDF parsing library loaded');
         
-        // Create a Uint8Array from the buffer
-        const pdfData = new Uint8Array(buffer);
-        console.log('QA Service: PDF data array created, size:', pdfData.length);
+        // Create a copy of the buffer to avoid any potential issues
+        const pdfBuffer = Buffer.from(buffer);
+        console.log('QA Service: PDF buffer copy created, size:', pdfBuffer.length);
         
-        // Load the PDF document
-        const loadingTask = pdfjsLib.getDocument({
-          data: pdfData,
-          useSystemFonts: true,
-          disableFontFace: true,
-          disableRange: true,
-          disableStream: true
+        // Parse PDF with minimal options to avoid filesystem dependencies
+        const pdfData = await pdfParse.default(pdfBuffer);
+        
+        console.log('QA Service: PDF Info:', {
+          pages: pdfData.numpages,
+          textLength: pdfData.text?.length || 0
         });
         
-        const pdf = await loadingTask.promise;
-        const pageCount = pdf.numPages;
-        console.log('QA Service: PDF loaded successfully, pages:', pageCount);
+        let content = pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
         
-        // Extract text from all pages
-        let extractedText = '';
-        for (let i = 1; i <= pageCount; i++) {
-          const page = await pdf.getPage(i);
-          const textContent = await page.getTextContent();
-          const pageText = textContent.items
-            .map((item: any) => item.str)
-            .join(' ');
-          extractedText += `\n--- Page ${i} ---\n${pageText}\n`;
-        }
-        
-        const content = extractedText.trim() || `PDF Content: ${fileName} - No text content found in PDF.`;
-        
+        // No content truncation - send full document to AI
         console.log(`QA Service: Full content length: ${content.length} chars`);
         console.log('QA Service: Content preview:', content.substring(0, 200));
         
@@ -372,7 +357,7 @@ class QAAnalysisServiceNew {
           content,
           fileInfo: {
             fileType: 'pdf',
-            pageCount: pageCount,
+            pageCount: pdfData.numpages,
             fileSize: buffer.length,
             extractedText: content.substring(0, 1000)
           }
@@ -384,22 +369,28 @@ class QAAnalysisServiceNew {
           stack: error instanceof Error ? error.stack : undefined
         });
         
-        // Fallback: Return a message explaining the issue
+        // Enhanced fallback with better user guidance
         const content = `PDF Document: ${fileName}
         
 File Information:
 - File Size: ${buffer.length} bytes
-- Status: PDF parsing failed
+- Status: PDF parsing not available in serverless environment
 
-Error: ${error instanceof Error ? error.message : 'Unknown error'}
+IMPORTANT: PDF text extraction is currently not available in our serverless deployment environment. However, you can still get full AI analysis by following these simple steps:
 
-The PDF could not be parsed due to serverless environment constraints. Please try one of the following:
+QUICK SOLUTION:
+1. Open your PDF file in any PDF viewer (Adobe Reader, Chrome, etc.)
+2. Select all text (Ctrl+A / Cmd+A)
+3. Copy the text (Ctrl+C / Cmd+C)
+4. Create a new text file (.txt) and paste the content
+5. Upload the .txt file for full AI analysis
 
-1. Convert the PDF to text format (.txt) and upload again
-2. Use a different PDF file that may be more compatible
-3. Contact support if this issue persists
+ALTERNATIVE SOLUTIONS:
+- Use online PDF to text converters
+- Use built-in PDF text extraction tools
+- Contact support for bulk PDF processing
 
-For immediate analysis, you can copy the text content from your PDF and save it as a .txt file.`;
+The AI analysis will work perfectly once you provide the text content. This is a temporary limitation while we implement a more robust PDF parsing solution for serverless environments.`;
         
         return {
           content,
@@ -436,18 +427,18 @@ For immediate analysis, you can copy the text content from your PDF and save it 
       console.log('QA Service: Content length:', content.length);
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
-      // Check if this is placeholder content (PDF parsing failed)
-      if (content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
+      // Check if this is placeholder content (PDF parsing not available)
+      if (content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
         console.log('QA Service: Detected placeholder content, returning default patient info');
         return {
-          patientName: 'Not available - PDF parsing failed',
-          mrn: 'Not available - PDF parsing failed',
-          visitType: 'Not available - PDF parsing failed',
-          payor: 'Not available - PDF parsing failed',
-          visitDate: 'Not available - PDF parsing failed',
-          clinician: 'Not available - PDF parsing failed',
-          payPeriod: 'Not available - PDF parsing failed',
-          status: 'PDF_PARSING_FAILED'
+          patientName: 'Not available - PDF parsing not available',
+          mrn: 'Not available - PDF parsing not available',
+          visitType: 'Not available - PDF parsing not available',
+          payor: 'Not available - PDF parsing not available',
+          visitDate: 'Not available - PDF parsing not available',
+          clinician: 'Not available - PDF parsing not available',
+          payPeriod: 'Not available - PDF parsing not available',
+          status: 'PDF_PARSING_NOT_AVAILABLE'
         };
       }
       
@@ -486,15 +477,15 @@ For immediate analysis, you can copy the text content from your PDF and save it 
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
-      // Check if this is placeholder content (PDF parsing failed)
-      if (content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
+      // Check if this is placeholder content (PDF parsing not available)
+      if (content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
         console.log('QA Service: Detected placeholder content, returning default analysis');
         return {
           complianceScore: 0,
           issuesFound: ['PDF parsing not available in serverless environment'],
           recommendations: ['Please convert PDF to text format (.txt) for analysis'],
           riskLevel: 'medium',
-          summary: `PDF Analysis Not Available: ${fileName} - PDF parsing failed due to serverless environment constraints.`,
+          summary: `PDF Analysis Not Available: ${fileName} - PDF parsing not available in serverless environment.`,
           detailedAnalysis: `
           PDF Analysis Report - Serverless Environment Limitation
           ======================================================
@@ -502,14 +493,22 @@ For immediate analysis, you can copy the text content from your PDF and save it 
           File: ${fileName}
           Analysis Type: ${analysisType}
           Date: ${new Date().toLocaleDateString()}
-          Status: PDF parsing failed
+          Status: PDF parsing not available
           
           LIMITATION:
-          PDF parsing failed due to serverless environment constraints.
-          The pdf-parse library has compatibility issues with Vercel's serverless functions.
+          PDF text extraction is currently not available in our serverless deployment environment.
+          This is a temporary limitation while we implement a more robust PDF parsing solution.
+          
+          QUICK SOLUTION:
+          1. Open your PDF file in any PDF viewer (Adobe Reader, Chrome, etc.)
+          2. Select all text (Ctrl+A / Cmd+A)
+          3. Copy the text (Ctrl+C / Cmd+C)
+          4. Create a new text file (.txt) and paste the content
+          5. Upload the .txt file for full AI analysis
           
           RECOMMENDATION:
           Please convert your PDF file to text format (.txt) and upload again for full AI analysis.
+          The AI analysis will work perfectly once you provide the text content.
           
           File Size: ${content.match(/\d+ bytes/)?.[0] || 'Unknown'}
           `
