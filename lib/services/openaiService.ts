@@ -233,8 +233,7 @@ Provide a comprehensive analysis in the requested JSON format.`;
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 0.3,
-        ...(model === 'gpt-5-nano' ? { max_completion_tokens: 8000 } : { max_tokens: 8000 }),
+        ...(model === 'gpt-5-nano' ? { max_completion_tokens: 8000 } : { max_tokens: 8000, temperature: 0.3 }),
       });
 
       const analysisText = response.choices[0]?.message?.content || '{}';
