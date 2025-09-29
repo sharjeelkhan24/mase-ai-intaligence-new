@@ -309,13 +309,6 @@ class QAAnalysisServiceNew {
       try {
         // Try to extract text from PDF using pdf-parse
         const pdfParse = await import('pdf-parse');
-        
-        // Ensure the test file exists for pdf-parse
-        const testFilePath = path.join(process.cwd(), 'public', 'test-data', '05-versions-space.pdf');
-        if (!fs.existsSync(testFilePath)) {
-          throw new Error('Test PDF file not found for pdf-parse');
-        }
-        
         const pdfData = await pdfParse.default(buffer);
         const extractedText = pdfData.text;
         
