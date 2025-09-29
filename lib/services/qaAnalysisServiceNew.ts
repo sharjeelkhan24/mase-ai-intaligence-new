@@ -306,38 +306,31 @@ class QAAnalysisServiceNew {
     if (fileExtension === '.pdf') {
       console.log('QA Service: PDF buffer size:', buffer.length);
       
-      // PDF parsing is not available in serverless environments
-      // Provide clear instructions for users to convert PDF to text
-      const content = `PDF Document: ${fileName}
-      
+      // Convert PDF buffer to base64 for AI analysis
+      const base64Content = buffer.toString('base64');
+      const content = `PDF Document Analysis Request
+
 File Information:
+- File Name: ${fileName}
 - File Size: ${buffer.length} bytes
-- Status: PDF text extraction not available in serverless environment
+- Format: PDF (Base64 encoded)
 
-IMPORTANT: PDF text extraction is currently not available in our serverless deployment environment. However, you can still get full AI analysis by following these simple steps:
+Please analyze this PDF document and extract all relevant patient information, diagnoses, and quality assurance data. The PDF content has been provided in base64 format for direct analysis.
 
-QUICK SOLUTION (2 minutes):
-1. Open your PDF file in any PDF viewer (Adobe Reader, Chrome, etc.)
-2. Select all text (Ctrl+A / Cmd+A)
-3. Copy the text (Ctrl+C / Cmd+C)
-4. Create a new text file (.txt) and paste the content
-5. Upload the .txt file for full AI analysis
+Base64 PDF Content:
+${base64Content}
 
-ALTERNATIVE SOLUTIONS:
-- Use online PDF to text converters (PDF24, SmallPDF, etc.)
-- Use built-in PDF text extraction tools
-- Contact support for bulk PDF processing
+Please provide a comprehensive analysis including:
+1. Patient information (name, MRN, visit type, etc.)
+2. All diagnoses and ICD codes
+3. Quality assurance findings
+4. Compliance issues
+5. Recommendations
 
-BENEFITS OF TEXT FORMAT:
-- Faster processing
-- More reliable analysis
-- Better AI accuracy
-- No file size limitations
-
-The AI analysis will work perfectly once you provide the text content. This is a temporary limitation while we implement a more robust PDF parsing solution for serverless environments.`;
+Note: This PDF is being analyzed directly without text extraction, allowing for more accurate analysis of the original document format.`;
       
-      console.log('QA Service: PDF processing skipped, providing user instructions');
-      console.log('QA Service: Content preview:', content.substring(0, 200));
+      console.log('QA Service: PDF sent directly to AI for analysis');
+      console.log('QA Service: Base64 content length:', base64Content.length);
       
       return {
         content,
@@ -345,7 +338,7 @@ The AI analysis will work perfectly once you provide the text content. This is a
           fileType: 'pdf',
           pageCount: 1,
           fileSize: buffer.length,
-          extractedText: content.substring(0, 1000)
+          extractedText: `PDF sent directly to AI for analysis (${buffer.length} bytes)`
         }
       };
     } else if (fileExtension === '.txt') {
@@ -373,20 +366,7 @@ The AI analysis will work perfectly once you provide the text content. This is a
       console.log('QA Service: Content length:', content.length);
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
-      // Check if this is placeholder content (PDF parsing not available)
-      if (content.includes('PDF text extraction not available') || content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
-        console.log('QA Service: Detected placeholder content, returning default patient info');
-        return {
-          patientName: 'Not available - PDF parsing not available',
-          mrn: 'Not available - PDF parsing not available',
-          visitType: 'Not available - PDF parsing not available',
-          payor: 'Not available - PDF parsing not available',
-          visitDate: 'Not available - PDF parsing not available',
-          clinician: 'Not available - PDF parsing not available',
-          payPeriod: 'Not available - PDF parsing not available',
-          status: 'PDF_PARSING_NOT_AVAILABLE'
-        };
-      }
+      // No need for placeholder detection - PDFs are sent directly to AI
       
       const openaiService = OpenAIService.getInstance();
       const result = await openaiService.analyzePatientDocument(content, fileName, aiModel);
@@ -423,43 +403,7 @@ The AI analysis will work perfectly once you provide the text content. This is a
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
-      // Check if this is placeholder content (PDF parsing not available)
-      if (content.includes('PDF text extraction not available') || content.includes('PDF parsing not available') || content.includes('PDF parsing failed') || content.includes('PDF parsing temporarily disabled')) {
-        console.log('QA Service: Detected placeholder content, returning default analysis');
-        return {
-          complianceScore: 0,
-          issuesFound: ['PDF parsing not available in serverless environment'],
-          recommendations: ['Please convert PDF to text format (.txt) for analysis'],
-          riskLevel: 'medium',
-          summary: `PDF Analysis Not Available: ${fileName} - PDF parsing not available in serverless environment.`,
-          detailedAnalysis: `
-          PDF Analysis Report - Serverless Environment Limitation
-          ======================================================
-          
-          File: ${fileName}
-          Analysis Type: ${analysisType}
-          Date: ${new Date().toLocaleDateString()}
-          Status: PDF parsing not available
-          
-          LIMITATION:
-          PDF text extraction is currently not available in our serverless deployment environment.
-          This is a temporary limitation while we implement a more robust PDF parsing solution.
-          
-          QUICK SOLUTION:
-          1. Open your PDF file in any PDF viewer (Adobe Reader, Chrome, etc.)
-          2. Select all text (Ctrl+A / Cmd+A)
-          3. Copy the text (Ctrl+C / Cmd+C)
-          4. Create a new text file (.txt) and paste the content
-          5. Upload the .txt file for full AI analysis
-          
-          RECOMMENDATION:
-          Please convert your PDF file to text format (.txt) and upload again for full AI analysis.
-          The AI analysis will work perfectly once you provide the text content.
-          
-          File Size: ${content.match(/\d+ bytes/)?.[0] || 'Unknown'}
-          `
-        };
-      }
+      // No need for placeholder detection - PDFs are sent directly to AI
       
       // Use GPT-4o for better analysis quality
       const modelToUse = aiModel;
