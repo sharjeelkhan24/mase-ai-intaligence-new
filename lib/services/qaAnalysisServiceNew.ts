@@ -313,7 +313,7 @@ class QAAnalysisServiceNew {
       const estimatedTokens = Math.ceil(base64Content.length / 4);
       console.log('QA Service: Estimated tokens:', estimatedTokens);
       
-      if (estimatedTokens > 100000) {
+      if (estimatedTokens > 25000) {
         // For very large PDFs, provide a message about size limitations
         const content = `PDF Document: ${fileName}
         
@@ -329,7 +329,7 @@ This PDF file is too large for direct AI analysis. Please try one of the followi
 3. Split the PDF into smaller sections
 4. Use a PDF to text converter online
 
-For files under 100MB, the AI can analyze the PDF directly.`;
+For files under 25MB, the AI can analyze the PDF directly.`;
         
         return {
           content,
@@ -417,7 +417,7 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
       }
       
       const openaiService = OpenAIService.getInstance();
-      const result = await openaiService.analyzePatientDocument(content, fileName, 'gpt-4o-mini');
+      const result = await openaiService.analyzePatientDocument(content, fileName, 'gpt-4o');
       
       const patientInfo: PatientInfo = {
         patientName: result.patientName || '',
@@ -485,8 +485,8 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
         };
       }
       
-      // Use GPT-4o-mini for higher token limits and better PDF handling
-      const modelToUse = 'gpt-4o-mini';
+      // Use GPT-4o for highest token limits and better PDF handling
+      const modelToUse = 'gpt-4o';
       console.log('QA Service: Using model:', modelToUse, '(original:', aiModel, ')');
       
       const openaiService = OpenAIService.getInstance();
