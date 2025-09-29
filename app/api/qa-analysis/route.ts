@@ -25,26 +25,15 @@ export async function POST(request: NextRequest) {
 
     for (const file of files) {
       try {
-        // Create temporary file
+        // Get file buffer directly (no filesystem operations needed)
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
         
-        // Create uploads directory if it doesn't exist
-        const uploadsDir = path.join(process.cwd(), 'uploads');
-        if (!fs.existsSync(uploadsDir)) {
-          fs.mkdirSync(uploadsDir, { recursive: true });
-        }
+        console.log('Processing file:', file.name, 'Size:', buffer.length, 'bytes');
 
-        // Always use the uploaded file
-        const filePath = path.join(uploadsDir, file.name);
-        console.log('Saving uploaded file to:', filePath);
-        
-        // Write the uploaded file
-        await writeFile(filePath, buffer);
-
-        // Analyze the file
-        const result = await qaAnalysisServiceNew.analyzeFile(
-          filePath,
+        // Analyze the file directly from buffer
+        const result = await qaAnalysisServiceNew.analyzeFileFromBuffer(
+          buffer,
           file.name,
           analysisType || 'qa-review',
           priority || 'medium',
@@ -54,9 +43,6 @@ export async function POST(request: NextRequest) {
         );
 
         results.push(result);
-
-        // Clean up temporary file
-        fs.unlinkSync(filePath);
 
       } catch (error) {
         console.error(`Error processing file ${file.name}:`, error);

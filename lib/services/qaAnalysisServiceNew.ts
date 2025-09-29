@@ -148,6 +148,108 @@ class QAAnalysisServiceNew {
     }
   }
 
+  async analyzeFileFromBuffer(
+    buffer: Buffer,
+    fileName: string,
+    analysisType: string,
+    priority: string,
+    patientId?: string,
+    processingNotes?: string,
+    aiModel: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' = 'gpt-4o'
+  ): Promise<QAAnalysisResult> {
+    const analysisId = `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Add to processing queue
+    const queueItem: ProcessingQueueItem = {
+      id: analysisId,
+      fileName,
+      status: 'queued',
+      progress: 0,
+      startTime: new Date()
+    };
+    this.processingQueue.set(analysisId, queueItem);
+
+    try {
+      console.log('QA Service: Starting analysis for:', fileName);
+      console.log('QA Service: Buffer size:', buffer.length, 'bytes');
+
+      // Update status to processing
+      queueItem.status = 'processing';
+      queueItem.progress = 10;
+
+      // Read file content from buffer
+      const { content, fileInfo } = await this.readFileContentFromBuffer(buffer, fileName);
+      queueItem.progress = 30;
+
+      // Extract patient info with AI
+      const patientInfo = await this.extractPatientInfoWithAI(content, fileName, aiModel);
+      queueItem.progress = 50;
+
+      // Perform analysis
+      const analysisResult = await this.performAnalysis(content, analysisType, fileName, aiModel);
+      queueItem.progress = 80;
+
+      // Create final result
+      const result: QAAnalysisResult = {
+        id: analysisId,
+        fileName,
+        analysisType,
+        priority,
+        patientId,
+        status: 'completed',
+        results: analysisResult,
+        processingNotes,
+        createdAt: new Date(),
+        completedAt: new Date(),
+        patientInfo,
+        fileInfo
+      };
+
+      // Store result
+      this.analysisResults.set(analysisId, result);
+
+      // Update queue
+      queueItem.status = 'completed';
+      queueItem.progress = 100;
+      queueItem.endTime = new Date();
+
+      console.log('QA Service: Analysis completed successfully for:', fileName);
+      return result;
+
+    } catch (error) {
+      console.error('QA Service: Analysis failed for:', fileName, error);
+      
+      // Update queue with error
+      queueItem.status = 'error';
+      queueItem.error = error instanceof Error ? error.message : 'Unknown error';
+      queueItem.endTime = new Date();
+
+      // Create error result
+      const errorResult: QAAnalysisResult = {
+        id: analysisId,
+        fileName,
+        analysisType,
+        priority,
+        patientId,
+        status: 'error',
+        results: {
+          complianceScore: 0,
+          issuesFound: ['Analysis failed'],
+          recommendations: ['Manual review required'],
+          riskLevel: 'high',
+          summary: `Analysis failed for ${fileName}`,
+          detailedAnalysis: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
+        },
+        processingNotes,
+        createdAt: new Date(),
+        completedAt: new Date()
+      };
+
+      this.analysisResults.set(analysisId, errorResult);
+      throw error;
+    }
+  }
+
   private async readFileContent(filePath: string, fileName: string): Promise<{ content: string; fileInfo?: any }> {
     console.log('QA Service: Reading file:', filePath);
     console.log('QA Service: File exists:', fs.existsSync(filePath));
@@ -212,6 +314,53 @@ class QAAnalysisServiceNew {
         fileInfo: {
           fileType: 'text',
           fileSize: fileStats.size
+        }
+      };
+    } else {
+      throw new Error(`Unsupported file type: ${fileExtension}`);
+    }
+  }
+
+  private async readFileContentFromBuffer(buffer: Buffer, fileName: string): Promise<{ content: string; fileInfo?: any }> {
+    console.log('QA Service: Reading file from buffer:', fileName);
+    console.log('QA Service: Buffer size:', buffer.length, 'bytes');
+    
+    const fileExtension = path.extname(fileName).toLowerCase();
+    
+    if (fileExtension === '.pdf') {
+      try {
+        const pdf = require('pdf-parse');
+        const pdfData = await pdf(buffer);
+        const content = pdfData.text;
+        
+        console.log(`QA Service: PDF content length: ${content.length} chars`);
+        console.log(`QA Service: PDF pages: ${pdfData.numpages}`);
+        
+        return {
+          content,
+          fileInfo: {
+            fileType: 'pdf',
+            pageCount: pdfData.numpages,
+            fileSize: buffer.length,
+            extractedText: content.substring(0, 1000)
+          }
+        };
+      } catch (error) {
+        console.error('QA Service: PDF parsing error:', error);
+        throw new Error(`Failed to parse PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+    } else if (fileExtension === '.txt') {
+      let content = buffer.toString('utf-8');
+      
+      // No content truncation - send full document to AI
+      console.log(`QA Service: Full text content length: ${content.length} chars`);
+      
+      return {
+        content,
+        fileInfo: {
+          fileType: 'txt',
+          fileSize: buffer.length,
+          extractedText: content.substring(0, 1000)
         }
       };
     } else {
