@@ -59,6 +59,13 @@ export class OpenAIService {
       console.log('OpenAI Service: Starting analysis for:', fileName);
       console.log('OpenAI Service: Using model:', model);
       console.log('OpenAI Service: Content length:', content.length);
+      
+      // Check if content is too large and might need truncation
+      if (content.length > 800000) { // GPT-5-nano can handle ~400K tokens = ~1.6M characters
+        console.log('OpenAI Service: Content is very large, might need truncation');
+        console.log('OpenAI Service: Content preview (first 2000 chars):', content.substring(0, 2000));
+        console.log('OpenAI Service: Content preview (last 2000 chars):', content.substring(Math.max(0, content.length - 2000)));
+      }
 
       const systemPrompt = `You are a healthcare quality assurance AI assistant specializing in analyzing patient care documents. Your task is to extract specific patient information and provide quality assurance analysis.
 
@@ -173,10 +180,66 @@ Format your response as a JSON object with this EXACT structure:
     "OASIS Corrections": [
       {
         "oasisItem": "M1800 - Grooming",
-        "currentValue": "1 - Able to groom self unaided",
-        "suggestedValue": "2 - Grooming utensils must be placed within reach",
-        "clinicalRationale": "Patient documentation indicates assistance needed with setup due to weakness and cognitive impairment",
-        "financialImpact": "Increases functional score by 8 points, contributing to higher HIPPS code and $127 additional revenue per episode"
+        "currentValue": "2 - Someone must assist the patient to groom self",
+        "suggestedValue": "1 - Grooming utensils must be placed within reach before able to complete grooming activities",
+        "clinicalRationale": "Patient shows potential for independence with proper setup and assistive devices",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1810 - Dressing Upper Body",
+        "currentValue": "2 - Someone must help the patient put on upper body clothing",
+        "suggestedValue": "1 - Able to dress upper body without assistance if clothing is laid out or handed to the patient",
+        "clinicalRationale": "Patient demonstrates ability to dress with minimal assistance and proper setup",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1820 - Dressing Lower Body",
+        "currentValue": "2 - Someone must help the patient put on undergarments, slacks, socks or nylons, and shoes",
+        "suggestedValue": "1 - Able to dress lower body without assistance if clothing and shoes are laid out or handed to the patient",
+        "clinicalRationale": "Patient shows potential for independence with proper setup and assistive devices",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1830 - Bathing",
+        "currentValue": "3 - Able to participate in bathing self in shower or tub, but requires presence of another person throughout the bath for assistance or supervision",
+        "suggestedValue": "2 - Able to bathe in shower or tub with the intermittent assistance of another person",
+        "clinicalRationale": "Patient demonstrates ability to bathe with minimal supervision and safety measures",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1840 - Toilet Transferring",
+        "currentValue": "1 - When reminded, assisted, or supervised by another person, able to get to and from the toilet and transfer",
+        "suggestedValue": "0 - Able to get to and from the toilet and transfer independently with or without a device",
+        "clinicalRationale": "Patient shows potential for independence with proper assistive devices and safety measures",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1845 - Toileting Hygiene",
+        "currentValue": "2 - Someone must help the patient to maintain toileting hygiene and/or adjust clothing",
+        "suggestedValue": "1 - Able to manage toileting hygiene and clothing management without assistance if supplies/implements are laid out for the patient",
+        "clinicalRationale": "Patient demonstrates ability to manage hygiene with proper setup and assistive devices",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1850 - Transferring",
+        "currentValue": "3 - Unable to transfer self and is unable to bear weight or pivot when transferred by another person",
+        "suggestedValue": "2 - Able to bear weight and pivot during the transfer process but unable to transfer self",
+        "clinicalRationale": "Patient shows potential for improved transfer ability with proper assistive devices and training",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1860 - Ambulation/Locomotion",
+        "currentValue": "3 - Able to walk only with the supervision or assistance of another person at all times",
+        "suggestedValue": "2 - Requires use of a two-handed device (for example, walker or crutches) to walk alone on a level surface",
+        "clinicalRationale": "Patient demonstrates ability to ambulate with proper assistive devices and safety measures",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
+      },
+      {
+        "oasisItem": "M1870 - Feeding or Eating",
+        "currentValue": "1 - Able to feed self independently but requires meal set-up OR intermittent assistance or supervision from another person OR a liquid, pureed or ground meat diet",
+        "suggestedValue": "0 - Able to independently feed self",
+        "clinicalRationale": "Patient shows potential for complete independence with proper meal setup and assistive devices",
+        "financialImpact": "Improves functional score, contributing to higher HIPPS code and additional revenue per episode"
       }
     ],
     "RevenueImpactAnalysis": {
@@ -205,27 +268,72 @@ Format your response as a JSON object with this EXACT structure:
 
 Be extremely thorough in extracting information. Look for variations in field names and formats.`;
 
-      const userPrompt = `Please analyze this patient document and extract ALL available information:
+      const userPrompt = `Please analyze this OASIS-E patient assessment document and extract ALL available information:
 
 File: ${fileName}
 Content: ${content}
 
-IMPORTANT: 
-1. Extract every piece of patient information you can find
-2. Look for field names in various formats (e.g., "Patient Name", "Name:", "Patient:", etc.)
-3. Pay special attention to medical record numbers, visit types, dates, and status information
-4. If you find information that doesn't fit the standard fields, include it in extractedData
-5. Be very thorough - don't miss any details
-6. CRITICAL: For diagnoses, specifically search for the "Diagnoses Symptom Control until Comorbidities and Co-existing Conditions" section - this is where all diagnosis information is located
-7. Look for the exact format: (M1021) Primary Diagnosis Code: [ICD-10], (M1021) Primary Diagnosis: [Description]
-8. Look for the exact format: (M1023) Other Diagnosis Code: [ICD-10], (M1023) Other Diagnosis: [Description]
-9. CRITICAL: For functional corrections, specifically search for the "FUNCTIONAL STATUS" section - this contains functional assessment items (M1800-M1900 series) with checkmarks (✓✓)
-10. Look for items with checkmarks (✓✓) to identify current values - these are the actual functional status values that may need correction
-11. Extract actual current values from the checkmarked items in the FUNCTIONAL STATUS section, not hardcoded examples
-12. If that specific section is not found, look for any section containing diagnosis information, ICD-10 codes, or medical conditions
-13. Every diagnosis MUST have an ICD-10 code - if not found in the document, provide the most appropriate standard ICD-10 code based on medical knowledge
+CRITICAL INSTRUCTIONS - EXTRACT INFORMATION FROM OASIS-E DOCUMENT:
 
-Provide a comprehensive analysis in the requested JSON format.`;
+PATIENT DEMOGRAPHICS (Look for these specific fields):
+1. Patient Name: Look for "(M0040) First Name", "(M0040) Last Name", or "Banks, Cleatus" format
+2. MRN: Look for "MRN:", "(M0020) ID Number:", or "BANKS08222025" format
+3. DOB: Look for "DOB:", "(M0066) Birth Date:", or "05/25/1966" format
+4. Gender: Look for "(M0069) Gender:" or "Male/Female"
+5. Address: Look for "Address Line 1:", "City:", "State:", "ZIP Code:"
+
+VISIT INFORMATION (Look for these sections):
+6. Visit Type: Look for "Start of Care", "ROC", "Recert", "Episode Timing", or "(M0100)" section
+7. Visit Date: Look for "Visit Date:", "(M0030) Start of Care Date:", or "09/04/2025" format
+8. Payor: Look for "(M0150) Current Payment Source", "Medicare", "Medicaid", or insurance information
+9. Clinician: Look for "Electronically Signed by:", "Tiffany Petty RN", or provider names
+10. Status: Look for "Ready for Billing", "Optimized", "Pending", or completion status
+
+DIAGNOSES SECTION (CRITICAL - Look for "Diagnoses Symptom Control" section):
+11. Primary Diagnosis: Look for "(M1021) Primary Diagnosis Code:" and "(M1021) Primary Diagnosis:"
+12. Other Diagnoses: Look for "(M1023) Other Diagnosis Code:" and "(M1023) Other Diagnosis:"
+13. ICD Codes: Extract all ICD-10 codes (e.g., "J96.01", "T40.2X1D", "F33.1", "I25.10", "M62.81")
+14. Diagnosis Descriptions: Extract all diagnosis descriptions
+15. Comorbidities: Look for "(M1028) Active Diagnoses - Comorbidities and Co-existing Conditions"
+
+FUNCTIONAL STATUS (Look for "FUNCTIONAL STATUS" section):
+16. ADL Items: Look for M1800-M1870 codes with checkmarked values (✓)
+17. Grooming (M1800): Look for checkmarked value (0, 1, 2, 3) - Current: 2 (Someone must assist)
+18. Dressing Upper (M1810): Look for checkmarked value (0, 1, 2, 3) - Current: 2 (Someone must help)
+19. Dressing Lower (M1820): Look for checkmarked value (0, 1, 2, 3) - Current: 2 (Someone must help)
+20. Bathing (M1830): Look for checkmarked value (0-6) - Current: 3 (Requires presence throughout)
+21. Toilet Transferring (M1840): Look for checkmarked value (0-4) - Current: 1 (When reminded/assisted)
+22. Toileting Hygiene (M1845): Look for checkmarked value (0-3) - Current: 2 (Someone must help)
+23. Transferring (M1850): Look for checkmarked value (0-5) - Current: 3 (Unable to transfer self)
+24. Ambulation (M1860): Look for checkmarked value (0-6) - Current: 3 (Able to walk only with supervision)
+25. Feeding (M1870): Look for checkmarked value (0-5) - Current: 1 (Requires meal set-up/assistance)
+
+REQUIRED CORRECTIONS & SUGGESTIONS:
+26. For each functional item with a checkmarked value, provide:
+    - Current value (the checkmarked value)
+    - Suggested improved value (based on clinical evidence)
+    - Clinical rationale for the correction
+    - Revenue impact (if applicable)
+
+VITAL SIGNS & ASSESSMENT:
+24. Vital Signs: Look for "Temperature:", "Pulse Rate:", "BP:", "Respirations:", "O2 Saturation:"
+25. Height/Weight: Look for "Height:", "Weight:", "BMI"
+26. Risk Assessments: Look for "Fall Risk Assessment", "Pressure Sore Risk", "Hospitalization Risk"
+
+MEDICATIONS & TREATMENTS:
+27. Medications: Look for "Medications" section, drug names, dosages
+28. Treatments: Look for "Special Treatments", "Respiratory Therapies", "Cancer Treatments"
+
+EXTRACTION RULES:
+- Extract EXACT values as they appear in the document
+- For checkmarked items, extract the checkmarked value (✓)
+- For ICD codes, extract the complete code (e.g., "J96.01")
+- For dates, extract in the format shown (e.g., "09/04/2025")
+- For names, extract as shown (e.g., "Banks, Cleatus")
+- If a field has multiple options, extract the one that is marked/selected
+- Don't return "N/A" unless the field is truly not present in the document
+
+Provide a comprehensive analysis in the requested JSON format with all extracted information.`;
 
       const response = await openai.chat.completions.create({
         model: model,
@@ -233,11 +341,13 @@ Provide a comprehensive analysis in the requested JSON format.`;
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        ...(model === 'gpt-5-nano' ? { max_completion_tokens: 8000 } : { max_tokens: 8000, temperature: 0.3 }),
+        ...(model === 'gpt-5-nano' ? { max_completion_tokens: 40000 } : { max_tokens: 8000, temperature: 0.1 }),
       });
 
       const analysisText = response.choices[0]?.message?.content || '{}';
-      console.log('OpenAI Service: Raw response:', analysisText);
+      console.log('OpenAI Service: Raw response length:', analysisText.length);
+      console.log('OpenAI Service: Raw response preview:', analysisText.substring(0, 500));
+      console.log('OpenAI Service: Raw response full:', analysisText);
 
       let analysisResult: QAAnalysisResult;
       

@@ -307,10 +307,8 @@ class QAAnalysisServiceNew {
       console.log('QA Service: PDF buffer size:', buffer.length);
       
       try {
-        // Try to extract text from PDF using pdf-parse
-        const pdfParse = await import('pdf-parse');
-        const pdfData = await pdfParse.default(buffer);
-        const extractedText = pdfData.text;
+        // Try to extract text from PDF using API
+        const extractedText = await this.extractPDFTextWithAPI(buffer);
         
         console.log('QA Service: PDF text extraction successful');
         console.log('QA Service: Extracted text length:', extractedText.length);
@@ -341,27 +339,35 @@ For files under 500MB, the AI can analyze the PDF directly.`;
             content,
             fileInfo: {
               fileType: 'pdf',
-              pageCount: pdfData.numpages,
+              pageCount: 1,
               fileSize: buffer.length,
               extractedText: `PDF too large for analysis (${estimatedTokens} estimated tokens)`
             }
           };
         }
         
-        // Send extracted text to AI for analysis
-        const content = `PDF Document Analysis Request
+            // Truncate content if too large to prevent connection errors
+            let contentToSend = extractedText;
+            if (extractedText.length > 50000) { // 50K characters = ~12.5K tokens
+              console.log('QA Service: Content too large, truncating to prevent connection errors');
+              contentToSend = extractedText.substring(0, 50000) + '\n\n[Content truncated due to size - showing first 50,000 characters]';
+            }
+
+            // Send extracted text to AI for analysis
+            const content = `PDF Document Analysis Request
 
 File Information:
 - File Name: ${fileName}
 - File Size: ${buffer.length} bytes
 - Extracted Text Length: ${extractedText.length} characters
-- Estimated Tokens: ${estimatedTokens}
+- Content Sent: ${contentToSend.length} characters
+- Estimated Tokens: ${Math.ceil(contentToSend.length / 4)}
 - Format: PDF (Text extracted)
 
 Please analyze this PDF document and extract all relevant patient information, diagnoses, and quality assurance data. The PDF text content has been extracted for analysis.
 
 PDF Text Content:
-${extractedText}
+${contentToSend}
 
 Please provide a comprehensive analysis including:
 1. Patient information (name, MRN, visit type, etc.)
@@ -371,6 +377,9 @@ Please provide a comprehensive analysis including:
 5. Recommendations
 
 Note: This PDF text has been extracted for accurate analysis of the document content.`;
+            
+            console.log('QA Service: PDF text content preview (first 1000 chars):', extractedText.substring(0, 1000));
+            console.log('QA Service: PDF text content preview (last 1000 chars):', extractedText.substring(Math.max(0, extractedText.length - 1000)));
         
         console.log('QA Service: PDF text sent to AI for analysis');
         
@@ -378,7 +387,7 @@ Note: This PDF text has been extracted for accurate analysis of the document con
           content,
           fileInfo: {
             fileType: 'pdf',
-            pageCount: pdfData.numpages,
+            pageCount: 1, // ILovePDF doesn't return page count
             fileSize: buffer.length,
             extractedText: extractedText.substring(0, 1000)
           }
@@ -591,6 +600,92 @@ Once you provide the text content, I will be able to extract all the necessary p
           nodeEnv: process.env.NODE_ENV
         }
       });
+      throw error;
+    }
+  }
+
+  private async extractPDFTextWithAPI(buffer: Buffer): Promise<string> {
+    try {
+      console.log('QA Service: Starting PDF text extraction with API');
+      
+      // Convert buffer to base64
+      const base64PDF = buffer.toString('base64');
+      
+      // Try PDF.co API first (more reliable)
+      if (process.env.PDF_CO_API_KEY) {
+        console.log('QA Service: Trying PDF.co API');
+        console.log('QA Service: PDF.co API key length:', process.env.PDF_CO_API_KEY.length);
+        
+        // Step 1: Upload file to PDF.co
+        const uploadResponse = await fetch('https://api.pdf.co/v1/file/upload/base64', {
+          method: 'POST',
+          headers: {
+            'x-api-key': process.env.PDF_CO_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            file: base64PDF,
+            name: 'document.pdf'
+          })
+        });
+        
+        console.log('QA Service: PDF.co upload response status:', uploadResponse.status);
+        
+        if (uploadResponse.ok) {
+          const uploadResult = await uploadResponse.json();
+          console.log('QA Service: PDF.co upload result:', JSON.stringify(uploadResult, null, 2));
+          
+          if (uploadResult.url) {
+            // Step 2: Convert uploaded file to text
+            const convertResponse = await fetch('https://api.pdf.co/v1/pdf/convert/to/text', {
+              method: 'POST',
+              headers: {
+                'x-api-key': process.env.PDF_CO_API_KEY,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                url: uploadResult.url,
+                pages: '0-', // Process all pages
+                async: false // Synchronous processing
+              })
+            });
+            
+            console.log('QA Service: PDF.co convert response status:', convertResponse.status);
+            
+            if (convertResponse.ok) {
+              const convertResult = await convertResponse.json();
+              console.log('QA Service: PDF.co convert result:', JSON.stringify(convertResult, null, 2));
+              
+              if (convertResult.url) {
+                // Step 3: Download the extracted text
+                console.log('QA Service: Downloading extracted text from:', convertResult.url);
+                const downloadResponse = await fetch(convertResult.url);
+                
+                if (downloadResponse.ok) {
+                  const extractedText = await downloadResponse.text();
+                  console.log('QA Service: PDF.co text extraction successful');
+                  console.log('QA Service: Extracted text length:', extractedText.length);
+                  return extractedText;
+                } else {
+                  console.error('QA Service: Failed to download extracted text');
+                }
+              }
+            } else {
+              const errorText = await convertResponse.text();
+              console.error('QA Service: PDF.co convert error response:', errorText);
+            }
+          }
+        } else {
+          const errorText = await uploadResponse.text();
+          console.error('QA Service: PDF.co upload error response:', errorText);
+        }
+        console.log('QA Service: PDF.co API failed');
+      }
+      
+      throw new Error('PDF.co API failed - PDF text extraction unavailable');
+      
+    } catch (error) {
+      console.error('QA Service: PDF text extraction failed:', error);
       throw error;
     }
   }
