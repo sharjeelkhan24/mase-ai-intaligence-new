@@ -306,93 +306,14 @@ class QAAnalysisServiceNew {
     if (fileExtension === '.pdf') {
       console.log('QA Service: PDF buffer size:', buffer.length);
       
-      try {
-        // Try to extract text from PDF using pdf-parse
-        const pdfParse = await import('pdf-parse');
-        const pdfData = await pdfParse.default(buffer);
-        const extractedText = pdfData.text;
-        
-        console.log('QA Service: PDF text extraction successful');
-        console.log('QA Service: Extracted text length:', extractedText.length);
-        
-        // Check if the extracted text is too large
-        const estimatedTokens = Math.ceil(extractedText.length / 4);
-        console.log('QA Service: Estimated tokens:', estimatedTokens);
-        
-        if (estimatedTokens > 500000) {
-          // For very large PDFs, provide a message about size limitations
-          const content = `PDF Document: ${fileName}
-          
-File Information:
-- File Size: ${buffer.length} bytes
-- Extracted Text Length: ${extractedText.length} characters
-- Estimated Tokens: ${estimatedTokens}
-- Status: File too large for AI analysis
-
-This PDF file is too large for AI analysis. Please try one of the following:
-
-1. Compress the PDF file to reduce size
-2. Split the PDF into smaller sections
-3. Use a PDF to text converter online
-
-For files under 500MB, the AI can analyze the PDF directly.`;
-          
-          return {
-            content,
-            fileInfo: {
-              fileType: 'pdf',
-              pageCount: pdfData.numpages,
-              fileSize: buffer.length,
-              extractedText: `PDF too large for analysis (${estimatedTokens} estimated tokens)`
-            }
-          };
-        }
-        
-        // Send extracted text to AI for analysis
-        const content = `PDF Document Analysis Request
-
-File Information:
-- File Name: ${fileName}
-- File Size: ${buffer.length} bytes
-- Extracted Text Length: ${extractedText.length} characters
-- Estimated Tokens: ${estimatedTokens}
-- Format: PDF (Text extracted)
-
-Please analyze this PDF document and extract all relevant patient information, diagnoses, and quality assurance data. The PDF text content has been extracted for analysis.
-
-PDF Text Content:
-${extractedText}
-
-Please provide a comprehensive analysis including:
-1. Patient information (name, MRN, visit type, etc.)
-2. All diagnoses and ICD codes
-3. Quality assurance findings
-4. Compliance issues
-5. Recommendations
-
-Note: This PDF text has been extracted for accurate analysis of the document content.`;
-        
-        console.log('QA Service: PDF text sent to AI for analysis');
-        
-        return {
-          content,
-          fileInfo: {
-            fileType: 'pdf',
-            pageCount: pdfData.numpages,
-            fileSize: buffer.length,
-            extractedText: extractedText.substring(0, 1000)
-          }
-        };
-        
-      } catch (error) {
-        console.error('QA Service: PDF text extraction failed:', error);
-        
-        // Fallback: Provide instructions for manual text extraction
-        const content = `PDF Document: ${fileName}
+      // PDF text extraction not available in serverless environment
+      console.log('QA Service: PDF text extraction not available in serverless environment');
+      
+      const content = `PDF Document: ${fileName}
 
 File Information:
 - File Size: ${buffer.length} bytes
-- Status: PDF text extraction failed in serverless environment
+- Status: PDF text extraction not available in serverless environment
 
 IMPORTANT: PDF text extraction is not available in this serverless environment. Please follow these steps:
 
@@ -405,17 +326,16 @@ IMPORTANT: PDF text extraction is not available in this serverless environment. 
 Alternatively, you can use an online PDF to text converter and upload the resulting .txt file.
 
 Once you provide the text content, I will be able to extract all the necessary patient information and provide a detailed analysis.`;
-        
-        return {
-          content,
-          fileInfo: {
-            fileType: 'pdf',
-            pageCount: 1,
-            fileSize: buffer.length,
-            extractedText: `PDF text extraction failed - manual extraction required`
-          }
-        };
-      }
+      
+      return {
+        content,
+        fileInfo: {
+          fileType: 'pdf',
+          pageCount: 1,
+          fileSize: buffer.length,
+          extractedText: `PDF text extraction not available - manual extraction required`
+        }
+      };
     } else if (fileExtension === '.txt') {
       let content = buffer.toString('utf-8');
       
@@ -441,18 +361,18 @@ Once you provide the text content, I will be able to extract all the necessary p
       console.log('QA Service: Content length:', content.length);
       console.log('QA Service: Content preview:', content.substring(0, 200));
       
-      // Check if this is a "too large" PDF message
-      if (content.includes('File too large for direct AI analysis')) {
-        console.log('QA Service: Detected large PDF, returning default patient info');
+      // Check if this is a PDF that needs manual text extraction
+      if (content.includes('PDF text extraction not available in serverless environment')) {
+        console.log('QA Service: Detected PDF requiring manual text extraction, returning default patient info');
         return {
-          patientName: 'Not available - PDF too large',
-          mrn: 'Not available - PDF too large',
-          visitType: 'Not available - PDF too large',
-          payor: 'Not available - PDF too large',
-          visitDate: 'Not available - PDF too large',
-          clinician: 'Not available - PDF too large',
-          payPeriod: 'Not available - PDF too large',
-          status: 'PDF_TOO_LARGE'
+          patientName: 'Not available - PDF text extraction required',
+          mrn: 'Not available - PDF text extraction required',
+          visitType: 'Not available - PDF text extraction required',
+          payor: 'Not available - PDF text extraction required',
+          visitDate: 'Not available - PDF text extraction required',
+          clinician: 'Not available - PDF text extraction required',
+          payPeriod: 'Not available - PDF text extraction required',
+          status: 'PDF_TEXT_EXTRACTION_REQUIRED'
         };
       }
       
@@ -491,36 +411,38 @@ Once you provide the text content, I will be able to extract all the necessary p
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
-      // Check if this is a "too large" PDF message
-      if (content.includes('File too large for direct AI analysis')) {
-        console.log('QA Service: Detected large PDF, returning default analysis');
+      // Check if this is a PDF that needs manual text extraction
+      if (content.includes('PDF text extraction not available in serverless environment')) {
+        console.log('QA Service: Detected PDF requiring manual text extraction, returning default analysis');
         return {
           complianceScore: 0,
-          issuesFound: ['PDF file too large for AI analysis'],
-          recommendations: ['Please compress the PDF or extract text content'],
+          issuesFound: ['PDF text extraction not available in serverless environment'],
+          recommendations: ['Please extract text from PDF and upload as .txt file for analysis'],
           riskLevel: 'medium',
-          summary: `PDF Analysis Not Available: ${fileName} - File too large for direct AI analysis.`,
+          summary: `PDF Analysis Not Available: ${fileName} - Text extraction required.`,
           detailedAnalysis: `
-          PDF Analysis Report - File Size Limitation
-          ==========================================
+          PDF Analysis Report - Text Extraction Required
+          ==============================================
           
           File: ${fileName}
           Analysis Type: ${analysisType}
           Date: ${new Date().toLocaleDateString()}
-          Status: File too large for analysis
+          Status: Text extraction required
           
           LIMITATION:
-          This PDF file exceeds the token limit for direct AI analysis.
-          The file is too large to process in a single request.
+          PDF text extraction is not available in this serverless environment.
+          The AI cannot read PDF files directly without text extraction.
           
           RECOMMENDATIONS:
-          1. Compress the PDF file to reduce size
-          2. Extract text content and upload as .txt file
-          3. Split the PDF into smaller sections
-          4. Use a PDF to text converter online
+          1. Open PDF in any viewer (Adobe Reader, Chrome, etc.)
+          2. Select all text (Ctrl+A / Cmd+A)
+          3. Copy text (Ctrl+C / Cmd+C)
+          4. Paste into a .txt file
+          5. Upload the .txt file for analysis
+          
+          Alternatively, use an online PDF to text converter.
           
           File Size: ${content.match(/\d+ bytes/)?.[0] || 'Unknown'}
-          Estimated Tokens: ${content.match(/\d+ estimated tokens/)?.[0] || 'Unknown'}
           `
         };
       }
