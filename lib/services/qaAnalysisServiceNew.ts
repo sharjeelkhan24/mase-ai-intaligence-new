@@ -306,55 +306,62 @@ class QAAnalysisServiceNew {
     if (fileExtension === '.pdf') {
       console.log('QA Service: PDF buffer size:', buffer.length);
       
-      // Convert PDF buffer to base64 for AI analysis
-      const base64Content = buffer.toString('base64');
-      
-      // Check if the content is too large (estimate ~4 chars per token)
-      const estimatedTokens = Math.ceil(base64Content.length / 4);
-      console.log('QA Service: Estimated tokens:', estimatedTokens);
-      
-      if (estimatedTokens > 500000) {
-        // For very large PDFs, provide a message about size limitations
-        const content = `PDF Document: ${fileName}
+      try {
+        // Try to extract text from PDF using pdf-parse
+        const pdfParse = await import('pdf-parse');
+        const pdfData = await pdfParse.default(buffer);
+        const extractedText = pdfData.text;
         
+        console.log('QA Service: PDF text extraction successful');
+        console.log('QA Service: Extracted text length:', extractedText.length);
+        
+        // Check if the extracted text is too large
+        const estimatedTokens = Math.ceil(extractedText.length / 4);
+        console.log('QA Service: Estimated tokens:', estimatedTokens);
+        
+        if (estimatedTokens > 500000) {
+          // For very large PDFs, provide a message about size limitations
+          const content = `PDF Document: ${fileName}
+          
 File Information:
 - File Size: ${buffer.length} bytes
+- Extracted Text Length: ${extractedText.length} characters
 - Estimated Tokens: ${estimatedTokens}
-- Status: File too large for direct AI analysis
+- Status: File too large for AI analysis
 
-This PDF file is too large for direct AI analysis. Please try one of the following:
+This PDF file is too large for AI analysis. Please try one of the following:
 
 1. Compress the PDF file to reduce size
-2. Extract text content and upload as .txt file
-3. Split the PDF into smaller sections
-4. Use a PDF to text converter online
+2. Split the PDF into smaller sections
+3. Use a PDF to text converter online
 
 For files under 500MB, the AI can analyze the PDF directly.`;
+          
+          return {
+            content,
+            fileInfo: {
+              fileType: 'pdf',
+              pageCount: pdfData.numpages,
+              fileSize: buffer.length,
+              extractedText: `PDF too large for analysis (${estimatedTokens} estimated tokens)`
+            }
+          };
+        }
         
-        return {
-          content,
-          fileInfo: {
-            fileType: 'pdf',
-            pageCount: 1,
-            fileSize: buffer.length,
-            extractedText: `PDF too large for analysis (${estimatedTokens} estimated tokens)`
-          }
-        };
-      }
-      
-      // Send full PDF content to GPT-5-nano for complete analysis
-      const content = `PDF Document Analysis Request
+        // Send extracted text to AI for analysis
+        const content = `PDF Document Analysis Request
 
 File Information:
 - File Name: ${fileName}
 - File Size: ${buffer.length} bytes
+- Extracted Text Length: ${extractedText.length} characters
 - Estimated Tokens: ${estimatedTokens}
-- Format: PDF (Base64 encoded)
+- Format: PDF (Text extracted)
 
-Please analyze this PDF document and extract all relevant patient information, diagnoses, and quality assurance data. The PDF content has been provided in base64 format for direct analysis.
+Please analyze this PDF document and extract all relevant patient information, diagnoses, and quality assurance data. The PDF text content has been extracted for analysis.
 
-Base64 PDF Content:
-${base64Content}
+PDF Text Content:
+${extractedText}
 
 Please provide a comprehensive analysis including:
 1. Patient information (name, MRN, visit type, etc.)
@@ -363,20 +370,52 @@ Please provide a comprehensive analysis including:
 4. Compliance issues
 5. Recommendations
 
-Note: This PDF is being analyzed directly without text extraction, allowing for more accurate analysis of the original document format.`;
-      
-      console.log('QA Service: PDF sent directly to AI for analysis');
-      console.log('QA Service: Base64 content length:', base64Content.length);
-      
-      return {
-        content,
-        fileInfo: {
-          fileType: 'pdf',
-          pageCount: 1,
-          fileSize: buffer.length,
-          extractedText: `PDF sent directly to AI for analysis (${buffer.length} bytes)`
-        }
-      };
+Note: This PDF text has been extracted for accurate analysis of the document content.`;
+        
+        console.log('QA Service: PDF text sent to AI for analysis');
+        
+        return {
+          content,
+          fileInfo: {
+            fileType: 'pdf',
+            pageCount: pdfData.numpages,
+            fileSize: buffer.length,
+            extractedText: extractedText.substring(0, 1000)
+          }
+        };
+        
+      } catch (error) {
+        console.error('QA Service: PDF text extraction failed:', error);
+        
+        // Fallback: Provide instructions for manual text extraction
+        const content = `PDF Document: ${fileName}
+
+File Information:
+- File Size: ${buffer.length} bytes
+- Status: PDF text extraction failed in serverless environment
+
+IMPORTANT: PDF text extraction is not available in this serverless environment. Please follow these steps:
+
+1. Open your PDF file in any PDF viewer (such as Adobe Reader or Chrome)
+2. Select all text using Ctrl+A (Cmd+A on Mac)
+3. Copy the text using Ctrl+C (Cmd+C on Mac)
+4. Paste the copied text into a new text file (.txt)
+5. Upload the .txt file for analysis
+
+Alternatively, you can use an online PDF to text converter and upload the resulting .txt file.
+
+Once you provide the text content, I will be able to extract all the necessary patient information and provide a detailed analysis.`;
+        
+        return {
+          content,
+          fileInfo: {
+            fileType: 'pdf',
+            pageCount: 1,
+            fileSize: buffer.length,
+            extractedText: `PDF text extraction failed - manual extraction required`
+          }
+        };
+      }
     } else if (fileExtension === '.txt') {
       let content = buffer.toString('utf-8');
       
