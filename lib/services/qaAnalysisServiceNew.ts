@@ -265,42 +265,18 @@ class QAAnalysisServiceNew {
     console.log('QA Service: File size:', fileStats.size);
 
     if (fileExtension === '.pdf') {
-      try {
-        console.log('QA Service: Processing PDF file...');
-        const pdf = require('pdf-parse');
-        const dataBuffer = fs.readFileSync(filePath);
-        console.log('QA Service: PDF buffer size:', dataBuffer.length);
-        
-        const pdfData = await pdf(dataBuffer);
-        
-        console.log('QA Service: PDF Info:', {
-          pages: pdfData.numpages,
-          textLength: pdfData.text?.length || 0
-        });
-        
-        let content = pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
-        
-        // No content truncation - send full document to AI
-        console.log(`QA Service: Full content length: ${content.length} chars`);
-        
-        console.log(`QA Service: Final content length: ${content.length} chars`);
-        
-        console.log('QA Service: Final content length:', content.length);
-        console.log('QA Service: Content preview:', content.substring(0, 200));
-        
-        return {
-          content,
-          fileInfo: {
-            fileType: 'pdf',
-            pageCount: pdfData.numpages,
-            fileSize: fileStats.size,
-            extractedText: content.substring(0, 1000)
-          }
-        };
-      } catch (error) {
-        console.error('QA Service: PDF parsing error:', error);
-        throw new Error(`Failed to parse PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      }
+      console.log('QA Service: PDF processing not available in serverless environment');
+      const content = `PDF Document: ${fileName} - PDF text extraction not available in serverless environment. Please convert to text format (.txt) for analysis.`;
+      
+      return {
+        content,
+        fileInfo: {
+          fileType: 'pdf',
+          pageCount: 1,
+          fileSize: fileStats.size,
+          extractedText: content.substring(0, 1000)
+        }
+      };
     } else if (fileExtension === '.txt') {
       let content = fs.readFileSync(filePath, 'utf-8');
       
@@ -328,57 +304,19 @@ class QAAnalysisServiceNew {
     const fileExtension = path.extname(fileName).toLowerCase();
     
     if (fileExtension === '.pdf') {
-      try {
-        console.log('QA Service: PDF buffer size:', buffer.length);
-        
-        // Try to use pdf-parse with a different approach
-        const pdfParse = await import('pdf-parse');
-        console.log('QA Service: PDF parsing library loaded');
-        
-        // Create a copy of the buffer to avoid any potential issues
-        const pdfBuffer = Buffer.from(buffer);
-        console.log('QA Service: PDF buffer copy created, size:', pdfBuffer.length);
-        
-        // Parse PDF with minimal options to avoid filesystem dependencies
-        const pdfData = await pdfParse.default(pdfBuffer);
-        
-        console.log('QA Service: PDF Info:', {
-          pages: pdfData.numpages,
-          textLength: pdfData.text?.length || 0
-        });
-        
-        let content = pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
-        
-        // No content truncation - send full document to AI
-        console.log(`QA Service: Full content length: ${content.length} chars`);
-        console.log('QA Service: Content preview:', content.substring(0, 200));
-        
-        return {
-          content,
-          fileInfo: {
-            fileType: 'pdf',
-            pageCount: pdfData.numpages,
-            fileSize: buffer.length,
-            extractedText: content.substring(0, 1000)
-          }
-        };
-      } catch (error) {
-        console.error('QA Service: PDF parsing error:', error);
-        console.error('QA Service: Error details:', {
-          message: error instanceof Error ? error.message : 'Unknown error',
-          stack: error instanceof Error ? error.stack : undefined
-        });
-        
-        // Enhanced fallback with better user guidance
-        const content = `PDF Document: ${fileName}
-        
+      console.log('QA Service: PDF buffer size:', buffer.length);
+      
+      // PDF parsing is not available in serverless environments
+      // Provide clear instructions for users to convert PDF to text
+      const content = `PDF Document: ${fileName}
+      
 File Information:
 - File Size: ${buffer.length} bytes
-- Status: PDF parsing not available in serverless environment
+- Status: PDF text extraction not available in serverless environment
 
 IMPORTANT: PDF text extraction is currently not available in our serverless deployment environment. However, you can still get full AI analysis by following these simple steps:
 
-QUICK SOLUTION:
+QUICK SOLUTION (2 minutes):
 1. Open your PDF file in any PDF viewer (Adobe Reader, Chrome, etc.)
 2. Select all text (Ctrl+A / Cmd+A)
 3. Copy the text (Ctrl+C / Cmd+C)
@@ -386,22 +324,30 @@ QUICK SOLUTION:
 5. Upload the .txt file for full AI analysis
 
 ALTERNATIVE SOLUTIONS:
-- Use online PDF to text converters
+- Use online PDF to text converters (PDF24, SmallPDF, etc.)
 - Use built-in PDF text extraction tools
 - Contact support for bulk PDF processing
 
+BENEFITS OF TEXT FORMAT:
+- Faster processing
+- More reliable analysis
+- Better AI accuracy
+- No file size limitations
+
 The AI analysis will work perfectly once you provide the text content. This is a temporary limitation while we implement a more robust PDF parsing solution for serverless environments.`;
-        
-        return {
-          content,
-          fileInfo: {
-            fileType: 'pdf',
-            pageCount: 1,
-            fileSize: buffer.length,
-            extractedText: content.substring(0, 1000)
-          }
-        };
-      }
+      
+      console.log('QA Service: PDF processing skipped, providing user instructions');
+      console.log('QA Service: Content preview:', content.substring(0, 200));
+      
+      return {
+        content,
+        fileInfo: {
+          fileType: 'pdf',
+          pageCount: 1,
+          fileSize: buffer.length,
+          extractedText: content.substring(0, 1000)
+        }
+      };
     } else if (fileExtension === '.txt') {
       let content = buffer.toString('utf-8');
       

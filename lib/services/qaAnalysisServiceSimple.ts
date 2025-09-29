@@ -167,32 +167,16 @@ class QAAnalysisServiceSimple {
           }
         };
       } else if (fileExtension === '.pdf') {
-        // Use pdf-parse to extract text from PDF
-        console.log('QA Service: Processing PDF file...');
-        const pdf = require('pdf-parse');
-        const dataBuffer = fs.readFileSync(filePath);
-        console.log('QA Service: PDF buffer size:', dataBuffer.length);
-        
-        const pdfData = await pdf(dataBuffer);
-        
-        console.log('QA Service: PDF Info:', {
-          pages: pdfData.numpages,
-          textLength: pdfData.text?.length || 0,
-          info: pdfData.info,
-          metadata: pdfData.metadata
-        });
-        
-        const content = pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
-        console.log('QA Service: Extracted content length:', content.length);
-        console.log('QA Service: Content preview:', content.substring(0, 200));
+        console.log('QA Service: PDF processing not available in serverless environment');
+        const content = `PDF Document: ${fileName} - PDF text extraction not available in serverless environment. Please convert to text format (.txt) for analysis.`;
         
         return {
           content,
           fileInfo: {
             fileType: 'pdf',
-            pageCount: pdfData.numpages,
+            pageCount: 1,
             fileSize: fileStats.size,
-            extractedText: content.substring(0, 1000) // First 1000 chars for preview
+            extractedText: content.substring(0, 1000)
           }
         };
       } else {

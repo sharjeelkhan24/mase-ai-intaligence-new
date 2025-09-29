@@ -2,13 +2,8 @@ import puppeteer from 'puppeteer';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Dynamic import for pdf-parse to handle potential import issues
-let pdfParse: any = null;
-try {
-  pdfParse = require('pdf-parse');
-} catch (error) {
-  console.warn('pdf-parse not available, falling back to placeholder text extraction');
-}
+// PDF parsing not available in serverless environment
+console.warn('PDF parsing not available in serverless environment');
 
 export interface QAAnalysisResult {
   id: string;
@@ -171,20 +166,8 @@ class QAAnalysisService {
         return fs.readFileSync(filePath, 'utf-8');
       
       case '.pdf':
-        try {
-          if (pdfParse) {
-            // Extract real text content from PDF using pdf-parse
-            const dataBuffer = fs.readFileSync(filePath);
-            const pdfData = await pdfParse(dataBuffer);
-            return pdfData.text || `PDF Content: ${fileName} - No text content found in PDF.`;
-          } else {
-            // Fallback when pdf-parse is not available
-            return `PDF Content: ${fileName} - PDF parsing library not available. Please install pdf-parse package.`;
-          }
-        } catch (error) {
-          console.error(`Error parsing PDF ${fileName}:`, error);
-          return `PDF Content: ${fileName} - Error extracting text from PDF: ${error instanceof Error ? error.message : 'Unknown error'}`;
-        }
+        // PDF parsing not available in serverless environment
+        return `PDF Document: ${fileName} - PDF text extraction not available in serverless environment. Please convert to text format (.txt) for analysis.`;
       
       case '.doc':
       case '.docx':

@@ -85,11 +85,8 @@ async function readFileContent(filePath: string, fileName: string): Promise<stri
   
   try {
     if (fileExtension === '.pdf') {
-      // Use pdf-parse to extract text from PDF
-      const pdf = require('pdf-parse');
-      const dataBuffer = fs.readFileSync(filePath);
-      const pdfData = await pdf(dataBuffer);
-      return pdfData.text;
+      // PDF parsing not available in serverless environment
+      return `PDF Document: ${fileName} - PDF text extraction not available in serverless environment. Please convert to text format (.txt) for analysis.`;
     } else if (fileExtension === '.txt') {
       // Read text file
       return fs.readFileSync(filePath, 'utf-8');
