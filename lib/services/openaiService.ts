@@ -48,7 +48,7 @@ export class OpenAIService {
   public async analyzePatientDocument(
     content: string,
     fileName: string,
-    model: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' | 'gpt-4o-mini' = 'gpt-4o'
+    model: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' | 'gpt-4o-mini' | 'gpt-5-nano' = 'gpt-4o'
   ): Promise<QAAnalysisResult> {
     try {
       // Check if OpenAI client is available

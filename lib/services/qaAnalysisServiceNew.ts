@@ -313,7 +313,7 @@ class QAAnalysisServiceNew {
       const estimatedTokens = Math.ceil(base64Content.length / 4);
       console.log('QA Service: Estimated tokens:', estimatedTokens);
       
-      if (estimatedTokens > 25000) {
+      if (estimatedTokens > 500000) {
         // For very large PDFs, provide a message about size limitations
         const content = `PDF Document: ${fileName}
         
@@ -329,7 +329,7 @@ This PDF file is too large for direct AI analysis. Please try one of the followi
 3. Split the PDF into smaller sections
 4. Use a PDF to text converter online
 
-For files under 25MB, the AI can analyze the PDF directly.`;
+For files under 500MB, the AI can analyze the PDF directly.`;
         
         return {
           content,
@@ -342,7 +342,37 @@ For files under 25MB, the AI can analyze the PDF directly.`;
         };
       }
       
-      const content = `PDF Document Analysis Request
+      // For large PDFs, use a more efficient approach
+      let content;
+      if (estimatedTokens > 100000) {
+        // For very large PDFs, send only a portion and ask AI to request more if needed
+        const chunkSize = Math.floor(base64Content.length * 0.3); // Send 30% of the content
+        const base64Chunk = base64Content.substring(0, chunkSize);
+        
+        content = `PDF Document Analysis Request - Large File
+
+File Information:
+- File Name: ${fileName}
+- File Size: ${buffer.length} bytes
+- Estimated Tokens: ${estimatedTokens}
+- Format: PDF (Base64 encoded - partial content for initial analysis)
+
+This is a large PDF file. I'm providing the first 30% of the content for initial analysis. Please analyze this portion and let me know if you need more content for a complete analysis.
+
+Base64 PDF Content (First 30%):
+${base64Chunk}
+
+Please provide a comprehensive analysis including:
+1. Patient information (name, MRN, visit type, etc.)
+2. All diagnoses and ICD codes
+3. Quality assurance findings
+4. Compliance issues
+5. Recommendations
+
+Note: This is a partial analysis. If you need more content for complete analysis, please request it.`;
+      } else {
+        // For smaller PDFs, send the full content
+        content = `PDF Document Analysis Request
 
 File Information:
 - File Name: ${fileName}
@@ -363,6 +393,7 @@ Please provide a comprehensive analysis including:
 5. Recommendations
 
 Note: This PDF is being analyzed directly without text extraction, allowing for more accurate analysis of the original document format.`;
+      }
       
       console.log('QA Service: PDF sent directly to AI for analysis');
       console.log('QA Service: Base64 content length:', base64Content.length);
@@ -417,7 +448,7 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
       }
       
       const openaiService = OpenAIService.getInstance();
-      const result = await openaiService.analyzePatientDocument(content, fileName, 'gpt-4o');
+      const result = await openaiService.analyzePatientDocument(content, fileName, 'gpt-5-nano');
       
       const patientInfo: PatientInfo = {
         patientName: result.patientName || '',
@@ -485,8 +516,8 @@ Note: This PDF is being analyzed directly without text extraction, allowing for 
         };
       }
       
-      // Use GPT-4o for highest token limits and better PDF handling
-      const modelToUse = 'gpt-4o';
+      // Use GPT-5-nano for highest token limits (200K TPM) and better PDF handling
+      const modelToUse = 'gpt-5-nano';
       console.log('QA Service: Using model:', modelToUse, '(original:', aiModel, ')');
       
       const openaiService = OpenAIService.getInstance();
