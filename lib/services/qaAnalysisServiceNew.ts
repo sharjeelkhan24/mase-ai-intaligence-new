@@ -22,6 +22,7 @@ export interface QAAnalysisResult {
   processingNotes?: string;
   createdAt: Date;
   completedAt?: Date;
+  processingTime?: string;
   patientInfo?: PatientInfo;
   fileInfo?: {
     fileType: string;
@@ -52,9 +53,10 @@ class QAAnalysisServiceNew {
     priority: string,
     patientId?: string,
     processingNotes?: string,
-    aiModel: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' = 'gpt-4o'
+    aiModel: 'gpt-5-nano' = 'gpt-5-nano'
   ): Promise<QAAnalysisResult> {
     const analysisId = `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const analysisStartTime = new Date();
     
     // Add to processing queue
     const queueItem: ProcessingQueueItem = {
@@ -62,12 +64,13 @@ class QAAnalysisServiceNew {
       fileName,
       status: 'queued',
       progress: 0,
-      startTime: new Date()
+      startTime: analysisStartTime
     };
     this.processingQueue.set(analysisId, queueItem);
 
     try {
       console.log('QA Service: Starting analysis for:', fileName);
+      console.log('QA Service: Analysis start time:', analysisStartTime.toISOString());
       console.log('QA Service: File path:', filePath);
       console.log('QA Service: File exists:', fs.existsSync(filePath));
 
@@ -79,13 +82,19 @@ class QAAnalysisServiceNew {
       const { content, fileInfo } = await this.readFileContent(filePath, fileName);
       queueItem.progress = 30;
 
-      // Extract patient info with AI
-      const patientInfo = await this.extractPatientInfoWithAI(content, fileName, aiModel);
-      queueItem.progress = 50;
-
-      // Perform analysis
+      // Perform single comprehensive analysis (includes patient info extraction)
       const analysisResult = await this.performAnalysis(content, analysisType, fileName, aiModel);
       queueItem.progress = 80;
+
+      // Calculate processing time
+      const analysisEndTime = new Date();
+      const processingTimeMs = analysisEndTime.getTime() - analysisStartTime.getTime();
+      const processingTimeSeconds = Math.round(processingTimeMs / 1000);
+      const processingTimeFormatted = processingTimeSeconds < 60 
+        ? `${processingTimeSeconds}s` 
+        : `${Math.floor(processingTimeSeconds / 60)}m ${processingTimeSeconds % 60}s`;
+
+      console.log('QA Service: Analysis completed in:', processingTimeFormatted);
 
       // Create final result
       const result: QAAnalysisResult = {
@@ -97,9 +106,19 @@ class QAAnalysisServiceNew {
         status: 'completed',
         results: analysisResult,
         processingNotes,
-        createdAt: new Date(),
-        completedAt: new Date(),
-        patientInfo,
+        createdAt: analysisStartTime,
+        completedAt: analysisEndTime,
+        processingTime: processingTimeFormatted,
+        patientInfo: {
+          patientName: analysisResult.patientName,
+          mrn: analysisResult.mrn,
+          visitType: analysisResult.visitType,
+          payor: analysisResult.payor,
+          visitDate: analysisResult.visitDate,
+          clinician: analysisResult.clinician,
+          payPeriod: analysisResult.payPeriod,
+          status: analysisResult.status
+        },
         fileInfo
       };
 
@@ -155,9 +174,10 @@ class QAAnalysisServiceNew {
     priority: string,
     patientId?: string,
     processingNotes?: string,
-    aiModel: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' = 'gpt-4o'
+    aiModel: 'gpt-5-nano' = 'gpt-5-nano'
   ): Promise<QAAnalysisResult> {
     const analysisId = `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const analysisStartTime = new Date();
     
     // Add to processing queue
     const queueItem: ProcessingQueueItem = {
@@ -165,12 +185,13 @@ class QAAnalysisServiceNew {
       fileName,
       status: 'queued',
       progress: 0,
-      startTime: new Date()
+      startTime: analysisStartTime
     };
     this.processingQueue.set(analysisId, queueItem);
 
     try {
       console.log('QA Service: Starting analysis for:', fileName);
+      console.log('QA Service: Analysis start time:', analysisStartTime.toISOString());
       console.log('QA Service: Buffer size:', buffer.length, 'bytes');
 
       // Update status to processing
@@ -181,13 +202,19 @@ class QAAnalysisServiceNew {
       const { content, fileInfo } = await this.readFileContentFromBuffer(buffer, fileName);
       queueItem.progress = 30;
 
-      // Extract patient info with AI
-      const patientInfo = await this.extractPatientInfoWithAI(content, fileName, aiModel);
-      queueItem.progress = 50;
-
-      // Perform analysis
+      // Perform single comprehensive analysis (includes patient info extraction)
       const analysisResult = await this.performAnalysis(content, analysisType, fileName, aiModel);
       queueItem.progress = 80;
+
+      // Calculate processing time
+      const analysisEndTime = new Date();
+      const processingTimeMs = analysisEndTime.getTime() - analysisStartTime.getTime();
+      const processingTimeSeconds = Math.round(processingTimeMs / 1000);
+      const processingTimeFormatted = processingTimeSeconds < 60 
+        ? `${processingTimeSeconds}s` 
+        : `${Math.floor(processingTimeSeconds / 60)}m ${processingTimeSeconds % 60}s`;
+
+      console.log('QA Service: Analysis completed in:', processingTimeFormatted);
 
       // Create final result
       const result: QAAnalysisResult = {
@@ -199,9 +226,19 @@ class QAAnalysisServiceNew {
         status: 'completed',
         results: analysisResult,
         processingNotes,
-        createdAt: new Date(),
-        completedAt: new Date(),
-        patientInfo,
+        createdAt: analysisStartTime,
+        completedAt: analysisEndTime,
+        processingTime: processingTimeFormatted,
+        patientInfo: {
+          patientName: analysisResult.patientName,
+          mrn: analysisResult.mrn,
+          visitType: analysisResult.visitType,
+          payor: analysisResult.payor,
+          visitDate: analysisResult.visitDate,
+          clinician: analysisResult.clinician,
+          payPeriod: analysisResult.payPeriod,
+          status: analysisResult.status
+        },
         fileInfo
       };
 
@@ -387,7 +424,7 @@ Note: This PDF text has been extracted for accurate analysis of the document con
         console.error('QA Service: PDF text extraction failed:', error);
         
         // No fallback - throw error if PDF extraction fails
-        throw new Error(`PDF text extraction failed: ${error.message}`);
+        throw new Error(`PDF text extraction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else if (fileExtension === '.txt') {
       let content = buffer.toString('utf-8');
@@ -408,7 +445,7 @@ Note: This PDF text has been extracted for accurate analysis of the document con
     }
   }
 
-  private async extractPatientInfoWithAI(content: string, fileName: string, aiModel: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' = 'gpt-4o'): Promise<PatientInfo> {
+  private async extractPatientInfoWithAI(content: string, fileName: string, aiModel: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' | 'gpt-4o-mini' | 'gpt-5-nano' = 'gpt-5-nano'): Promise<PatientInfo> {
     try {
       console.log('QA Service: Starting AI patient info extraction for:', fileName);
       console.log('QA Service: Content length:', content.length);
@@ -444,15 +481,36 @@ Note: This PDF text has been extracted for accurate analysis of the document con
     content: string,
     analysisType: string,
     fileName: string,
-    aiModel: 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o' = 'gpt-4o'
-  ): Promise<QAAnalysisResult['results']> {
+    aiModel: 'gpt-5-nano' = 'gpt-5-nano'
+  ): Promise<any> {
     try {
       console.log('QA Service: Starting OpenAI analysis...');
+      console.log('QA Service: Analysis type:', analysisType);
       console.log('QA Service: Content length for analysis:', content.length);
       console.log('QA Service: Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
       console.log('QA Service: Environment check - OPENAI_API_KEY length:', process.env.OPENAI_API_KEY?.length || 0);
       
-      // No fallback - only work with real extracted text
+      // Route to appropriate analysis service based on analysisType
+      if (analysisType === 'coding-review') {
+        console.log('QA Service: Routing to Coding Analysis Service');
+        const { codingAnalysisService } = await import('./codingAnalysisService');
+        // For coding review, we need to create a temporary file or handle differently
+        // Since we already have the content, we'll pass it directly to the coding service
+        const CodingReviewService = (await import('./codingReviewService')).default;
+        const codingService = new CodingReviewService();
+        const result = await codingService.analyzeCodingReview(content, fileName);
+        
+        // Return early with coding review result
+        return {
+          ...result,
+          // Map coding review specific fields to common interface
+          aiConfidence: result.summary?.complianceScore || 85,
+          issuesFound: result.summary?.totalIssues || 0,
+          riskLevel: result.summary?.riskLevel?.toUpperCase() || 'MEDIUM'
+        };
+      }
+      
+      // Default to QA Review analysis
       console.log('QA Service: Processing extracted text for quality analysis');
       
       // Use GPT-5-nano for highest token limits (200K TPM) and better PDF handling
@@ -463,50 +521,35 @@ Note: This PDF text has been extracted for accurate analysis of the document con
       console.log('QA Service: OpenAI service instance obtained');
       
       const result = await openaiService.analyzePatientDocument(content, fileName, modelToUse);
-      console.log('QA Service: OpenAI analysis completed successfully');
+      
+      console.log('QA Service: Analysis completed successfully');
 
+      // Calculate enhanced AI confidence
+      const enhancedConfidence = this.calculateEnhancedConfidence(result, content);
+      
+      // For QA review, use the existing mapping
+      const qaResult = result as any; // Type assertion for QA review result
       return {
-        complianceScore: result.confidence ? Math.round(result.confidence * 100) : 85,
-        issuesFound: result.complianceIssues || ['No major issues detected'],
-        recommendations: result.recommendations || ['Continue current care plan'],
-        riskLevel: this.mapRiskLevel(result.riskLevel),
-        summary: `OpenAI Analysis of ${fileName}: ${result.status} status, ${result.riskLevel} risk level.`,
-        detailedAnalysis: `
-        OpenAI Quality Assurance Analysis Report
-        ========================================
-        
-        File: ${fileName}
-        Analysis Type: ${analysisType}
-        Date: ${new Date().toLocaleDateString()}
-        AI Model: ${modelToUse}
-        
-        PATIENT INFORMATION:
-        - Name: ${result.patientName || 'Not identified'}
-        - MRN: ${result.mrn || result.patientId || 'Not identified'}
-        - Visit Type: ${result.visitType || 'Not identified'}
-        - Payor: ${result.payor || 'Not identified'}
-        - Visit Date: ${result.visitDate || 'Not identified'}
-        - Clinician: ${result.clinician || 'Not identified'}
-        - Pay Period: ${result.payPeriod || 'Not identified'}
-        - Status: ${result.status || 'Unknown'}
-        
-        COMPLIANCE SCORE: ${result.confidence ? Math.round(result.confidence * 100) : 85}%
-        RISK LEVEL: ${result.riskLevel?.toUpperCase() || 'MEDIUM'}
-        
-        ISSUES IDENTIFIED:
-        ${result.complianceIssues?.map((issue, index) => `${index + 1}. ${issue}`).join('\n') || '1. No major issues detected'}
-        
-        RECOMMENDATIONS:
-        ${result.recommendations?.map((rec, index) => `${index + 1}. ${rec}`).join('\n') || '1. Continue current care plan'}
-        
-        DETAILED FINDINGS:
-        - AI Model: ${modelToUse}
-        - Analysis Confidence: ${result.confidence ? Math.round(result.confidence * 100) : 85}%
-        - Content Length: ${content.length} characters
-        - Extracted Data: ${JSON.stringify(result.extractedData, null, 2)}
-        - Timestamp: ${result.timestamp}
-        `,
-        extractedData: result.extractedData // Store extractedData separately
+        // Patient information
+        patientName: qaResult.patientName,
+        patientId: qaResult.patientId,
+        mrn: qaResult.mrn,
+        visitType: qaResult.visitType,
+        payor: qaResult.payor,
+        visitDate: qaResult.visitDate,
+        clinician: qaResult.clinician,
+        payPeriod: qaResult.payPeriod,
+        status: qaResult.status,
+        riskLevel: qaResult.riskLevel,
+        complianceIssues: qaResult.complianceIssues,
+        recommendations: qaResult.recommendations,
+        extractedData: qaResult.extractedData,
+        detailedAnalysis: qaResult.detailedAnalysis,
+        detailedAnalysisCleaned: qaResult.detailedAnalysisCleaned,
+        confidence: enhancedConfidence,
+        // Legacy fields for backward compatibility
+        issuesFound: qaResult.complianceIssues || ['No major issues detected'],
+        summary: `OpenAI Analysis of ${fileName}: ${qaResult.status} status, ${qaResult.riskLevel} risk level.`
       };
     } catch (error) {
       console.error('QA Service: OpenAI analysis failed:', error);
@@ -627,6 +670,139 @@ Note: This PDF text has been extracted for accurate analysis of the document con
     if (level.includes('low')) return 'low';
     if (level.includes('high') || level.includes('critical')) return 'high';
     return 'medium';
+  }
+
+  private calculateEnhancedConfidence(result: any, content: string): number {
+    try {
+      // 1. Data Completeness (35%)
+      const dataCompleteness = this.calculateDataCompleteness(result);
+      
+      // 2. Analysis Quality (30%)
+      const analysisQuality = this.calculateAnalysisQuality(result);
+      
+      // 3. Content Reliability (20%)
+      const contentReliability = this.calculateContentReliability(result, content);
+      
+      // 4. AI Raw Confidence (15%)
+      const aiRawConfidence = result.confidence || 0.5;
+      
+      // Calculate weighted average
+      const enhancedConfidence = (
+        dataCompleteness * 0.35 +
+        analysisQuality * 0.30 +
+        contentReliability * 0.20 +
+        aiRawConfidence * 0.15
+      );
+      
+      // Ensure confidence is between 0 and 1
+      return Math.max(0, Math.min(1, enhancedConfidence));
+    } catch (error) {
+      console.error('QA Service: Error calculating enhanced confidence:', error);
+      return result.confidence || 0.5;
+    }
+  }
+
+  private calculateDataCompleteness(result: any): number {
+    const requiredFields = [
+      'patientName', 'mrn', 'visitType', 'payor', 'visitDate', 'clinician'
+    ];
+    
+    const clinicalFields = [
+      'complianceIssues', 'recommendations', 'extractedData'
+    ];
+    
+    let foundFields = 0;
+    let totalFields = requiredFields.length + clinicalFields.length;
+    
+    // Check required fields
+    requiredFields.forEach(field => {
+      if (result[field] && result[field] !== 'N/A' && result[field] !== 'Unknown') {
+        foundFields++;
+      }
+    });
+    
+    // Check clinical fields
+    clinicalFields.forEach(field => {
+      if (result[field] && (
+        (Array.isArray(result[field]) && result[field].length > 0) ||
+        (typeof result[field] === 'object' && Object.keys(result[field]).length > 0) ||
+        (typeof result[field] === 'string' && result[field].length > 0)
+      )) {
+        foundFields++;
+      }
+    });
+    
+    return foundFields / totalFields;
+  }
+
+  private calculateAnalysisQuality(result: any): number {
+    let qualityScore = 0.5; // Base score
+    
+    // Check for detailed analysis
+    if (result.detailedAnalysis && result.detailedAnalysis.length > 500) {
+      qualityScore += 0.2;
+    }
+    
+    // Check for compliance issues analysis
+    if (result.complianceIssues && Array.isArray(result.complianceIssues) && result.complianceIssues.length > 0) {
+      qualityScore += 0.15;
+    }
+    
+    // Check for recommendations
+    if (result.recommendations && Array.isArray(result.recommendations) && result.recommendations.length > 0) {
+      qualityScore += 0.15;
+    }
+    
+    // Check for extracted data completeness
+    if (result.extractedData && typeof result.extractedData === 'object') {
+      const extractedKeys = Object.keys(result.extractedData);
+      if (extractedKeys.length >= 3) {
+        qualityScore += 0.1;
+      }
+    }
+    
+    return Math.min(1, qualityScore);
+  }
+
+  private calculateContentReliability(result: any, content: string): number {
+    let reliabilityScore = 0.5; // Base score
+    
+    // Check for medical terminology
+    const medicalTerms = ['diagnosis', 'ICD-10', 'OASIS', 'M1800', 'M1810', 'clinical', 'assessment'];
+    const contentLower = content.toLowerCase();
+    const foundTerms = medicalTerms.filter(term => contentLower.includes(term.toLowerCase()));
+    
+    if (foundTerms.length >= 3) {
+      reliabilityScore += 0.2;
+    }
+    
+    // Check for OASIS compliance
+    if (result.complianceIssues && Array.isArray(result.complianceIssues)) {
+      const oasisIssues = result.complianceIssues.filter((issue: any) => {
+        // Handle both string and object formats
+        const issueText = typeof issue === 'string' ? issue : 
+                         (issue.item || issue.description || issue.regulation || JSON.stringify(issue));
+        return issueText && (issueText.includes('M-') || issueText.includes('OASIS'));
+      });
+      if (oasisIssues.length > 0) {
+        reliabilityScore += 0.15;
+      }
+    }
+    
+    // Check for logical consistency (basic check)
+    if (result.riskLevel && result.complianceIssues) {
+      const issueCount = result.complianceIssues.length;
+      const riskLevel = result.riskLevel.toLowerCase();
+      
+      // Basic logic: more issues should correlate with higher risk
+      if ((riskLevel === 'high' && issueCount >= 3) || 
+          (riskLevel === 'medium' && issueCount >= 1) ||
+          (riskLevel === 'low' && issueCount <= 2)) {
+        reliabilityScore += 0.15;
+      }
+    }
+    
+    return Math.min(1, reliabilityScore);
   }
 
   getProcessingQueue(): ProcessingQueueItem[] {

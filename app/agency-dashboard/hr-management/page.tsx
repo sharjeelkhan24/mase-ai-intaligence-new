@@ -32,13 +32,7 @@ export default function HRManagement() {
     licenseExpiry: '',
     certifications: '',
     notes: '',
-    password: '',
-    // Patient-specific fields
-    dateOfBirth: '',
-    admissionDate: '',
-    dischargeDate: '',
-    medicalRecordNumber: '',
-    primaryNurse: ''
+    password: ''
   });
 
   // Staff data - will be loaded from database and updated when new staff is added
@@ -53,7 +47,6 @@ export default function HRManagement() {
   
   // Staff roles as specified by the user
   const staffRoles = [
-    'Patient',
     'Staff Nurse',
     'Nurse Manager', 
     'Clinical Director',
@@ -70,14 +63,12 @@ export default function HRManagement() {
   const roleCategories = {
     clinical: ['Staff Nurse', 'Nurse Manager', 'Clinical Director', 'QA Nurse', 'QA Director'],
     administrative: ['HR Director', 'HR Specialist', 'Marketing Manager', 'Marketing Specialist'],
-    patient: ['Patient'],
     survey: ['Survey User']
   };
 
   // Check if role belongs to a specific category
   const isClinicalRole = (role: string) => roleCategories.clinical.includes(role);
   const isAdministrativeRole = (role: string) => roleCategories.administrative.includes(role);
-  const isPatientRole = (role: string) => roleCategories.patient.includes(role);
   const isSurveyRole = (role: string) => roleCategories.survey.includes(role);
 
   // Load staff data from database
@@ -232,16 +223,15 @@ export default function HRManagement() {
     }
     
     try {
-      // Determine which table to use based on role
-      const isPatient = isPatientRole(staffForm.role);
-      const tableName = isPatient ? agency.patients_table_name : agency.staff_table_name;
+      // Use staff table for all staff members
+      const tableName = agency.staff_table_name;
       
       if (!tableName) {
-        throw new Error(`Agency ${isPatient ? 'patients' : 'staff'} table not found. Please contact support.`);
+        throw new Error(`Agency staff table not found. Please contact support.`);
       }
       
       // Prepare data for database insertion
-      const baseData = {
+      const insertData = {
         agency_name: agency.agency_name,
         first_name: staffForm.firstName,
         last_name: staffForm.lastName,
@@ -255,37 +245,17 @@ export default function HRManagement() {
         emergency_contact_phone: staffForm.emergencyContactPhone,
         notes: staffForm.notes,
         password_hash: btoa(staffForm.password), // Simple encoding - use bcrypt in production
-        status: 'active'
+        status: 'active',
+        role: staffForm.role,
+        department: staffForm.department,
+        hire_date: staffForm.hireDate,
+        salary: staffForm.salary ? parseFloat(staffForm.salary) : null,
+        license_number: staffForm.licenseNumber,
+        license_expiry: staffForm.licenseExpiry || null,
+        certifications: staffForm.certifications
       };
 
-      let insertData;
-      
-      if (isPatient) {
-        // Patient-specific data
-        insertData = {
-          ...baseData,
-          date_of_birth: staffForm.dateOfBirth || staffForm.hireDate, // Use dateOfBirth if available, fallback to hireDate
-          medical_record_number: staffForm.medicalRecordNumber || `MRN-${Date.now()}`, // Use form value or generate
-          primary_physician: 'TBD', // Default value
-          primary_nurse: staffForm.primaryNurse || 'TBD', // Use form value or default
-          admission_date: staffForm.admissionDate || new Date().toISOString().split('T')[0], // Use form value or current date
-          discharge_date: staffForm.dischargeDate || null // Use form value or null
-        };
-      } else {
-        // Staff-specific data
-        insertData = {
-          ...baseData,
-          role: staffForm.role,
-          department: staffForm.department,
-          hire_date: staffForm.hireDate,
-          salary: staffForm.salary ? parseFloat(staffForm.salary) : null,
-          license_number: staffForm.licenseNumber,
-          license_expiry: staffForm.licenseExpiry || null,
-          certifications: staffForm.certifications
-        };
-      }
-
-      console.log(`Inserting ${isPatient ? 'patient' : 'staff'} data into agency-specific table:`, tableName, { ...insertData, password_hash: '[REDACTED]' });
+      console.log(`Inserting staff data into agency-specific table:`, tableName, { ...insertData, password_hash: '[REDACTED]' });
 
       // Insert into appropriate agency-specific Supabase table
       const { data: result, error } = await supabase
@@ -296,41 +266,26 @@ export default function HRManagement() {
 
       if (error) {
         console.error('Supabase error:', error);
-        alert(`Error adding ${isPatient ? 'patient' : 'staff member'}: ${error.message}`);
+        alert(`Error adding staff member: ${error.message}`);
         return;
       }
 
-      console.log(`${isPatient ? 'Patient' : 'Staff member'} added to database:`, result);
+      console.log(`Staff member added to database:`, result);
 
       // Add to local state for immediate UI update
-      if (!isPatient) {
       const newStaffMember = {
-          ...result,
-          firstName: result.first_name,
-          lastName: result.last_name,
-          location: `${result.city}, ${result.state}`,
+        ...result,
+        firstName: result.first_name,
+        lastName: result.last_name,
+        location: `${result.city}, ${result.state}`,
         shift: 'Day Shift',
-          certifications: result.certifications ? result.certifications.split(',').map((cert: string) => cert.trim()).filter((cert: string) => cert) : []
+        certifications: result.certifications ? result.certifications.split(',').map((cert: string) => cert.trim()).filter((cert: string) => cert) : []
       };
 
       setStaff(prevStaff => [...prevStaff, newStaffMember]);
-      } else {
-        const newPatient = {
-          ...result,
-          firstName: result.first_name,
-          lastName: result.last_name,
-          location: `${result.city}, ${result.state}`,
-          role: 'Patient',
-          department: 'Patient Care',
-          shift: 'N/A',
-          certifications: []
-        };
-
-        setPatients(prevPatients => [...prevPatients, newPatient]);
-      }
       
       // Show success message
-      alert(`${isPatient ? 'Patient' : 'Staff member'} ${result.first_name} ${result.last_name} has been added successfully to ${agency.agency_name}'s ${isPatient ? 'patients' : 'staff'} table!`);
+      alert(`Staff member ${result.first_name} ${result.last_name} has been added successfully to ${agency.agency_name}'s staff table!`);
 
     } catch (error) {
       console.error('Error submitting data:', error);
@@ -358,13 +313,7 @@ export default function HRManagement() {
       licenseExpiry: '',
       certifications: '',
       notes: '',
-      password: '',
-      // Patient-specific fields
-      dateOfBirth: '',
-      admissionDate: '',
-      dischargeDate: '',
-      medicalRecordNumber: '',
-      primaryNurse: ''
+      password: ''
     });
     setShowAddStaffModal(false);
   };
@@ -913,16 +862,9 @@ export default function HRManagement() {
                               No patients found
                             </h3>
                             <p className="text-sm text-gray-500 font-[family-name:var(--font-adlam-display)]">
-                              Get started by adding your first patient.
+                              Patients will appear here when they are added to the system.
                             </p>
                           </div>
-                          <button 
-                            onClick={() => setShowAddStaffModal(true)}
-                            className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition-colors flex items-center space-x-2 font-[family-name:var(--font-adlam-display)]"
-                          >
-                            <Plus className="w-4 h-4" />
-                            <span>Add Patient</span>
-                          </button>
                         </div>
                       </td>
                     </tr>
@@ -1066,8 +1008,7 @@ export default function HRManagement() {
                 </select>
               </div>
 
-              {/* Department - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Department */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   Department *
@@ -1086,13 +1027,11 @@ export default function HRManagement() {
                   ))}
                 </select>
               </div>
-              )}
 
-              {/* Hire Date - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Hire Date */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                    {isPatientRole(staffForm.role) ? 'Registration Date' : 'Hire Date'} *
+                  Hire Date *
                 </label>
                 <input
                   type="date"
@@ -1102,10 +1041,8 @@ export default function HRManagement() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
                 />
               </div>
-              )}
 
-              {/* Salary - Show for staff roles only, not Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Salary */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   Annual Salary
@@ -1118,20 +1055,16 @@ export default function HRManagement() {
                   placeholder="Enter annual salary"
                 />
               </div>
-              )}
 
-              {/* Address Information Section - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Address Information Section */}
               <div className="lg:col-span-2 mt-8">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center font-[family-name:var(--font-adlam-display)]">
                   <MapPin className="w-5 h-5 mr-2 text-blue-600" />
                   Address Information
                 </h3>
               </div>
-              )}
 
-              {/* Address - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Address */}
               <div className="lg:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   Street Address
@@ -1144,10 +1077,8 @@ export default function HRManagement() {
                   placeholder="Enter street address"
                 />
               </div>
-              )}
 
-              {/* City - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* City */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   City
@@ -1160,10 +1091,8 @@ export default function HRManagement() {
                   placeholder="Enter city"
                 />
               </div>
-              )}
 
-              {/* State - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* State */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   State
@@ -1176,10 +1105,8 @@ export default function HRManagement() {
                   placeholder="Enter state"
                 />
               </div>
-              )}
 
-              {/* ZIP Code - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* ZIP Code */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   ZIP Code
@@ -1192,20 +1119,16 @@ export default function HRManagement() {
                   placeholder="Enter ZIP code"
                 />
               </div>
-              )}
 
-              {/* Emergency Contact Section - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Emergency Contact Section */}
               <div className="lg:col-span-2 mt-8">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center font-[family-name:var(--font-adlam-display)]">
                   <Phone className="w-5 h-5 mr-2 text-blue-600" />
                   Emergency Contact
                 </h3>
               </div>
-              )}
 
-              {/* Emergency Contact Name - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Emergency Contact Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   Emergency Contact Name
@@ -1218,10 +1141,8 @@ export default function HRManagement() {
                   placeholder="Enter emergency contact name"
                 />
               </div>
-              )}
 
-              {/* Emergency Contact Phone - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
+              {/* Emergency Contact Phone */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
                   Emergency Contact Phone
@@ -1234,7 +1155,6 @@ export default function HRManagement() {
                   placeholder="Enter emergency contact phone"
                 />
               </div>
-              )}
 
               {/* Professional Information Section - Show for Clinical roles only */}
               {isClinicalRole(staffForm.role) && (
@@ -1317,260 +1237,6 @@ export default function HRManagement() {
                 </>
               )}
 
-              {/* Patient Information Section - Show for Patient role only */}
-              {isPatientRole(staffForm.role) && (
-                <>
-                  <div className="lg:col-span-2 mt-8">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center font-[family-name:var(--font-adlam-display)]">
-                      <Heart className="w-5 h-5 mr-2 text-blue-600" />
-                      Patient Information
-                    </h3>
-                  </div>
-
-                  {/* Date of Birth */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Date of Birth *
-                    </label>
-                    <input
-                      type="date"
-                      required
-                      value={staffForm.dateOfBirth}
-                      onChange={(e) => handleStaffFormChange('dateOfBirth', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    />
-                  </div>
-
-                  {/* Medical Record Number */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Medical Record Number
-                    </label>
-                    <input
-                      type="text"
-                      value={staffForm.medicalRecordNumber}
-                      onChange={(e) => handleStaffFormChange('medicalRecordNumber', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                      placeholder="Enter MRN (auto-generated if empty)"
-                    />
-                  </div>
-
-                  {/* Primary Nurse */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Primary Nurse
-                    </label>
-                    <select
-                      value={staffForm.primaryNurse}
-                      onChange={(e) => handleStaffFormChange('primaryNurse', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    >
-                      <option value="">Select a nurse</option>
-                      {staff
-                        .filter(member => 
-                          (member.role === 'Staff Nurse' || member.role === 'Nurse Manager')
-                        )
-                        .map((nurse) => (
-                          <option key={nurse.id} value={`${nurse.first_name} ${nurse.last_name}`}>
-                            {nurse.first_name} {nurse.last_name} ({nurse.role})
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  {/* Admission Date */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Admission Date
-                    </label>
-                    <input
-                      type="date"
-                      value={staffForm.admissionDate}
-                      onChange={(e) => handleStaffFormChange('admissionDate', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    />
-                  </div>
-
-                  {/* Discharge Date */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Discharge Date
-                    </label>
-                    <input
-                      type="date"
-                      value={staffForm.dischargeDate}
-                      onChange={(e) => handleStaffFormChange('dischargeDate', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    />
-                  </div>
-
-                  {/* Address Information Section for Patients */}
-                  <div className="lg:col-span-2 mt-8">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center font-[family-name:var(--font-adlam-display)]">
-                      <MapPin className="w-5 h-5 mr-2 text-blue-600" />
-                      Address Information
-                    </h3>
-                  </div>
-
-                  {/* Address for Patients */}
-                  <div className="lg:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Street Address
-                    </label>
-                    <input
-                      type="text"
-                      value={staffForm.address}
-                      onChange={(e) => handleStaffFormChange('address', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                      placeholder="Enter street address"
-                    />
-                  </div>
-
-                  {/* City for Patients */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      value={staffForm.city}
-                      onChange={(e) => handleStaffFormChange('city', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                      placeholder="Enter city"
-                    />
-                  </div>
-
-                  {/* State for Patients */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      value={staffForm.state}
-                      onChange={(e) => handleStaffFormChange('state', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                      placeholder="Enter state"
-                    />
-                  </div>
-
-                  {/* Zip Code for Patients */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      ZIP Code
-                    </label>
-                    <input
-                      type="text"
-                      value={staffForm.zipCode}
-                      onChange={(e) => handleStaffFormChange('zipCode', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                      placeholder="Enter ZIP code"
-                    />
-                  </div>
-
-              {/* Address - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
-                <div className="lg:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                    Street Address
-                  </label>
-                  <input
-                    type="text"
-                    value={staffForm.address}
-                    onChange={(e) => handleStaffFormChange('address', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    placeholder="Enter street address"
-                  />
-                </div>
-              )}
-
-              {/* City - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    value={staffForm.city}
-                    onChange={(e) => handleStaffFormChange('city', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    placeholder="Enter city"
-                  />
-                </div>
-              )}
-
-              {/* State - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                    State
-                  </label>
-                  <input
-                    type="text"
-                    value={staffForm.state}
-                    onChange={(e) => handleStaffFormChange('state', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    placeholder="Enter state"
-                  />
-                </div>
-              )}
-
-              {/* Zip Code - Show for all roles except Patient */}
-              {!isPatientRole(staffForm.role) && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                    ZIP Code
-                  </label>
-                  <input
-                    type="text"
-                    value={staffForm.zipCode}
-                    onChange={(e) => handleStaffFormChange('zipCode', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                    placeholder="Enter ZIP code"
-                  />
-                </div>
-              )}
-
-                  {/* Emergency Contact Section for Patients */}
-                  <div className="lg:col-span-2 mt-8">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center font-[family-name:var(--font-adlam-display)]">
-                      <Phone className="w-5 h-5 mr-2 text-blue-600" />
-                      Emergency Contact (Required)
-                    </h3>
-                  </div>
-
-                  {/* Emergency Contact Name */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Emergency Contact Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={staffForm.emergencyContactName}
-                      onChange={(e) => handleStaffFormChange('emergencyContactName', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                      placeholder="Enter emergency contact name"
-                    />
-                  </div>
-
-                  {/* Emergency Contact Phone */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 font-[family-name:var(--font-adlam-display)]">
-                      Emergency Contact Phone *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={staffForm.emergencyContactPhone}
-                      onChange={(e) => handleStaffFormChange('emergencyContactPhone', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 font-[family-name:var(--font-adlam-display)] text-black placeholder-gray-400"
-                      placeholder="Enter emergency contact phone"
-                    />
-                  </div>
-                </>
-              )}
 
               {/* Survey User Information Section - Show for Survey User role only */}
               {isSurveyRole(staffForm.role) && (

@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     
     const formData = await request.formData();
     const file = formData.get('file') as File;
-    const model = formData.get('model') as string || 'gpt-3.5-turbo';
+    const model = 'gpt-5-nano';
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const analysisResult = await openaiService.analyzePatientDocument(
       content,
       file.name,
-      model as 'gpt-3.5-turbo' | 'gpt-4'
+      model as 'gpt-5-nano'
     );
 
     console.log('ChatGPT QA Analysis: Analysis completed:', analysisResult);

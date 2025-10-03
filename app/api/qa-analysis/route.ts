@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const priority = formData.get('priority') as string;
     const patientId = formData.get('patientId') as string;
     const processingNotes = formData.get('processingNotes') as string;
-    const aiModel = (formData.get('aiModel') as string) || 'gpt-3.5-turbo';
+    const aiModel = 'gpt-5-nano';
 
     if (!files || files.length === 0) {
       return NextResponse.json(
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
           priority || 'medium',
           patientId || undefined,
           processingNotes || undefined,
-          aiModel as 'gpt-3.5-turbo' | 'gpt-4' | 'gpt-4o'
+          aiModel as 'gpt-5-nano'
         );
 
         results.push(result);

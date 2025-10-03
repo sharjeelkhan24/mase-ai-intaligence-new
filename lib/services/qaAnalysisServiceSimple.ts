@@ -52,7 +52,7 @@ class QAAnalysisServiceSimple {
     priority: string,
     patientId?: string,
     processingNotes?: string,
-    aiModel: 'gpt-3.5-turbo' | 'gpt-4' = 'gpt-3.5-turbo'
+    aiModel: 'gpt-5-nano' = 'gpt-5-nano'
   ): Promise<QAAnalysisResult> {
     const analysisId = `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
@@ -235,7 +235,7 @@ class QAAnalysisServiceSimple {
     content: string,
     analysisType: string,
     fileName: string,
-    aiModel: 'gpt-3.5-turbo' | 'gpt-4' = 'gpt-3.5-turbo'
+    aiModel: 'gpt-5-nano' = 'gpt-5-nano'
   ): Promise<QAAnalysisResult['results']> {
     
     // Use OpenAI for analysis

@@ -1,0 +1,1378 @@
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+                                                VISIT INFORMATION
+     Visit Start Time:    1:00 PM           Travel Start Time:                     Surcharge:                           Visit Date:     9/3/2025
+     Visit End Time:     3:15 PM           Travel End Time:                      Associated Mileage:
+                                           DEMOGRAPHICS
+                                                                    Patient Information
+     (M0040) First Name:      Billy                     (M0040) Middle Initial:                            (M0040) Last Name:      Scott
+     (M0040) Suffix:                                   (M0066) Birth Date:      08/30/1942              (M0069) Gender:         Male
+     Marital Status:                                   Preferred Phone:         2486511666              Alternate Phone:
+     Address Line 1:          1245 SCHOOL RD          Address Line 2:                                   City:                    ROCHESTER HLS
+     (M0050) State:           MICHIGAN               (M0060) Patient ZIP Code: 483073221               (M0020) ID Number:      SCOTT081825
+     ✓ Unknown SSN                              ✓ N/A - No Medicare Number                    ✓ N/A - No Medicaid Number
+     (M0030) Start of Care     09/03/2025              Certification Period:      09/03/2025 - 11/01/2025   (M0010) CMS Certification 239199
+     Date:                                                                                           Number:
+     (M0018) National Provider 1316937071              Physician Name:         Stamatin, Rica            Agency Branch:          Compassionate Home
+     Identifier (NPI):                                                                                                          Health services, Inc
+     (A1005) Ethnicity: Are you of Hispanic, Latino/a, or Spanish Origin? (Check all that apply.)
+     ✓ A - No, not of Hispanic, Latino/a, or Spanish origin      D - Yes, Cuban                                    X - Patient unable to respond
+        B - Yes, Mexican, Mexican American, Chicano/a        E - Yes, another Hispanic, Latino, or Spanish origin      Y - Patient declines to respond
+        C - Yes, Puerto Rican
+     (A1010) Race: What is your race? (Check all that apply.)
+     ✓ A - White                                        G - Japanese                                     M - Samoan
+        B - Black or African-American                       H - Korean                                       N - Other Pacific Islander
+        C - American Indian or Alaska Native                 I - Vietnamese                                   X - Patient unable to respond
+        D - Asian Indian                                  J - Other Asian                                    Y - Patient declines to respond
+        E - Chinese                                       K - Native Hawaiian                               Z - None of the above
+        F - Filipino                                       L - Guamanian or Chamorro
+     (M0150) Current Payment Source
+        0 - None; no charge for current services              5 - Workers’ Compensation                         9 - Private HMO/managed care
+        1 - Medicare (traditional fee-for-service)              6 - Title programs (for example Title III, V, or XX)       10 - Self-pay
+     ✓ 2 - Medicare (HMO/managed care/Advantage plan)    7 - Other government (for example TriCare, VA)       UK - Unknown
+        3 - Medicaid (traditional fee-for-service)              8 - Private insurance                              11 - Other (Specify):
+        4 - Medicaid (HMO/Managed Care)
+     (A1110A) What is your preferred language? English
+     (A1110B) Do you need or want an interpreter to communicate with a doctor or health care staff?
+    ✓ No
+        Yes
+        Unable to Determine
+                                                                     Clinical Records
+     (M0080) Discipline of Person Completing Assessment
+     ✓ 1 - RN
+        2 - PT
+        3 - SLP/ST
+        4 - OT
+     (M0090) Date Assessment Completed: 09/03/2025
+     (M0100) This Assessment Is Currently Being Completed for the Following Reason:
+     ✓ 01 - Start of care - further visits planned
+        03 - Resumption of care (after inpatient stay)
+        04 - Recertification (follow-up) reassessment
+        05 - Other follow-up
+        06 - Transferred to an inpatient facility (patient not discharged from agency)
+        07 - Transferred to an inpatient facility (patient discharged from agency)
+        08 - Death at home
+        09 - Discharge from agency
+     (M0102) Date of Physician-Ordered Start of Care (Resumption of Care):
+     ✓ N/A - No specific SOC/ROC date ordered by physician
+     (M0104) Date of Referral: 08/18/2025
+     Episode Timing
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 1 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     ✓ 1 - Early
+        2 - Later
+        UK - Unknown
+        N/A Not Applicable: No Medicare case-mix group to be defined by this assessment.
+                                           PATIENT HISTORY & DIAGNOSES
+                                                                        Vital Signs
+     Temperature:     97.3 °F            Route:            Temporal          O2 Saturation:     91 %              Method:          On Room Air
+     Pulse Rate:        64                Location:         Apical Sitting       BP Sitting Left:     114/56 mmHg      Respirations:      20 /min
+     Height:           67 inches          Weight:           224 lbs            BMI Calculated:    35
+                                                             Plan of Care: Vital Sign Parameters
+     Pulse Rate (bpm)              Pulse Rate (bpm)              Temperature (°F)              Temperature (°F)              Respirations (/min)
+     greater than (>) 130           or less than (<) 60             greater than (>) 100           or less than (<) 96             greater than (>) 20
+     Respirations (/min)            O2 Saturation (%)             Pain Level (/10)               Systolic Blood Pressure (mmHg) Systolic Blood Pressure (mmHg)
+     or less than (<) 12             less than (<) 91               greater than (>) 6             greater than (>) 139           or less than (<) 90
+     Diastolic Blood Pressure       Diastolic Blood Pressure       Blood Sugar, Fasting (mg/dL)   Blood Sugar, Fasting (mg/dL)   Blood Sugar, Random (mg/dL)
+     (mmHg)                   (mmHg)                   greater than (>)             or less than (<)             greater than (>)
+     greater than (>) 90            or less than (<) 60
+     Blood Sugar, Random (mg/dL)
+     or less than (<)
+                                                          Inpatient Discharges (in the Past 14 Days)
+     (M1000) From which of the following Inpatient Facilities was the patient discharged within the past 14 days? (Check all that apply.)
+        1 - Long-term nursing facility (NF)
+        2 - Skilled nursing facility (SNF/TCU)
+        3 - Short-stay acute hospital (IPPS)
+        4 - Long-term care hospital (LTCH)
+        5 - Inpatient rehabilitation hospital or unit (IRF)
+        6 - Psychiatric hospital or unit
+        7 - Other:
+     ✓ N/A - Patient was not discharged from an inpatient facility
+                                                              Diagnoses Symptom Control
+     (M1021) Primary Diagnosis Code:       (M1021) Primary Diagnosis             (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis
+     S81.801S                            Unspecified open wound, right lower     M17.11                             Unilateral primary osteoarthritis, right
+     Severity: 03                          leg, sequela                          Severity: 03                          knee
+     (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis              (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis
+     G30.9                               Alzheimer's disease, unspecified         R26.81                              Unsteadiness on feet
+     Severity: 03                                                              Severity: 03
+     (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis              (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis
+     E11.9                               Type 2 diabetes mellitus without         J44.9                                Chronic obstructive pulmonary disease,
+     Severity: 02                          complications                        Severity: 03                          unspecified
+     (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis              (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis
+     E66.9                               Obesity, unspecified                   I73.9                                Peripheral vascular disease, unspecified
+     Severity: 03                                                              Severity: 01
+     (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis              (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis
+     I50.9                                Heart failure, unspecified               Z87.891                             Personal history of nicotine dependence
+     Severity: 01                                                              Severity:
+     (M1023) Other Diagnosis Code:         (M1023) Other Diagnosis
+     F02.84                              Dem in other dis classd elswhr, unsp
+     Severity: 01                          severity, with anxiety
+                                                         Comorbidities and Co-existing Conditions
+     (M1028) Active Diagnoses - Comorbidities and Co-existing Conditions - Check all that apply
+     ✓ 1 - Peripheral Vascular Disease (PVD) or Peripheral Arterial Disease (PAD)
+     ✓ 2 - Diabetes Mellitus (DM)
+        3 - None of the above
+        (-) No information available
+                                                       Special Treatments, Procedures, and Programs
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 2 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     Cancer Treatments
+     Respiratory Therapies
+     Other
+     None of the Above
+     ✓ Z1. None of the Above
+                                                          Comments
+     (R). 110/62 SPO2: 91% Started O2 @ 3 L/NC, Repeat SPO2: 95%.
+                                                 RISK ASSESSMENT
+                                                                   Shingles Vaccination
+     At start of care, does patient report EVER receiving the shingles vaccine?
+     ✓ Yes (Log immunization.)
+       No
+                                                           Potential Risk for Infection Assessment
+     Assess for predictors:
+        Diarrhea                                        Post-op abdominal surgery                       ✓ Wounds
+       Immunocompromised                          Post-op thoracic surgery                         Instrumentation (nebulizer, ventilator, trach etc.)
+        Indwelling catheter                               Post-op other surgery                             Other:
+        IV/venous access device                           Respiratory (recent pneumonia, bronchitis)
+     Assess for confounding factors:
+        Absence of capable caregiver                       Poor hand hygiene                                Poor nutrition
+        Decreased alertness                              Poor hydration                                ✓ Underlying disease process (COPD, Diabetes, etc.)
+        Decreased cognition                              Medications (steroids, antibiotics, chemo)            Other:
+        Inadequate environmental cleaning                  Poor mobility
+     Identify the patient’s risk level for infection based upon agency policies and procedures:
+        High risk for infection identified
+     ✓ No risk for infection identified
+                                             Hospitalization Risk Assessment Tools and Emergency Preparedness
+     Choose a risk assessment tool based on agency preference.
+        SMH Project BOOST-Hospitalization Readmission Risk Assessment Post-Acute Care
+     ✓ HHQI- Acute Care Hospitalization Risk Assessment for Patients Without Hospitalization, 30 Days Post-Acute Care or Recent Discharge
+     Acute Care Hospitalization Risk Assessment (HHQI)
+     ✓ Polypharmacy (greater than 7 medications)
+     ✓ Help with managing medications needed
+     ✓ Diabetes
+    ✓ COPD
+     ✓ More than two secondary diagnoses
+     ✓ ADL assistance needed
+     ✓ Dyspnea
+     Total No Of Checked Questions: 7
+     Emergency Preparedness
+     ✓ Emergency Preparedness Performed
+                                                                  Risk for Hospitalization
+     (M1033) Which of the following signs or symptoms characterize this patient as at risk for hospitalization? (Mark all that apply.)
+        1 - History of falls (2 or more falls - or any fall with an injury - in the past 12 months)
+        2 - Unintentional weight loss of a total of 10 pounds or more in the past 12 months
+        3 - Multiple hospitalizations (2 or more) in the past 6 months
+        4 - Multiple emergency department visits (2 or more) in the past 6 months
+        5 - Decline in mental, emotional, or behavioral status in the past 3 months
+        6 - Reported or observed history of difficulty complying with any medical instructions (for example, medications, diet, exercise) in the past 3 months
+     ✓ 7 - Currently taking 5 or more medications
+        8 - Currently reports exhaustion
+        9 - Other risk(s) not listed in 1 - 8
+        10 - None of the above
+                                                                   Height/Weight
+     (M1060) Height (in inches): 67
+     (M1060) Weight (in pounds): 224
+                                                          Comments
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+    AXXESS                                                                                                                     Page 3 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+                                               PROGNOSIS
+                                                                    Advance Care Plan
+     Advance Care Plan
+     ✓ Advance Care Plan Performed
+                                                                  Plan of Care: Prognosis
+     Select a response.
+        Guarded
+        Poor
+     ✓ Fair
+       Good
+        Excellent
+                                                          Comments
+                                              SUPPORTIVE ASSISTANCE
+                                                                   Cultural Preferences
+     Respond to each option below.
+     ✓ Spiritual or cultural practice that impacts healthcare:
+        Catholic
+                                                                  Patient Living Situation
+     (M1100) Which of the following best describes the patient's residential circumstance and availability of assistance? (Check one box only.)
+     Living Arrangement: Patient lives with other person(s) in the home Around the Clock
+                                                                      Transportation
+     (A1250) Transportation (NACHC ©)
+        A. Yes, it has kept me from medical appointments or from getting my medications
+        B. Yes, it has kept me from non-medical meetings, appointments, work or from getting things that I need
+     ✓ C. No
+        X. Patient unable to respond
+        Y. Patient declines to respond
+                                                                      Health Literacy
+     (B1300) Health Literacy (from Creative Commons ©)
+        0. Never
+     ✓ 1. Rarely
+        2. Sometimes
+        3. Often
+        4. Always
+        7. Patient declines to respond
+        8. Patient unable to respond
+                                                           Plan of Care: Psychosocial Assessment
+     Select all that apply. Selections will populate in the Plan of Care.
+     ✓ No problems identified
+        Home environment, altered:
+        Suspected abuse/neglect:
+        Barriers to health status:
+        Community resources needed:
+        Community resources providing assistance:
+     Comments:
+                                                               Plan of Care: Caregiver Status
+     Caregiver Availability/Type of Assistance 24/7: Marianne, Wife
+                                                               Plan of Care: Safety Measures
+     Select all that apply. Selections will populate in the Plan of Care.
+     ✓ 24-hour supervision                               Neutropenic precautions                           Seizure precautions
+        Aspiration precautions                             O2 precautions                                   Sharps safety
+        Bleeding precautions                           ✓ Presence of animals: Dog                          Side rails up
+     ✓ Diabetic: Do not cut nails.                          Prone to skin breakdown precaution               ✓ Slow position changes
+        DME and electrical safety                          Prone to fractures precaution                       Infection control:
+        Elevate head of bed                            ✓ Proper positioning during meals                  ✓ Support during transfer and ambulation
+     ✓ Emergency/disaster plan development               Proper handling of biohazard waste               ✓ Use of assistive devices
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 4 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     ✓ Fall precautions                                ✓ Safety in ADLs                                    Other:
+     ✓ Keep pathways clear
+                                                SENSORY STATUS
+                                                                  Sensory Assessment
+     Select all that apply.
+        No problems identified                            Ear drainage                                     Pain in ear(s)
+        Ringing in ear(s)                                  Slurred speech                                   Abnormal pupils/vision:
+     ✓ Hearing-impaired:                                Aphasia:
+           Deaf
+        ✓ Hearing-impaired, bilateral
+           Hearing-impaired, left
+           Hearing-impaired, right
+           Hearing aid bilateral
+           Hearing aid left
+           Hearing aid right
+     Comments: HOH: Not as bad as “My wife”. Patient does have hearing aids but refuses to wear.
+                                                                      Sensory Status
+     (B0200) Ability to hear (with hearing aid or hearing appliances if normally used)
+        0. Adequate - no difficulty in normal conversation, social interaction, listening to TV
+        1. Minimal difficulty - difficulty in some environments (e.g., when person speaks softly, or setting is noisy)
+     ✓ 2. Moderate difficulty - speaker has to increase volume and speak distinctly
+        3. Highly impaired - absence of useful hearing
+        (-) No information available
+     (B1000) Ability to see in adequate light (with glasses or other visual appliances)
+     ✓ 0. Adequate - sees fine detail, such as regular print in newspapers/books
+        1. Impaired - sees large print, but not regular print in newspapers/books
+        2. Moderately impaired - limited vision; not able to see newspaper headlines but can identify objects
+        3. Highly impaired - object identification in question, but eyes appear to follow objects
+        4. Severely impaired - no vision or sees only light, colors or shapes; eyes do not appear to follow objects
+        (-) No information available
+                                                   PAIN STATUS
+                                                                    Pain Assessment
+     Has the patient had any pain? Yes
+     Primary Site R Knee
+     Current Pain Intensity 1 - Very mild
+     Past Week - Least Pain Intensity 0 - No pain
+     Past Week - Most Pain Intensity 6 - Intense
+     Interferes with Activity: Yes
+     Daily, but not constantly
+     Pain Description
+        Aching
+        Burning
+        Dull
+        Sharp
+        Shooting
+        Tender
+     ✓ Throbbing
+        Other:
+     Nonverbal Pain Cues
+     ✓ N/A
+        Grimacing
+        Guarding
+        Crying
+        Bracing
+        Sitting position
+        Stiff
+        Other:
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 5 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     Pain Relief Measures
+        Change in weight-bearing
+        Cold
+        Distraction
+        Heat
+        Massage
+     ✓ Medication
+        Meditation
+     ✓ Reposition
+     ✓ Rest
+        Sleep
+        Visualization
+        Other:
+     Current Pain Management Effectiveness
+        Decline in mood
+        Decline in sleep pattern
+        Decline in physical function
+        Decline in psychosocial function
+     ✓ Improvement in mood
+        Improvement in sleep pattern
+     ✓ Improvement in physical function
+     ✓ Improvement in psychosocial function
+        Stabilization in mood
+        Stabilization in sleep pattern
+        Stabilization in physical function
+        Stabilization in psychosocial function
+     Potential Aberrant Behavior Noted
+     ✓ N/A
+        Appears intoxicated
+        Hoarding of prescriptions
+        Increase to dosage without physician approval
+        Purposeful over-sedation
+        Reports lost/stolen prescriptions
+        Requests frequent/early prescription renewal
+        Use of pain meds for situational stress
+        Other:
+     Comments: Tylenol 8 hrs. Arthritis Pain ER 1 - 2 tablets Every 8 hrs., PRN Hydrocodone Acetaminophen 5 - 325 1 Tablet 3 times a day
+                                                                        Pain Status
+     (J0510) Pain Effect on Sleep
+     Ask patient: "Over the past 5 days, how much of the time has pain made it hard for you to sleep at night"
+        0. Does not apply - I have not had any pain or hurting in the past 5 days
+     ✓ 1. Rarely or not at all
+        2. Occasionally
+        3. Frequently
+        4. Almost constantly
+        8. Unable to answer
+     (J0520) Pain Interference with Therapy Activities
+     Ask patient: "Over the past 5 days, how often have you limited your participation in rehabilitation therapy sessions due to pain?"
+     ✓ 0. Does not apply - I have not received rehabilitation therapy in the past 5 days
+        1. Rarely or not at all
+        2. Occasionally
+        3. Frequently
+        4. Almost constantly
+        8. Unable to answer
+     (J0530) Pain Interference with Day-to-Day Activities
+     Ask patient: "Over the past 5 days, how often you have limited your day-to-day activities (excluding rehabilitation therapy sessions) because of pain?"
+        1. Rarely or not at all
+        2. Occasionally
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 6 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     ✓ 3. Frequently
+        4. Almost constantly
+        8. Unable to answer
+                                          INTEGUMENTARY STATUS
+                                                              Integumentary Assessment
+     Select all that apply.
+        No problems identified                            Diaphoretic                                      Poor turgor
+        Bruising                                         Flushed                                         Pruritus
+        Cool                                            Incision                                         Rash
+        Cyanotic                                        Jaundice                                        Skin lesion requiring intervention
+        Dry                                             Pallor                                        ✓ Wound(s):
+       Clammy                                                                                Pressure injury (ulcer)
+                                                                                                          Closed surgical incision
+                                                                                                          Open surgical wound
+                                                                                                          Arterial ulcer
+                                                                                                       ✓ Venous stasis ulcer
+                                                                                                          Diabetic ulcer
+                                                                                                          Skin tear
+                                                                                                          Trauma, full thickness
+                                                                                                          Trauma, superficial
+                                                                                                         Burn
+                                                                                                          Other:
+     Comments: Cellulitis assessed on bilateral calves. Skin color is reddish purple (erythematous). Discoloration more prominent on R calf, R Calf more swollen than L calf and
+     both calves are tender to touch. Patient is going to a Wound Care Clinic for assessment and treatments tomorrow, September 4th, 2025. L Calf: 43 cm. Ankle: 29.0 cm.
+     Foot: 26.6 cm R Calf: 48.5.cm. Ankle: 28.0 cm. Foot: 27.0. Cm
+                                                           Norton Pressure Sore Risk-Assessment
+     Physical Condition
+        Good (4)
+     ✓ Fair (3)
+        Poor (2)
+        Very Bad (1)
+     Mental Condition
+     ✓ Alert (4)
+        Apathetic (3)
+        Confused (2)
+        Stuporous (1)
+     Activity
+        Ambulant (4)
+     ✓ Walks with help (3)
+        Chairbound (2)
+        Bedfast (1)
+     Mobility
+        Full (4)
+     ✓ Slightly Impaired (3)
+        Very Limited (2)
+        Immobile (1)
+     Incontinence
+        None (4)
+        Occasional (3)
+     ✓ Usually Urinary (2)
+        Urinary and Fecal (1)
+     TOTAL SCORE: 15 
+     Between 18 and 14: Medium Risk
+                                                                      Pressure Ulcer
+     (M1306) Does this patient have at least one Unhealed Pressure Ulcer/Injury at Stage 2 or Higher or designated as Unstageable? (Excludes Stage 1 pressure injuries
+     and all healed pressure ulcers/injuries)
+     ✓ 0 - No
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 7 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+        1 - Yes
+     (M1322) Current Number of Stage 1 Pressure Injuries
+     ✓ 0 - Zero
+        1 - One
+        2 - Two
+        3 - Three
+        4 - Four or more
+     (M1324) Stage of Most Problematic Unhealed Pressure Ulcer/Injury that is Stageable
+        1 - Stage 1
+        2 - Stage 2
+        3 - Stage 3
+        4 - Stage 4
+     ✓ N/A - Patient has no pressure ulcers/injuries or no stageable pressure ulcers/injuries
+                                                                       Stasis Ulcer
+     (M1330) Does this patient have a Stasis Ulcer?
+        0 - No
+        1 - Yes, patient has BOTH observable and unobservable stasis ulcers
+     ✓ 2 - Yes, patient has observable stasis ulcers ONLY
+        3 - Yes, patient has unobservable stasis ulcers ONLY (known but not observable due to non-removable dressing/device)
+     (M1332) Current Number of Stasis Ulcer(s) that are Observable:
+        1 - One
+     ✓ 2 - Two
+        3 - Three
+        4 - Four or more
+     (M1334) Status of Most Problematic Stasis Ulcer that is Observable:
+        1 - Fully granulating
+     ✓ 2 - Early/partial granulation
+        3 - Not healing
+                                                               Other Wounds
+     (M1340) Does this patient have a Surgical Wound?
+     ✓ 0 - No
+        1 - Yes, patient has at least one observable surgical wound
+        2 - Surgical wound known but not observable due to non-removable dressing/device
+                                               RESPIRATORY STATUS
+                                                                  Respiratory Assessment
+     Select all that apply.
+        No problems identified                          ✓ Dyspnea                                        Paroxysmal nocturnal dyspnea (PND)
+        Accessory muscles used                            Cough, nonproductive                             Tachypnea
+        CPAP/BIPAP                                    Cough, productive:                               Tracheostomy
+        Orthopnea                                      Nebulizer                                       Oxygen use, continuous:
+        Abnormal breath sounds:                          Oxygen use, intermittent:
+     Comments: O2 3 L/NC to wear only at night or as needed during the day. Some days he does wears O2 and some days he does wear the prescribed O2. Smoked cigarettes
+     for > 60 years. Started at age 16. 1 - 1/2 ppd. Quit 2 years ago. Binsons’s O2: (888) BINSONS SPO2: 91% Room Air O2 @ 3 L/NC Repeat SPO2: L Finger: 94%. R Finger: 95%
+                                                                    Respiratory Status
+     (M1400) When is the patient dyspneic or noticeably Short of Breath?
+        0 - Patient is not short of breath
+        1 - When walking more than 20 feet, climbing stairs
+        2 - With moderate exertion (for example, while dressing, using commode or bedpan, walking distances less than 20 feet)
+     ✓ 3 - With minimal exertion (for example, while eating, talking, or performing other ADLs) or with agitation
+        4 - At rest (during day or night)
+                                                 CARDIAC STATUS
+                                                                    Cardiac Assessment
+     Select all that apply.
+     ✓ No problems identified                            Capillary refill > 3 sec                              Fatigue/Weakness
+        Activity intolerance                               Dizziness/Lightheadedness                         Orthopnea
+        Abnormal pulses:                                 Paroxysmal nocturnal dyspnea (PND)                 Orthostatic hypotension
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 8 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+        AICD:                                           Pacemaker:                                      Palpitations:
+        Distended neck veins:                             Edema, non-pitting:                               Edema, pitting:
+        Abnormal heart rhythm:                           Abnormal heart sounds:                            Chest pain:
+        Abnormal lower extremity sensation:                Abnormal lower extremity appearance:              Exhibiting S/S of heart failure:
+     Comments: RRR H/O: HTN, Hyperlipidemia
+                                               ELIMINATION STATUS
+                                                                Genitourinary Assessment
+     Select all that apply.
+        No problems identified                            Nocturia                                        Urostomy
+        Bladder distention                                Abnormal urine appearance:                       Indwelling/foley catheter:
+     ✓ Abnormal control:                                Dialysis:                                         Intermittent catheterization:
+           Frequency                                    Suprapubic catheter:                              UTI signs/symptoms:
+           Hesitancy
+        ✓ Incontinence, functional
+           Incontinence, overflow (dribble)
+           Incontinence, stress
+           Incontinence, urge
+           Retention
+           Urgency
+        Abnormal volume:
+        Discharge
+     Comments: Depends only. Changes only once per day. Smell of urine saturated the room.
+                                                               Gastrointestinal Assessment
+     Last BM 09/02/2025
+     Select all that apply.
+     ✓ No problems identified                            Bowel incontinence                               Distended
+        Ascites                                          Hard                                           Heartburn/Reflux
+        Hemorrhoids                                    Laxative/Enema use                              Laxative/Enema abuse
+        Nausea                                        Pain                                          Rectal bleeding
+        Tenderness                                      Vomiting                                        Ostomy:
+        Abnormal bowel sounds:                           Abnormal stool:
+     Comments: Normal Bowel Pattern: Daily
+                                                                    Elimination Status
+     (M1600) Has this patient been treated for a Urinary Tract Infection in the past 14 days?
+     ✓ 0 - No
+        1 - Yes
+        N/A - Patient on prophylactic treatment
+        UK - Unknown
+     (M1610) Urinary Incontinence or Urinary Catheter Presence:
+        0 - No incontinence or catheter (includes anuria or ostomy for urinary drainage)
+     ✓ 1 - Patient is incontinent
+        2 - Patient requires a urinary catheter (specifically: external, indwelling, intermittent, or suprapubic)
+     (M1620) Bowel Incontinence Frequency:
+     ✓ 0 - Very rarely or never has bowel incontinence
+        1 - Less than once weekly
+        2 - One to three times weekly
+        3 - Four to six times weekly
+        4 - On a daily basis
+        5 - More often than once daily
+        N/A - Patient has ostomy for bowel elimination
+        UK - Unknown
+     (M1630) Ostomy for Bowel Elimination:
+     ✓ 0 - Patient does not have an ostomy for bowel elimination.
+        1 - Patient's ostomy was not related to an inpatient stay and did not necessitate change in medical or treatment regimen.
+        2 - The ostomy was related to an inpatient stay or did necessitate change in medical or treatment regimen.
+                                    NEURO/EMOTIONAL/BEHAVIORAL STATUS
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                     Page 9 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+                                                                 Neurological Assessment
+     Oriented To
+     ✓ Person
+     ✓ Place
+     ✓ Time
+     Select all that apply.
+        No problems identified                          ✓ Forgetful                                        Loss of sensation
+        Dizziness                                        Headache                                       Lethargic
+        Spasticity:                                       Rigidity                                         Seizure precautions
+        Tremors:                                        Abnormal behavior:                               Neuromuscular weakness/loss:
+     Comments: Patient’s recall of recent events is limited but recalls past events more easily.
+                                                                    Neurological Status
+     (C0100) Should Brief Interview for Mental Status (C0200-C0500) Be Conducted? Attempt to conduct interview with all patients.
+        0. No (patient is rarely/never understood)
+     ✓ 1. Yes
+        (-) No information available
+     (C0200) Repetition of Three Words. Ask patient: “I am going to say three words for you to remember. Please repeat the words after I have said all three. The
+     words are: sock, blue, and bed. Now tell me the three words.” Number of words repeated after first attempt
+        0. None
+        1. One
+        2. Two
+     ✓ 3. Three
+        (-) No information available
+     (C0300) Temporal Orientation. Ask patient: 'Please tell me what year it is right now.' A. Able to report correct year
+        0. Missed by > 5 years or no answer
+     ✓ 1. Missed by 2-5 years
+        2. Missed by 1 year
+        3. Correct
+        (-) No information available
+     Ask patient: 'What month are we in right now?' B. Able to report correct month.
+        0. Missed by > 1 month or no answer
+     ✓ 1. Missed by 6 days to 1 month
+        2. Accurate within 5 days
+        (-) No information available
+     Ask patient: 'What day of the week is today?' C. Able to report correct day of the week
+        0. Incorrect or no answer
+     ✓ 1. Correct
+        (-) No information available
+     (C0400) Recall. A. Able to recall “sock”
+        0. No – could not recall
+     ✓ 1. Yes, after cueing ("something to wear")
+        2. Yes, no cue required
+        (-) No information available
+     B. Able to recall “blue”
+        0. No – could not recall
+     ✓ 1. Yes, after cueing ("a color")
+        2. Yes, no cue required
+        (-) No information available
+     C. Able to recall “bed”
+        0. No – could not recall
+     ✓ 1. Yes, after cueing ("a piece of furniture")
+        2. Yes, no cue required
+        (-) No information available
+     (C0500) BIMS Summary Score: 9
+     (C1310) Signs and Symptoms of Delirium (CAM©) A. Acute Onset of Mental Status Change. Is there evidence of an acute change in mental status from the patient's
+     baseline?
+     ✓ 0. No
+        1. Yes
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 10 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+        (-) No information available
+     B. Inattention – Did the patient have difficulty focusing attention, for example, being easily distractible or having difficulty keeping track of what was being said?
+     ✓ 0. Behavior not present
+        1. Behavior continuously present, does not fluctuate
+        2. Behavior present, fluctuates (comes and goes, changes in severity)
+        (-) No information available
+     C. Disorganized thinking – Was the patient's thinking disorganized or incoherent (rambling or irrelevant conversation, unclear or illogical flow of ideas, or
+     unpredictable switching from subject to subject)?
+        0. Behavior not present
+     ✓ 1. Behavior continuously present, does not fluctuate
+        2. Behavior present, fluctuates (comes and goes, changes in severity)
+        (-) No information available
+     D. Altered level of consciousness – Did the patient have altered level of consciousness, as indicated by any of the following criteria?Vigilant – startled easily to any
+     sound or touch Lethargic – repeatedly dozed off when being asked questions, but responded to voice or touch Stuporous – very difficult to arouse and keep
+     aroused for the interview Comatose – could not be aroused
+     ✓ 0. Behavior not present
+        1. Behavior continuously present, does not fluctuate
+        2. Behavior present, fluctuates (comes and goes, changes in severity)
+        (-) No information available
+     (M1700) Cognitive Functioning: Patient's current (day of assessment) level of alertness, orientation, comprehension, concentration, and immediate memory for
+     simple commands.
+        0 - Alert/oriented, able to focus and shift attention, comprehends and recalls task directions independently.
+     ✓ 1 - Requires prompting (cuing, repetition, reminders) only under stressful or unfamiliar conditions.
+        2 - Requires assistance and some direction in specific situations (for example, on all tasks involving shifting of attention) or consistently requires low stimulus
+     environment due to distractibility.
+        3 - Requires considerable assistance in routine situations. Is not alert and oriented or is unable to shift attention and recall directions more than half the time.
+        4 - Totally dependent due to disturbances such as constant disorientation, coma, persistent vegetative state, or delirium.
+     (M1710) When Confused (Reported or Observed Within the Last 14 Days):
+        0 - Never
+     ✓ 1 - In new or complex situations only
+        2 - On awakening or at night only
+        3 - During the day and evening, but not constantly
+        4 - Constantly
+        N/A - Patient nonresponsive
+     (M1720) When Anxious (Reported or Observed Within the Last 14 Days):
+        0 - None of the time
+     ✓ 1 - Less often than daily
+        2 - Daily, but not constantly
+        3 - All of the time
+        N/A - Patient nonresponsive
+                                                                     Emotional Status
+     (D0150) Patient Mood Interview (PHQ 2-9)
+     Say to patient: "Over the last 2 weeks, have you been bothered by any of the following problems?"
+     If symptom is present, enter yes in column 1, Symptom Presence.
+     If yes in column 1, then ask the patient: "about how often have you been bothered by this?"
+     Read and show the patient a card with the symptom frequency choices. Indicate the response in column 2, symptom frequency.
+     1. Symptom Presence                                                     2. Symptom Frequency
+         0. No (enter 0 in column 2)                                                0. Never or 1 day
+         1. Yes (enter 0-3 in column 2)                                              1. 2-6 days (several days)
+         9. No response (leave column 2 blank)                                      2. 7-11 days (half or more of the days)
+         (-) No information available                                                3. 12-14 days (nearly every day)
+     A. Little interest or pleasure in doing things
+     A1. Symptom Presence
+      0. No
+     A2. Symptom Frequency
+      0. Never or 1 day
+     B. Feeling down, depressed or hopeless
+     B1. Symptom Presence
+      1. Yes
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 11 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     B2. Symptom Frequency
+      0. Never or 1 day
+     C. Trouble falling or staying asleep, or sleeping too much
+     C1. Symptom Presence
+     C2. Symptom Frequency
+     D. Feeling tired or having too little energy
+     D1. Symptom Presence
+     D2. Symptom Frequency
+     E. Poor appetite or overeating
+     E1. Symptom Presence
+     E2. Symptom Frequency
+     F. Feeling bad about yourself - or that you are a failure or that have let yourself or your family down
+     F1. Symptom Presence
+     F2. Symptom Frequency
+     G. Trouble concentrating on things, such as reading the newspaper or watching television
+     G1. Symptom Presence
+     G2. Symptom Frequency
+     H. Moving or speaking so slowly that other people could have noticed. Or the opposite - being so fidgety or restless that you have been moving around
+     H1. Symptom Presence
+     H2. Symptom Frequency
+     I. Thoughts that you would be better off dead or of hurting yourself in some way
+     I1. Symptom Presence
+     I2. Symptom Frequency
+     (D0160) Total Severity Score: 00
+     (D0700) How often do you feel lonely or isolated from those around you?
+        0. Never
+        1. Rarely
+     ✓ 2. Sometimes
+        3. Often
+        4. Always
+        7. Patient declines to respond
+        8. Patient unable to respond
+                                                                     Behavioral Status
+     (M1740) Cognitive, behavioral, and psychiatric symptoms that are demonstrated at least once a week (Reported or Observed): (Mark all that apply.)
+     ✓ 1 - Memory deficit: failure to recognize familiar persons/places, inability to recall events of past 24 hours, significant memory loss so that supervision is required
+        2 - Impaired decision-making: failure to perform usual ADLs or IADLs, inability to appropriately stop activities, jeopardizes safety through actions
+        3 - Verbal disruption: yelling, threatening, excessive profanity, sexual references, etc.
+        4 - Physical aggression: aggressive or combative to self and others (for example, hits self, throws objects, punches, dangerous maneuvers with wheelchair or other
+     objects)
+        5 - Disruptive, infantile, or socially inappropriate behavior (excludes verbal actions)
+        6 - Delusional, hallucinatory, or paranoid behavior
+        7 - None of the above behaviors demonstrated
+     (M1745) Frequency of Disruptive Behavior Symptoms (Reported or Observed): Any physical, verbal, or other disruptive/dangerous symptoms that are injurious
+     to self or others or jeopardize personal safety.
+        0 - Never
+     ✓ 1 - Less than once a month
+        2 - Once a month
+        3 - Several times each month
+        4 - Several times a week
+        5 - At least daily
+                                                           Plan of Care: Mental/Cognitive Status
+     Select all that apply. Selections will populate in the plan of care.
+        Oriented X3                                      Comatose                                       Disoriented
+        Oriented to self only                            ✓ Forgetful                                        Lethargic
+     ✓ Oriented to self and place                          Depressed                                       Other:
+        Agitated
+                                              FUNCTIONAL STATUS
+                                                               Musculoskeletal Assessment
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 12 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     Select all that apply.
+        No problems identified                            Atrophy                                         Aftercare, knee replacement:
+        Joint pain                                        Joint stiffness                                    High risk for falls
+     ✓ Poor balance                                     Shuffling gait                                  ✓ Muscle weakness
+        Weight-bearing restriction (full)                     Weight bearing restriction (partial)                ✓ Unsteady gait
+        Weak hand grip strength:                        ✓ Limited ROM: BLE                                Fracture
+        Amputation:                                     Contracture:                                     Autoimmune diseases affecting function:
+        Aftercare, hip replacement:
+     Comments: Utilizes cane/walker with each ambulation.
+                                                            MAHC 10 - Fall Risk Assessment Tool
+     ✓ Age 65+
+     ✓ Diagnosis (3 or more co-existing)
+     ✓ Incontinence
+     ✓ Impaired functional mobility
+     ✓ Poly Pharmacy (4 or more prescriptions - any type)
+     ✓ Pain affecting level of function
+     ✓ Cognitive impairment
+     Fall Assessment Total: 7 (A score of 4 or more is considered at risk for falling)
+                                                               Grooming
+     (M1800) Grooming: Current ability to tend safely to personal hygiene needs (specifically: washing face and hands, hair care, shaving or make up, teeth or denture
+     care, or fingernail care).
+        0 - Able to groom self unaided, with or without the use of assistive devices or adapted methods.
+     ✓ 1 - Grooming utensils must be placed within reach before able to complete grooming activities.
+        2 - Someone must assist the patient to groom self.
+        3 - Patient depends entirely upon someone else for grooming needs.
+                                                                     Dressing Ability
+     (M1810) Current Ability to Dress Upper Body safely (with or without dressing aids) including undergarments, pullovers, front-opening shirts and blouses,
+     managing zippers, buttons, and snaps:
+        0 - Able to get clothes out of closets and drawers, put them on and remove them from the upper body without assistance.
+        1 - Able to dress upper body without assistance if clothing is laid out or handed to the patient.
+     ✓ 2 - Someone must help the patient put on upper body clothing.
+        3 - Patient depends entirely upon another person to dress the upper body.
+     (M1820) Current Ability to Dress Lower Body safely (with or without dressing aids) including undergarments, slacks, socks or nylons, shoes:
+        0 - Able to obtain, put on, and remove clothing and shoes without assistance.
+        1 - Able to dress lower body without assistance if clothing and shoes are laid out or handed to the patient.
+     ✓ 2 - Someone must help the patient put on undergarments, slacks, socks or nylons, and shoes.
+        3 - Patient depends entirely upon another person to dress lower body.
+                                                                     Bathing/Toileting
+     (M1830) Bathing: Current ability to wash entire body safely. Excludes grooming (washing face, washing hands, and shampooing hair).
+        0 - Able to bathe self in shower or tub independently, including getting in and out of tub/shower.
+        1 - With the use of devices, is able to bathe self in shower or tub independently, including getting in and out of the tub/shower.
+        2 - Able to bathe in shower or tub with the intermittent assistance of another person:(a)for intermittent supervision or encouragement or reminders OR (b)to get in
+     and out of the shower or tub OR (c)for washing difficult to reach areas.
+     ✓ 3 - Able to participate in bathing self in shower or tub, but requires presence of another person throughout the bath for assistance or supervision.
+        4 - Unable to use the shower or tub, but able to bathe self independently with or without the use of devices at the sink, in chair, or on commode.
+        5 - Unable to use the shower or tub, but able to participate in bathing self in bed, at the sink, in bedside chair, or on commode, with the assistance or supervision of
+     another person.
+        6 - Unable to participate effectively in bathing and is bathed totally by another person.
+     (M1840) Toilet Transferring: Current ability to get to and from the toilet or bedside commode safely and transfer on and off toilet/commode.
+        0 - Able to get to and from the toilet and transfer independently with or without a device.
+     ✓ 1 - When reminded, assisted, or supervised by another person, able to get to and from the toilet and transfer.
+        2 - Unable to get to and from the toilet but is able to use a bedside commode (with or without assistance).
+        3 - Unable to get to and from the toilet or bedside commode but is able to use a bedpan/urinal independently.
+        4 - Is totally dependent in toileting.
+     (M1845) Toileting Hygiene: Current ability to maintain perineal hygiene safely, adjust clothes and/or incontinence pads before and after using toilet, commode,
+     bedpan, urinal. If managing ostomy, includes cleaning area around stoma, but not managing equipment.
+        0 - Able to manage toileting hygiene and clothing management without assistance.
+        1 - Able to manage toileting hygiene and clothing management without assistance if supplies/implements are laid out for the patient.
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 13 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     ✓ 2 - Someone must help the patient to maintain toileting hygiene and/or adjust clothing.
+        3 - Patient depends entirely upon another person to maintain toileting hygiene.
+                                                                       Transferring
+     (M1850) Transferring: Current ability to move safely from bed to chair, or ability to turn and position self in bed if patient is bedfast.
+        0 - Able to independently transfer.
+     ✓ 1 - Able to transfer with minimal human assistance or with use of an assistive device.
+        2 - Able to bear weight and pivot during the transfer process but unable to transfer self.
+        3 - Unable to transfer self and is unable to bear weight or pivot when transferred by another person.
+        4 - Bedfast, unable to transfer but is able to turn and position self in bed.
+        5 - Bedfast, unable to transfer and is unable to turn and position self.
+                                                             Ambulation/Locomotion
+     (M1860) Ambulation/Locomotion: Current ability to walk safely, once in a standing position, or use a wheelchair, once in a seated position, on a variety of
+     surfaces.
+        0 - Able to independently walk on even and uneven surfaces and negotiate stairs with or without railings (specifically: needs no human assistance or assistive device).
+        1 - With the use of a one-handed device (for example, cane, single crutch, hemi-walker), able to independently walk on even and uneven surfaces and negotiate stairs
+     with or without railings.
+     ✓ 2 - Requires use of a two-handed device (for example, walker or crutches) to walk alone on a level surface and/or requires human supervision or assistance to negotiate
+     stairs or steps or uneven surfaces.
+        3 - Able to walk only with the supervision or assistance of another person at all times.
+        4 - Chairfast, unable to ambulate but is able to wheel self independently.
+        5 - Chairfast, unable to ambulate and is unable to wheel self.
+        6 - Bedfast, unable to ambulate or be up in a chair.
+                                                                      Feeding/Eating
+     (M1870) Feeding or Eating: Current ability to feed self meals and snacks safely. Note: This refers only to the process of eating, chewing, and swallowing, not
+     preparing the food to be eaten.
+        0 - Able to independently feed self.
+     ✓ 1 - Able to feed self independently but requires:(a)meal set-up OR (b)intermittent assistance or supervision from another person OR (c)a liquid, pureed or ground meat
+     diet.
+        2 - Unable to feed self and must be assisted or supervised throughout the meal/snack.
+        3 - Able to take in nutrients orally and receives supplemental nutrients through a nasogastric tube or gastrostomy.
+        4 - Unable to take in nutrients orally and is fed nutrients through a nasogastric tube or gastrostomy.
+        5 - Unable to take in nutrients orally or by tube feeding.
+                                                            Plan of Care: Functional Limitations
+     Select all that apply. Selections will populate in the Plan of Care.
+     ✓ Ambulation                                    Dyspnea at rest                                 Vision deficit
+        Amputation                                   ✓ Dyspnea with minimal exertion                     Legally blind
+        Bowel incontinence                               Dyspnea with moderate exertion                    Paralysis
+     ✓ Bladder incontinence                           ✓ Endurance                                       Speech/Communication deficit
+        Contracture                                   ✓ Hearing deficit                                   Other:
+                                                        Plan of Care: Activities Permitted/Restricted
+     Select all that apply. Selections will populate in the Plan of Care.
+        No restrictions                                   Transfer bed-chair                              ✓ Cane
+        Bed bound (unable to sit in a chair)                ✓ Exercise prescribed                               Wheelchair
+        Complete bed rest                                Partial weight bearing:                          ✓ Walker
+        Bed rest with BRP                              ✓ Human assistance required                         Other:
+     ✓ Up as tolerated                                  Crutches
+                                             FUNCTIONAL ABILITIES & GOALS
+                                                      Section GG: Prior Functioning: Everyday Activities
+     (GG0100) Prior Functioning: Everyday Activities: Indicate the patient’s usual ability with everyday activities prior to the current illness, exacerbation, or injury.
+     A. Self-Care: Code the patient’s need for assistance with bathing, dressing, using the toilet, and eating prior to the current illness, exacerbation, or injury.
+      2. Needed Some Help
+     B. Indoor Mobility (Ambulation): Code the patient’s need for assistance with walking from room to room (with or without a device such as cane, crutch or walker)
+     prior to the current illness, exacerbation, or injury.
+      2. Needed Some Help
+     C. Stairs: Code the patient’s need for assistance with internal or external stairs (with or without a device such as cane, crutch, or walker) prior to the current
+     illness, exacerbation or injury.
+      2. Needed Some Help
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 14 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     D. Functional Cognition: Code the patient’s need for assistance with planning regular tasks, such as shopping or remembering to take medication prior to the
+     current illness, exacerbation, or injury.
+      2. Needed Some Help
+                                                               Section GG: Prior Device Use
+     (GG0110) Prior Device Use. Indicate devices and aids used by the patient prior to the current illness, exacerbation, or injury.
+        A. Manual wheelchair
+        B. Motorized wheelchair and/or scooter
+        C. Mechanical lift
+     ✓ D. Walker
+        E. Orthotics/Prosthetics
+        Z. None of the above
+        (-) No information available
+                                                                   Section GG: Self-Care
+     (GG0130) Self-Care
+     A. Eating: The ability to use suitable utensils to bring food and/or liquid to the mouth and swallow food and/or liquid once the meal is placed before the patient.
+     A1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     B. Oral Hygiene: The ability to use suitable items to clean teeth. Dentures (if applicable): The ability to insert and remove dentures into and from mouth, and
+     manage denture soaking and rinsing with use of equipment.
+     B1. SOC/ROC Performance
+      05. Setup or clean-up assistance
+     C. Toileting Hygiene: The ability to maintain perineal hygiene, adjust clothes before and after voiding or having a bowel movement. If managing an ostomy,
+     include wiping the opening but not managing equipment.
+     C1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     E. Shower/bathe self: The ability to bathe self, including washing, rinsing, and drying self (excludes washing of back and hair). Does not include transferring
+     in/out of tub/shower.
+     E1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     F. Upper body dressing: The ability to dress and undress above the waist; including fasteners, if applicable.
+     F1. SOC/ROC Performance
+      03. Partial/moderate assistance
+     G. Lower body dressing: The ability to dress and undress below the waist, including fasteners; does not include footwear.
+     G1. SOC/ROC Performance
+      02. Substantial/maximal assistance
+     H. Putting on/taking off footwear: The ability to put on and take off socks and shoes or other footwear that is appropriate for safe mobility; including fasteners, if
+     applicable.
+     H1. SOC/ROC Performance
+      04. Supervision or touching assistance
+                                                                   Section GG: Mobility
+     (GG0170) Mobility
+     A. Roll left and right: The ability to roll from lying on back to left and right side, and return to lying on back on the bed.
+     A1. SOC/ROC Performance
+      06. Independent
+     B. Sit to lying: The ability to move from sitting on side of bed to lying flat on the bed.
+     B1. SOC/ROC Performance
+      06. Independent
+     C. Lying to sitting on side of bed: The ability to move from lying on the back to sitting on the side of the bed with no back support.
+     C1. SOC/ROC Performance
+      05. Setup or clean-up assistance
+     D. Sit to stand: The ability to come to a standing position from sitting in a chair, wheelchair, or on the side of the bed.
+     D1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     E. Chair/bed-to-chair transfer: The ability to transfer to and from a bed to a chair (or wheelchair).
+     E1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     F. Toilet transfer: The ability to get on and off a toilet or commode.
+     F1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 15 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     G. Car transfer: The ability to transfer in and out of a car or van on the passenger side. Does not include the ability to open/close door or fasten seat belt.
+     G1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     I. Walk 10 feet: Once standing, the ability to walk at least 10 feet in a room, corridor, or similar space.
+     I1. SOC/ROC Performance
+      04. Supervision or touching assistance
+     J. Walk 50 feet with two turn: Once standing, the ability to walk 50 feet and make two turns.
+     J1. SOC/ROC Performance
+      88. Not attempted due to medical conditions or safety concerns
+     K. Walk 150 feet: Once standing, the ability to walk at least 150 feet in a corridor or similar space.
+     K1. SOC/ROC Performance
+      88. Not attempted due to medical conditions or safety concerns
+     L. Walk 10 feet on uneven surfaces: The ability to walk 10 feet on uneven or sloping surfaces (indoor or outdoor), such as turf or gravel.
+     L1. SOC/ROC Performance
+      09. Not applicable
+     M. 1 step (curb): The ability to go up and down a curb or up and down one step.
+     M1. SOC/ROC Performance
+      03. Partial/moderate assistance
+     N. 4 steps: The ability to go up and down four steps with or without a rail.
+     N1. SOC/ROC Performance
+      02. Substantial/maximal assistance
+     O. 12 steps: The ability to go up and down 12 steps with or without a rail.
+     O1. SOC/ROC Performance
+      09. Not applicable
+     P. Picking up object: The ability to bend/stoop from a standing position to pick up a small object, such as a spoon, from the floor.
+     P1. SOC/ROC Performance
+      02. Substantial/maximal assistance
+     Q. Does patient use wheelchair and/or scooter?
+     ✓ 0. No
+        1. Yes
+         (-) No information available
+                                                          Comments
+                                               ENDOCRINE
+                                                          Endocrine/Hematological Assessment
+     Select all that apply.
+        No problems identified                            Cancer:                                         Hyperthyroidism
+        Anemia:                                         Hypothyroidism                                ✓ Diabetes:
+                                                                                                       Blood Sugars Performed By: Caregiver
+                                                                                                       Blood Sugar Range, Fasting From: 90
+                                                                                                       Blood Sugar Range, Fasting To: 250
+                                                                                                       Blood Sugar Range, Random From: 70
+                                                                                                       Blood Sugar Range, Random To: 350
+                                                                                                       Diabetic Care
+                                                                                                          S/S of hyperglycemia:
+                                                                                                          S/S of hypoglycemia:
+                                                                                                          Diabetic foot care not followed
+                                                                                                       ✓ Diabetic management:
+                                                                                                          Diabetic Managment Option
+                                                                                                          ✓ Diet/Exercise
+                                                                                                          ✓ Oral hypoglycemic
+                                                                                                            Insulin:
+                                                                                                          Caregiver Availability
+                                                                                                            No willing/able caregiver
+                                                                                                          ✓ Intermittent Assistance: Marianne, Wife & 3
+                                                                                                          Children
+     Comments Only checked by PCP at scheduled appointments per patient and son, Jim.
+                                                  NUTRITION
+                                                                   Nutrition Assessment
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 16 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     Select all that apply.
+     ✓ No problems identified                            Anorexic                                        Sore throat
+        Difficulty chewing                                 Fair appetite                                     TPN or Lipids
+        Dysphagia                                       Poor appetite                                    Weight loss
+        Ill-fitting dentures                                Poor hydration                                   Weight gain
+        Tube feeding present:
+     Comments: No problems eating. NO SALT DIET PER WIFE. Own teeth upper & lower.
+                                                                 Nutritional Health Screen
+     Select all that apply.
+     ✓ 10 - Has an illness or condition that made pt change the type and/or amount of food eaten
+     ✓ 5 - Takes 3 or more prescribed or OTC medications a day
+     ✓ 5 - Is not always physically able to cook and/or feed self and has no caregiver to assist
+     TOTAL: 20 
+     Good Nutritional Status (Score 0 - 25)
+                                                                  Nutritional Approaches
+     (K0520) Nutritional Approaches
+        A. Parenteral/IV feeding
+        B. Feeding tube(e.g., nasogastric or abdominal (PEG))
+        C. Mechanically altered diet – require change in texture of food or liquids (e.g., pureed food, thickened liquids)
+     ✓ D. Therapeutic diet (e.g., low salt, diabetic, low cholesterol)
+        Z. None of the above
+        (-) No information available
+                                                           Plan of Care: Nutritional Requirements
+     Nutritional Requirements
+        Regular                                      ✓ No added salt                                    Enteral nutrition
+        Mechanical soft                                  Calorie ADA diet:                                 TPN
+     ✓ Heart healthy                                    No concentrated sweets                           Supplements:
+     ✓ Low cholesterol                                  Coumadin diet                                   Fluid restriction:
+     ✓ Low fat                                         Renal diet                                       Other:
+        Sodium restriction:
+                                               MEDICATIONS
+                                                                Medication Administration
+     Admin Time:                                     Medication Type:                                Dose:
+     Route:                                          Frequency:                                      PRN Reason:
+     Location:                                        Patient Response                                Comment
+                                                                    Medication Status
+     Medications Status
+     ✓ Medications reconciled
+        Medication issues identified:
+        Anticoagulant use:
+        Pill box pre-filled
+        Insulin syringes pre-filled
+        Intravenous or infusion therapy:
+                                                                     Medications
+     (M2001) Drug Regimen Review: Did a complete drug regimen review identify potential clinically significant medication issues?
+     ✓ 0 - No - No issues found during review
+        1 - Yes - Issues found during review
+        9 - N/A - Patient is not taking any medications
+        (-) No information available
+     (M2010) Patient/Caregiver High Risk Drug Education: Has the patient/caregiver received instruction on special precautions for all high-risk medications (such as
+     hypoglycemics, anticoagulants, etc.) and how and when to report problems that may occur?
+        0 - No
+     ✓ 1 - Yes
+        N/A - Patient not taking any high-risk drugs OR patient/caregiver fully knowledgeable about special precautions associated with all high-risk medication
+     (M2020) Management of Oral Medications: Patient's current ability to prepare and take all oral medications reliably and safely, including administration of the
+     correct dosage at the appropriate times/intervals. Excludes injectable and IV medications. (NOTE: This refers to ability, not compliance or willingness.)
+        0 - Able to independently take the correct oral medication(s) and proper dosage(s) at the correct times.
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 17 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+        1 - Able to take medication(s) at the correct times if:(a) Individual dosages are prepared in advance by another person; OR (b) another person develops a drug diary or
+     chart.
+        2 - Able to take medication(s) at the correct times if given reminders by another person at the appropriate times.
+     ✓ 3 - Unable to take medication unless administered by another person.
+        N/A - No oral medications prescribed.
+     (M2030) Management of Injectable Medications: Patient's current ability to prepare and take all prescribed injectable medications reliably and safely, including
+     administration of correct dosage at the appropriate times/intervals. Excludes IV medications.
+        0 - Able to independently take the correct medications(s) and proper dosage(s) at the correct times.
+        1 - Able to take injectable medication(s) at the correct times if:(a) Individual syringes are prepared in advance by another person; OR (b) another person develops a
+     drug diary or chart.
+        2 - Able to take medication(s) at the correct times if given reminders by another person based on the frequency of the injection.
+        3 - Unable to take injectable medication unless administered by another person.
+     ✓ N/A - No injectable medications prescribed.
+     (N0415) High Risk Drug Classes: Use and Indication
+     A. Antipsychotic
+     ✓ A1. Is Taking
+     J. Hypoglycemic (including insulin)
+     ✓ J1. Is Taking
+                                                          Comments
+                                         CARE MANAGEMENT
+                                                              Types And Sources Of Assistance
+     (M2102) Types and Sources of Assistance: Determine the ability and willingness of non-agency caregivers (such as family members, friends, or privately paid
+     caregivers) to provide assistance for the following activities, if assistance is needed. Excludes all care by your agency staff.
+     F. Supervision and safety (due to cognitive impairment)
+        0 - No assistance needed - patient is independent or does not have needs in this area
+     ✓ 1 - Non-agency caregiver(s) currently provide assistance
+        2 - Non-agency caregiver(s) need training/ supportive services to provide assistance
+        3 - Non-agency caregiver(s) are not likely to provide assistance OR it is unclear if they will provide assistance
+        4 - Assistance needed, but no non-agency caregiver(s) available
+                                                          Comments
+                                         SUPPLY MANAGER/DME
+                                                          Plan of Care: Durable Medical Equipment
+        Bedside commode                               Hospital bed                                 ✓ Walker
+     ✓ Cane                                      Nebulizer                                   Wheelchair
+        Elevated toilet seat                             ✓ Oxygen                                         Other:
+     ✓ Grab Bars                                    ✓ Tub/Shower bench
+                                                     Plan of Care: Durable Medical Equipment Provider
+     Name: Previous Purchased
+     Phone:
+     DME/Supplies Provided:
+                                                          Comments
+                                            SUMMARY OF CARE
+                                                                Physician Visit Information
+     Last Physician Visit Date 08/18/2025
+     Face-to-Face Information Face-to-face information complete
+                                                                 Labs and Infection Control
+     Labs Obtained
+     ✓ N/A                                     Urine specimen obtained:                      Comments:
+        Blood test obtained:                               Other:
+     Infection Control
+     ✓ Universal precautions observed                     Patient demonstrates knowledge deficits regarding     Nosocomial infection identified on admission (24-48
+        Sharps disposed per biohazard P&P               infection control:                                 hours past hospital)
+        Soiled waste disposed per biohazard                 Infection suspected:                               Community-acquired infection identified on
+                                                                                                     admission (At least 72 hours past hospital or no
+                                                                                                     hospitalization)
+                                                                      Patient Rights
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 18 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     Patient's Area(s) of Interest:
+        How to take medications                        ✓ How to manage symptoms                         Where to get more information
+        What to eat                                   ✓ When to seek help                                Other:
+        Activity and exercise                              How to stay out of the hospital
+     Patient's Personal Healthcare Goal(s): Just keep living
+     Care Coordination
+     ✓ Coordinated care with:
+         SN
+          PT
+         OT
+           ST
+       MSW
+        HHA
+        ✓ Physician, primary care
+           Physician, other
+           Clinical manager
+           Other
+     ✓ Name/Title: Dr. Rica Stamatin
+     ✓ Regarding: SOC completed. SN, PT Skilled Services
+     Plan of Care Review
+     ✓ Plan of care:
+        ✓ Developed and reviewed plan of care/goals with patient
+        ✓ Developed and reviewed plan of care/goals with patient-selected representative
+           Developed and reviewed plan of care/goals with legal representative
+     ✓ Patient response:
+        ✓ Patient willing/able to participate
+        ✓ Patient willing/unable to participate
+           Patient unwilling to participate
+           Patient with barriers impeding full participation
+        ✓ Patient agrees with identified goals
+           Patient disagrees with one or more goal(s) in the Plan
+           Plan of care is not acceptable to the patient
+        ✓ Patient agrees to the plan of care, as presented
+           Patient agrees to the plan of care, with Patient-requested revisions
+        Patient-selected/Legal representative response:
+        Patient-selected/Legal representative involvement
+        Patient elected to not include patient-selected representative in care planning process.
+        Patient able to identify people who may be able to assist in reaching goals:
+        Other:
+     Patient Strengths
+       N/A                                        Absence of multiple comorbidities                 College graduate
+        Motivated learner                              ✓ Enhanced socioeconomic status                     Other:
+     ✓ Strong support system                             High school graduate
+                                                                    Visit Interventions
+     Reviewed and/or instructed on the following Information:
+       N/A
+        Legal:
+     ✓ Medication review:
+        ✓ Performed complete medication review and assessed drug interactions
+           Performed medication reconciliation due to noted discrepancies
+           Instructed patient/representative on medication administration and ensured patient is safe with medication administration until next visit
+           Additional Intervention:
+     ✓ Disease process:
+        ✓ Instructed patient/representative on signs/symptoms of disease process that necessitate an emergency, and who to call
+        ✓ Established patient care plan and goals with patient/representative involvement and approval
+           Additional Intervention:
+     ✓ Safety:
+        ✓ Instructed on safety measures in the home
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 19 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+        ✓ Instructed on measures to prevent falls in the home
+        ✓ Instructed patient on infection control in the home
+           Additional intervention:
+     ✓ Disciplines/Scheduling:
+        ✓ Instructed patient/representative regarding all disciplines on the case, and developed a process for scheduling services with patient
+           Patient/Representative agree on need to develop overall schedule with individual services
+           Additional visit intervention:
+     ✓ Physician contact:
+        ✓ Contacted physician regarding initiation of home care services per physician orders with plan of care to follow
+           Primary care physician is not the certifying physician but agreed to care plan oversight. Contacted physician regarding initiation of home care services per physician
+        orders with plan of care to follow.
+           Identified all additional physicians with patient/representative to include in plan of care
+           Additional visit intervention:
+     Interventions SN educated Pt/CG and Jim, son, on SOC on admission consent, high risk medication and medication profile, signs and symptoms of COPD, HTN and when to
+     call home care agency or PCP, plan of care (POC), next appointment with PCP, Covid precautions, standard precautions, after hours phone number, complaint process,
+     state hotline number, patient rights, HIPPA, safe medication administration, safe use of assistive devices. Patient instructed on advanced directives, patient rights and
+     responsibilities :that patient has the right to stop services, participate in decisions regarding her care and treatment, agency transfer and d/c policies, name and phone
+     number(s) for administrator and clinical manager, addresses and phone numbers for senior services, and assembling ER kit. Pt. instructed on safety/fall precautions and
+     infection control. Reviewed with the Pt. their current medication, actions/side effects and understanding the dose and frequency/schedule of each medication.
+     InstructedPt to take all medications as directed/per med sheet and to contact the physician or 911 for pain over 7/10. Informed the Pt. of all disciplines ordered and
+     discussed with the Pt. how each discipline will assist her. Instructed to call Compassionate Home Care office should they be admitted to the hospital for any reason.
+     Educated on home safety: remove all throw rugs, repair frayed carpet, tape or tack down loose carpet, arrange furniture to allow adequate space for safe walking
+     between and within all rooms, use night lights as needed, keep all areas well lit, keep floors free of any clutter, immediately cleanup all spills, use skid strips in tub/shower,
+     use AD at all times, don't walk barefoot or in socks, make sure you feel your seat behind your legs before sitting, keep frequently used item in reach. Pt/CG verbalized
+     understanding and denied any question or concerns at completion of SOC. Pt/CG agreeable to SN & PT skilled services. Pt/CG and son verbalized understanding and denied
+     any question or concerns at completion of SOC
+     Response to Teaching/Procedure Pt/CG and son verbalized understanding and denied any question or concerns at completion of SOC
+                                                      Admission Summary/F2F Addendum
+     Visit Narrative Greeted at the front door by patient’s son, Jim and together walked to the living room. SN introduced self to patient and his wife, Marianne. Learned that
+     they are living in the family home that Marianne’s father built. Questioned how long both have been married? SN was informed 65 years and was just celebrated this past
+     July. Congratulation to you both! SOC initiated and appropriate forms signed. See SN Interventions for details of today’s SNV.
+                                                        Plan of Care: Discipline Orders and Treatment
+     ✓ Skilled nurse evaluation performed; Need for skilled nursing services:
+        Therapy-only case (Chosen only if an order was written for therapy-only services):
+        Management and evaluation of non-skilled plan of care (Physician addendum required):
+        Skilled nurse evaluation performed; no further visits required:
+        Additional physicians on the case:
+        Need for oral explanation of patient rights by 2nd visit:
+                                                  Plan of Care: Rehabilitation Potential and Discharge Plans
+     Rehabilitation Potential: Good potential for treatment plan implementation
+     Discharge to care of: Self
+     Discharge Patient When:
+     ✓ Patient demonstrates necessary skills to self-manage disease process:
+        Patient demonstrate necessary skills to self-manage disease process including medication management, when to notify physician, s/s necessitating emergent care,
+        nutrition and activity.
+     ✓ Caregiver demonstrate necessary skills aid patient in managing disease process:
+        Caregiver demonstrate necessary skills aid patient in managing disease process including medication management, when to notify physician, s/s necessitating
+        emergent care, nutrition and activity.
+        Patient demonstrates return to stable status:
+        Pain level stabilizes and patient demonstrates ability to self-manage pain:
+        Patient is able to perform procedure without prompting:
+        Caregiver is able to perform procedure without prompting:
+        Wounds are healed:
+        Caregiver demonstrates ability to manage wounds:
+        Caregiver identified to instruct and demonstrate:
+        Other:
+                                                                  Frequency and Duration
+     SN Frequency: 1w5 Effective Date: 09/03/2025
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+   A XXESS                                                                                                    Page 20 of 21
+
+     Compassionate Home Health services, Inc
+     35 S Johnson Ave                                                                                      OASIS-E1
+     3B
+     Pontiac , MI , 48341                                                                                Start of Care
+     Phone: (248) 681-1211
+     Fax: (248) 681-2832
+     Scott, Billy                                                                     DOB: 08/30/1942               MRN: SCOTT081825
+     PT Frequency: Eval,Tx Effective Date: 09/03/2025
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     Signature: Electronically Signed by: Charlotte Kopczynski RSARN                   Date: 09/03/2025
+    AXXESS                                                                                                                    Page 21 of 21
+
+

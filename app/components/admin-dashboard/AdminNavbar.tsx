@@ -16,9 +16,6 @@ export default function AdminNavbar({ activeSection, onSectionChange }: AdminNav
   const pathname = usePathname();
   const { agency, subscriptions, isLoading, clearAgencyData } = useAgencyAuth();
 
-  // Debug logging
-  console.log('AdminNavbar render - agency:', agency, 'subscriptions:', subscriptions, 'isLoading:', isLoading);
-
   // All possible navigation items with their subscription requirements
   const allNavigationItems = [
     { id: 'overview', label: 'Overview', icon: Home, path: '/agency-dashboard', requiresSubscription: null }, // Always available
@@ -33,13 +30,11 @@ export default function AdminNavbar({ activeSection, onSectionChange }: AdminNav
   const availableSubscriptionTypes = subscriptions
     .filter(sub => sub.status === 'active' || sub.status === 'trial')
     .map(sub => sub.subscription_type);
-  console.log('Available subscription types:', availableSubscriptionTypes);
   
   // Also track which are trial for potential UI indicators
   const trialSubscriptions = subscriptions
     .filter(sub => sub.status === 'trial')
     .map(sub => sub.subscription_type);
-  console.log('Trial subscriptions:', trialSubscriptions);
 
   // Filter navigation items based on subscriptions
   const navigationItems = allNavigationItems.filter(item => {
@@ -49,7 +44,6 @@ export default function AdminNavbar({ activeSection, onSectionChange }: AdminNav
     return availableSubscriptionTypes.includes(item.requiresSubscription);
   });
 
-  console.log('Filtered navigation items:', navigationItems.map(item => item.label));
 
   const handleNavigation = (item: typeof navigationItems[0]) => {
     // Use router to navigate to the specific page
@@ -73,7 +67,6 @@ export default function AdminNavbar({ activeSection, onSectionChange }: AdminNav
   };
 
   const handleLogout = () => {
-    console.log('Logging out...');
     // Clear agency data from localStorage
     localStorage.removeItem('agencyEmail');
     // Clear context data

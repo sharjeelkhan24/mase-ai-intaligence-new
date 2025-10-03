@@ -18,6 +18,8 @@ interface AgencyData {
   patient_count: string;
   notes?: string;
   profile_image?: string;
+  patients_table_name?: string;
+  staff_table_name?: string;
   created_at: string;
   updated_at: string;
 }
@@ -65,7 +67,6 @@ export function AgencyAuthProvider({ children }: AgencyAuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   const clearAgencyData = () => {
-    console.log('Clearing agency data...');
     setAgency(null);
     setSubscriptions([]);
     setIsLoading(false);
@@ -73,20 +74,15 @@ export function AgencyAuthProvider({ children }: AgencyAuthProviderProps) {
 
   const refreshAgencyData = async () => {
     try {
-      console.log('RefreshAgencyData called');
       setIsLoading(true);
       
       // Get agency email from localStorage (set during signin)
       const agencyEmail = localStorage.getItem('agencyEmail');
-      console.log('Agency email from localStorage:', agencyEmail);
       
       if (!agencyEmail) {
-        console.log('No agency email found in localStorage');
         clearAgencyData();
         return;
       }
-
-      console.log('Fetching agency data for email:', agencyEmail);
       
       // Fetch agency data from Supabase
       const { data: agencyData, error } = await supabase
@@ -95,34 +91,29 @@ export function AgencyAuthProvider({ children }: AgencyAuthProviderProps) {
         .eq('email', agencyEmail)
         .single();
 
-      console.log('Supabase query result:', { data: agencyData, error });
-
       if (error) {
-        console.error('Error fetching agency data:', error);
         setAgency(null);
         setSubscriptions([]);
       } else {
-        console.log('Agency data loaded successfully:', agencyData);
         setAgency(agencyData);
 
-        // Fetch agency subscriptions
-        console.log('Fetching agency subscriptions for agency ID:', agencyData.id);
+        // Fetch agency subscriptions from agency-specific subscription table
+        const agencyNameClean = agencyData.agency_name.toLowerCase().replace(/\s+/g, '_');
+        const subscriptionTableName = `subscription_${agencyNameClean}`;
+        
         const { data: subscriptionData, error: subscriptionError } = await supabase
-          .from('agency_subscription')
+          .from(subscriptionTableName)
           .select('*')
           .eq('agency_id', agencyData.id)
-          .in('status', ['active', 'trial']); // Get both active and trial subscriptions
+          .in('status', ['active', 'trial']);
 
         if (subscriptionError) {
-          console.error('Error fetching subscriptions:', subscriptionError);
           setSubscriptions([]);
         } else {
-          console.log('Subscriptions loaded successfully:', subscriptionData);
           setSubscriptions(subscriptionData || []);
         }
       }
     } catch (error) {
-      console.error('Error in refreshAgencyData:', error);
       setAgency(null);
       setSubscriptions([]);
     } finally {
@@ -133,13 +124,11 @@ export function AgencyAuthProvider({ children }: AgencyAuthProviderProps) {
   useEffect(() => {
     // Only run on client side
     if (typeof window !== 'undefined') {
-      console.log('useEffect running on client side');
       refreshAgencyData();
 
       // Listen for storage changes to handle account switching
       const handleStorageChange = (e: StorageEvent) => {
         if (e.key === 'agencyEmail') {
-          console.log('Agency email changed in localStorage, refreshing data...');
           refreshAgencyData();
         }
       };
@@ -151,7 +140,6 @@ export function AgencyAuthProvider({ children }: AgencyAuthProviderProps) {
         window.removeEventListener('storage', handleStorageChange);
       };
     } else {
-      console.log('useEffect skipped on server side');
       setIsLoading(false);
     }
   }, []);
