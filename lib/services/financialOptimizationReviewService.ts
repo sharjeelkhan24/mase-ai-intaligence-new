@@ -182,7 +182,7 @@ class FinancialOptimizationReviewService {
           console.log('Financial Optimization Review Service: Very large response detected, using timeout protection');
           analysisResult = await this.parseJsonWithTimeout(responseText, 5000); // 5 second timeout
         } else {
-          analysisResult = JSON.parse(responseText);
+        analysisResult = JSON.parse(responseText);
         }
         console.log('Financial Optimization Review Service: AI analysisType from response:', analysisResult.analysisType);
         console.log('Financial Optimization Review Service: Full AI response keys:', Object.keys(analysisResult));
@@ -198,8 +198,8 @@ class FinancialOptimizationReviewService {
         console.log('Financial Optimization Review Service: JSON cleaning completed');
         
         try {
-          analysisResult = JSON.parse(cleanedJson);
-          console.log('Financial Optimization Review Service: Parsed cleaned response analysisType:', analysisResult.analysisType);
+        analysisResult = JSON.parse(cleanedJson);
+        console.log('Financial Optimization Review Service: Parsed cleaned response analysisType:', analysisResult.analysisType);
         } catch (secondError) {
           console.log('Financial Optimization Review Service: Second parse attempt failed:', secondError);
           
